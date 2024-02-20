@@ -3,75 +3,78 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/02/14 20:41:29 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/02/20 21:12:04 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "includes/minishell.h"
 
 int g_exit_code;
 
-static void minishell(t_session *session, char **env)
+// static void minishell(t_session *session)
+// {
+// 	//while (1)
+// 	//{
+// 		char *line;
+// 		line = "hi ls | jshd  >   	";
+// 		//session->line = readline("minishell>>");
+// 		//if (session->line == NULL)
+// 		//	break;
+// 		printf("before split_line");
+// 		session->tokens = split_line(line, session);
+// 		int i = 0;
+// 		printf("before loop");
+// 		while (session->tokens[i])
+// 		{
+// 			printf("in the loop");
+// 			printf("%s\n", session->tokens[i]);
+// 			i++;
+// 		}
+// 		free_double_ptr(session->tokens);
+// 		//lexer(session, env);
+// 	//}
+// 	printf("exit\n");
+// 	//exit_shell();
+// }
+
+
+//int	main(int ac, char **av, char **env)
+int main()
 {
-	while (1)
-	{
-		/* handle_interactive_session_signal(); */
-		sig_setup();
-		session->input = readline("minishell>>");
-		if (session->input == NULL)
-			break;
-		// if (session->input)
-		// {
-		// 	ft_printf("exit\n");
-		// 	return (exit_shell(session, 0));
-		// }
-		/* handle_non_interactive_session_signal(); */
-		add_history(session->input);
-		lexer(session, env);
-		parse_cmd();
-		execute_cmd();
-		free(session->input);
-		/* if (lexer(session)) */
-		/* { */
-		/*     lstadd_back_token(&session->token, lstnew_token(NULL, END)); */
-		/*     strip_space_token(&session->token); */
-		/*     if (check_syntax(&session->token)) */
-		/*         g_exit_code = 2; */
-		/*     else */
-		/*     { */
-		/*         parser(session); */
-		/*         g_exit_code = executor(session); */
-		/*     } */
-		/* } */
-		/* free_session(session, false); */
-	}
+	//t_session	session;
+	//(void)av;
+	//(void)env;
+
+
+	//ft_memset(&session, 0, sizeof(t_session));
+	// if (ac != 1)
+	// {
+	// 	write(STDERR_FILENO, "No arguments allowed!\n", 22);
+	// 	return (1);
+	// }
+	//minishell(&session);
+		char *line;
+		char **tokens;
+		line = "hi ls | jshd  >   	";
+		//session->line = readline("minishell>>");
+		//if (session->line == NULL)
+		//	break;
+		printf("before split_line");
+		tokens = split_line(line);
+		int i = 0;
+		printf("before loop");
+		while (tokens[i])
+		{
+			printf("in the loop");
+			printf("%s\n", tokens[i]);
+			i++;
+		}
+		free_double_ptr(tokens);
+		//lexer(session, env);
+	//}
 	printf("exit\n");
-	exit_shell();
-}
-
-int main(int ac, char **av, char **env)
-{
-	t_session session;
-	(void)av;
-	//TODO remove when implemented env
-	(void)env;
-
-	// TODO: why use memset?
-	ft_memset(&session, 0, sizeof(t_session));
-	// if (argc != 1)
-	// 	return (ft_putendl_fd("No arguments allowed!", 2), 1);
-	if (ac != 1)
-	{
-		write(STDERR_FILENO, "No arguments allowed!\n", 22);
-		return (1);
-	}
-	// TODO: implement init_session
-	/* if (!init_session(&session, env)) */
-	/*     exit_shell(&session, EXIT_FAILURE)) */
-	minishell(&session, env);
-	exit_shell(&session, g_exit_code);
 	return (0);
 }
