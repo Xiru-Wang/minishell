@@ -12,15 +12,15 @@ SRC = $(wildcard *.c)
 OBJS = $(SRC:.c=.o)
 
 # Add here any additional libraries needed
-READLINE_LIB = -lreadline -lhistory -ltermcap
+#READLINE_LIB = -lreadline -lhistory -ltermcap
 # Include directories for header files
 INCLUDES = -Iincludes -I$(PATH_LIBFT)
 
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME) $(READLINE_LIB) $(INCLUDES)
-
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME) $(INCLUDES)
+#$(READLINE_LIB)
 # Make sure libft is compiled before compiling minishell
 $(LIBFT):
 	echo "Making libft..."

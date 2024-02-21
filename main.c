@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/02/20 21:12:04 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/02/21 16:39:47 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,18 +58,16 @@ int main()
 	//minishell(&session);
 		char *line;
 		char **tokens;
-		line = "hi ls | jshd  >   	";
+		line = "  hello 42 ? |>< cat|  	";
 		//session->line = readline("minishell>>");
 		//if (session->line == NULL)
 		//	break;
-		printf("before split_line");
+		printf("before split_line\n");
 		tokens = split_line(line);
 		int i = 0;
-		printf("before loop");
 		while (tokens[i])
 		{
-			printf("in the loop");
-			printf("%s\n", tokens[i]);
+			printf("token[%d]:%s\n", i, tokens[i]);
 			i++;
 		}
 		free_double_ptr(tokens);

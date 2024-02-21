@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/02/20 21:14:08 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/02/21 15:43:41 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,5 @@ int		ft_is_space(char c);
 int		if_all_space(char *s);
 void	free_double_ptr(char **ptr);
 //lexer
-char	**split_line(const char *line);
+char	**split_line(char *line);
 #endif
