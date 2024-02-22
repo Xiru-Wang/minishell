@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/02/21 15:43:41 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/02/22 16:15:43 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,34 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-# define CMD 1
-# define ARG 2
-# define TRUNC 3
-# define APPEND 4
-# define INPUT 5
-# define PIPE 6
-# define END 7
+// # define CMD 1
+// # define ARG 2
+// # define TRUNC 3
+// # define APPEND 4
+// # define INPUT 5
+// # define PIPE 6
+// # define END 7
 
 # define STDIN 0
 # define STDOUT 1
 # define STDERR 2
 
+typedef enum s_type
+{
+	WORD,
+	ARG,//eg. -e -ls
+	PIPE,
+	REDIR_IN,//<
+	REDIR_OUT,//>
+	HEREDOC,// <<
+	APPEND,//>>
+}	t_type;
+
 typedef struct s_token
 {
 	char			*value;
-	int				type;
+	t_type			type;
+	int				i;
 	struct s_token	*prev;
 	struct s_token	*next;
 }	t_token;
@@ -65,5 +77,5 @@ int		ft_is_space(char c);
 int		if_all_space(char *s);
 void	free_double_ptr(char **ptr);
 //lexer
-char	**split_line(char *line);
+void	split_line(char *line);
 #endif
