@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/02/22 16:15:43 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/02/22 16:58:31 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,18 +53,18 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-typedef struct s_session
+typedef struct s_data
 {
 	char		*line;
-	char		**tokens;
+	t_token		**token_list;
 	char		**env;
 	char		*pwd;
 	char		*old_pwd;
 	int			num_tokens;
-	t_token *token;
+	t_token		*token;
 	// t_command	*cmd;
 	// pid_t		pid;
-}	t_session;
+}	t_data;
 
 
 // termination
@@ -77,5 +77,5 @@ int		ft_is_space(char c);
 int		if_all_space(char *s);
 void	free_double_ptr(char **ptr);
 //lexer
-void	split_line(char *line);
+void	split_line(char *s, t_data *data);
 #endif
