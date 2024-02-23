@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/02/22 19:32:30 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/02/23 19:47:18 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,12 @@ int		if_all_space(char *s);
 void	free_double_ptr(char **ptr);
 //lexer
 void	init_data(t_data *data, char **env);
-void	split_line(char *s, t_data *data);
+int		split_line(char *s, t_token **token_list);
 //token_list
-t_token	*create_token(char *s, t_type type, int n);
+t_token	*create_token(char *s, int type, int n);
 void	token_add_back(t_token **head, t_token *new);
-int		add_list(char *str, t_type type, t_token **head, int n);
+int		add_list(char *str, int type, t_token **head, int n);
 void	print_list(t_token *token_list);
-void	free_node(t_token **list);
+void	free_token_list(t_token **list);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/02/22 19:54:41 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/02/23 17:56:52 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int g_exit_code;
 // 		// if (s == NULL)
 // 		// 	break ;
 // 		// add_history(s);
-		
+
 // 		data->line = ft_strtrim(s, " \t\n\v\f\r");
 // 		//free(s);
 // 		// if (if_all_space(data->line) || !data->line)
@@ -36,25 +36,35 @@ int g_exit_code;
 
 int	main(int ac, char **av, char **env)
 {
-	t_data	data;
+	t_data	*data;
 	(void)av;
-	char	s[] = "	| hi 42";
+	char	s[] = "hi 42 | <>";
 
-	ft_memset(&data, 0, sizeof(data));
+	//ft_memset(&data, 0, sizeof(data));
+	data = (t_data *)malloc(sizeof(t_data));
 	if (ac != 1)
 	{
 		write(STDERR_FILENO, "No arguments allowed!\n", 22);
 		return (1);
 	}
-	init_data(&data, env);
-	printf("shell\n");
+	init_data(data, env);
+	printf("before strtrim\n");
 	//minishell(&data);
-	data.line = ft_strtrim(s, " \t\n\v\f\r");
-	split_line(data.line, &data);
+	data->line = ft_strtrim(s, " \t\n\v\f\r");
+	printf("before split\n");
+	if (split_line(data->line, data->token_list) == 0)//data.token_list已经是**类型
+	{
+		free_token_list(data->token_list);//这是头指针
+		printf("exit\n");
+		free(data->line);
+		free(data);
+		return (2);
+	}
 	printf("print list\n");
-	print_list(*(data.token_list));
-	free_node(data.token_list);
+	//print_list(*data->token_list);//这是1st node
+	free_token_list(data->token_list);//这是头指针
 	printf("exit\n");
-	free(data.line);
+	free(data->line);
+	free(data);
 	return (0);
 }

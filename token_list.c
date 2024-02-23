@@ -1,6 +1,6 @@
 #include "includes/minishell.h"
 
-t_token	*create_token(char *s, t_type type, int n)
+t_token	*create_token(char *s, int type, int n)
 {
 	t_token	*token;
 
@@ -12,7 +12,6 @@ t_token	*create_token(char *s, t_type type, int n)
 	token->i = n;
 	token->prev = NULL;
 	token->next = NULL;
-
 	return (token);
 }
 
@@ -27,12 +26,12 @@ void	token_add_back(t_token **head, t_token *new)
 		return ;
 	}
 	while (temp->next != NULL)
-		temp = temp->next;//arrive at last node
-	temp->next = new;//let last node point new
-	new->prev = temp;//MISTAKE temp->prev = temp;
+		temp = temp->next;
+	temp->next = new;
+	new->prev = temp;
 }
 
-int	add_list(char *str, t_type type, t_token **head, int n)
+int	add_list(char *str, int type, t_token **head, int n)
 {
 	t_token	*new;
 
@@ -42,17 +41,33 @@ int	add_list(char *str, t_type type, t_token **head, int n)
 	token_add_back(head, new);
 	return (1);
 }
+//这意味着循环会继续执行直到stack为NULL。
+//这种方式确保了链表中的每个节点都会被访问和打印，包括链表的最后一个节点
 
-void	print_list(t_token *token_list)
+// void	print_list(t_token *token_list)
+// {
+// 	while (token_list)
+// 	{
+// 		if (token_list->value != NULL)
+// 			printf("value: %s, index: %d\n", token_list->value, token_list->i);
+// 		token_list = token_list->next;
+// 	}
+// }
+
+void print_list(t_token *token_list)
 {
-	while (token_list != NULL)
+	while (token_list)
 	{
-		printf("value: %s, index: %d\n", token_list->value, token_list->i);
+		if (token_list->value)
+			printf("value: %s, index: %d\n", token_list->value, token_list->i);
+		else
+			printf("value: (null), index: %d\n", token_list->i);
 		token_list = token_list->next;
 	}
 }
 
-void	free_node(t_token **list)
+
+void	free_token_list(t_token **list)
 {
 	t_token	*temp;
 
@@ -61,7 +76,8 @@ void	free_node(t_token **list)
 	while (*list)
 	{
 		temp = (*list)->next;
-		free ((*list)->value);
+		if ((*list)->value)
+			free ((*list)->value);
 		free(*list);
 		*list = temp;
 	}

@@ -12,7 +12,8 @@ SRC = $(wildcard *.c)
 OBJS = $(SRC:.c=.o)
 
 # Add here any additional libraries needed
-READLINE_LIB = -lreadline -lhistory -ltermcap
+READLINE_LIB = -lreadline -ltermcap
+#-lhistory
 # Include directories for header files
 INCLUDES = -Iincludes -I$(PATH_LIBFT)
 

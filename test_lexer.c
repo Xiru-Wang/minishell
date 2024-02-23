@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:47:18 by xiwang            #+#    #+#             */
-/*   Updated: 2024/02/22 17:21:51 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/02/23 19:47:05 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ void	init_data(t_data *data, char **env)
 	data->env = env;
 
 	//init_signals();
-	return (1);
+	//return (1);
 }
 
-static int	ft_type(char c)
+static enum	s_type ft_type(char c)
 {
 	if (c == '-')
 		return (ARG);
@@ -37,66 +37,59 @@ static int	ft_type(char c)
 	return (WORD);
 }
 
-//think about << >> and quotes
-// if i use linkedlist no need to consider
-// static int	count_num_token(char *s)
-// {
-// 	int	count;
-
-// 	count = 0;
-// 	while (*s)
-// 	{
-// 		while (*s && ft_is_space(*s))
-// 			s++;
-// 		if (!ft_is_space(*s) && !is_special(*s))//is word
-// 		{
-// 			count++;
-// 			while (*s && !ft_is_space(*s) && !is_special(*s))//skip word
-// 				s++;
-// 		}
-// 		else if (is_special(*s))//is sepcial
-// 		{
-// 			count++;
-// 			s++;
-// 		}
-// 	}
-// 	return (count);
-// }
-
-void	split_line(char *s, t_data *data)
+int	split_line(char *s, t_token **token_list)
 {
-	int	i, start;
+	int	i, start, n;
 	int	type;
+	char *temp;
 
 	i = 0;
+	n = 0;
 	while (s[i])
 	{
-		while (ft_is_space(s[i]))// Skip spaces to find the start of next token
-			i++;
+		printf("in the loop\n");
 		type = ft_type(s[i]);
 		if (type == WORD || type == ARG)
 		{
+			printf("%c\n", s[i]);
 			start = i;
 			while (s[i] && !ft_is_space(s[i]) && (type == WORD || type == ARG)) // skip rest of the word
 				i++;
-			add_list(ft_substr(s, start, i - start), type, data->token_list);
+			printf("here***\n");
+			printf("i = %d, start = %d\n", i, start);
+			temp = ft_substr(s, start, i - start);
+			printf("%s\n", temp);
+			printf("the problem is after this line\n");
+			if (add_list(temp, type, token_list, n) == 0)
+				return (0);
 		}
 		else if (type == REDIR_IN && ft_type(s[i + 1]) == REDIR_IN)
 		{
-			add_list("<<", HEREDOC, data->token_list);
+			temp = ft_substr(s, i, 2);
+			if (!add_list(temp, HEREDOC, token_list, n))
+				return (0);
 			i = i + 2;
 		}
 		else if ( type == REDIR_OUT && ft_type(s[i + 1]) == REDIR_OUT)
 		{
-			add_list(">>", APPEND, data->token_list);
+			temp = ft_substr(s, i, 2);
+			if (!add_list(temp, APPEND, token_list, n))
+				return (0);
 			i = i + 2;
 		}
-		else
+		else if (type != WORD && type != ARG)
 		{
-			add_list(ft_substr(s, i, 1), type, data->token_list);
+			temp = ft_substr(s, type, 1);
+			if (add_list(temp, type, token_list, n))
+				return (0);
 			i++;
 		}
+		n++;
+		while (ft_is_space(s[i]))// Skip spaces to find the start of next token
+			i++;
 	}
+	free(temp);
+	return (1);
 }
 
 // int main()
