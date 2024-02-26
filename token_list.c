@@ -7,7 +7,10 @@ t_token	*create_token(char *s, int type, int n)
 	token = (t_token *)malloc(sizeof(t_token));
 	if (!token)
 		return (NULL);
-	token->value = s;
+	if (*s)
+		token->value = s;
+	else
+		token->value = NULL;
 	token->type = type;
 	token->i = n;
 	token->prev = NULL;
@@ -19,26 +22,31 @@ void	token_add_back(t_token **head, t_token *new)
 {
 	t_token	*temp;
 
-	temp = *head;
-	if (*head == NULL)
-	{
-		*head = new;
+	//printf("start the token add back func\n");//debug
+	if (!head || !new)
 		return ;
+	if (*head == NULL)
+		*head = new;
+	else
+	{
+		temp = *head;
+
+		while (temp->next != NULL)
+			temp = temp->next;
+		temp->next = new;
+		new->prev = temp;
 	}
-	while (temp->next != NULL)
-		temp = temp->next;
-	temp->next = new;
-	new->prev = temp;
 }
 
-int	add_list(char *str, int type, t_token **head, int n)
+int	add_list(char *s, int type, t_token **head, int n)
 {
 	t_token	*new;
 
-	new = create_token(str, type, n);
+	new = create_token(s, type, n);
 	if (!new)
 		return (0);
 	token_add_back(head, new);
+
 	return (1);
 }
 //这意味着循环会继续执行直到stack为NULL。
@@ -71,7 +79,7 @@ void	free_token_list(t_token **list)
 {
 	t_token	*temp;
 
-	if ((*list) == NULL)
+	if ((*list) == NULL || list == NULL)
 		return ;
 	while (*list)
 	{

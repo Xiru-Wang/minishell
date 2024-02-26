@@ -1,14 +1,20 @@
-// //" '.....'"
-// //"   "   "  "
-// //'  ".... "'
-// //find a pair
-// 单引号保留了双引号的字面值。
-// 双引号允许单引号出现在字符串内部。
-// if (s[i] == QUOTE)
-// {
-// 	//strrchr??find last QUOTE
-// }
-// else if (s[i] == S_QUOTE)
-// {
-// 	//strrchr??find last QUOTE
-// }
+#include "includes/minishell.h"
+
+// previos call: handle_quotes((s+i), QUOTE/D_QUO, head, n)
+int	handle_quotes(char *s, int quote, t_token **head, int n)
+{
+	int	i;
+
+	i = 0;
+	//IN THE LOOP, only if s[0] == quote
+	while (s[i])
+	{
+		i++;
+		while (s[i] && s[i] != quote)//count the length till next quote
+			i++;
+		if (s[i] != quote)//unclosed
+			return (perror("quotes unclosed"), STDERR);
+		add_list(ft_substr(s, 1, i - 1), quote, head, n);
+	}
+	return (i + 2);//+2 in order to skip a pair of quotes
+}

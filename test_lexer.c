@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:47:18 by xiwang            #+#    #+#             */
-/*   Updated: 2024/02/23 19:47:05 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/02/26 17:58:11 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,10 @@ static enum	s_type ft_type(char c)
 		return (REDIR_IN);
 	else if (c == '>')
 		return (REDIR_OUT);
+	else if (c == '\'')
+		return (S_QUO);
+	else if (c == '\"')
+		return (D_QUO);
 	return (WORD);
 }
 
@@ -41,46 +45,42 @@ int	split_line(char *s, t_token **token_list)
 {
 	int	i, start, n;
 	int	type;
-	char *temp;
 
 	i = 0;
 	n = 0;
 	while (s[i])
 	{
-		printf("in the loop\n");
 		type = ft_type(s[i]);
+		//printf("s[%d] = %c\n", i, s[i]);
 		if (type == WORD || type == ARG)
 		{
-			printf("%c\n", s[i]);
+			//printf("%c\n", s[i]);
 			start = i;
 			while (s[i] && !ft_is_space(s[i]) && (type == WORD || type == ARG)) // skip rest of the word
 				i++;
-			printf("here***\n");
-			printf("i = %d, start = %d\n", i, start);
-			temp = ft_substr(s, start, i - start);
-			printf("%s\n", temp);
-			printf("the problem is after this line\n");
-			if (add_list(temp, type, token_list, n) == 0)
+			if (add_list(ft_substr(s, start, i - start), type, token_list, n) == 0)
 				return (0);
 		}
-		else if (type == REDIR_IN && ft_type(s[i + 1]) == REDIR_IN)
+		else if (type == REDIR_IN && s[i + 1] && ft_type(s[i + 1]) == REDIR_IN)
 		{
-			temp = ft_substr(s, i, 2);
-			if (!add_list(temp, HEREDOC, token_list, n))
+
+			if (!add_list(ft_substr(s, i, 2), HEREDOC, token_list, n))
 				return (0);
 			i = i + 2;
 		}
-		else if ( type == REDIR_OUT && ft_type(s[i + 1]) == REDIR_OUT)
+		else if ( type == REDIR_OUT && s[i + 1] && ft_type(s[i + 1]) == REDIR_OUT)
 		{
-			temp = ft_substr(s, i, 2);
-			if (!add_list(temp, APPEND, token_list, n))
+			if (!add_list(ft_substr(s, i, 2), APPEND, token_list, n))
 				return (0);
 			i = i + 2;
 		}
-		else if (type != WORD && type != ARG)
+		else if (type == S_QUO)
+			i += handle_quotes((s + i), S_QUO, token_list, n);
+		else if (type == D_QUO)
+			i += handle_quotes((s + i), D_QUO, token_list, n);
+		else
 		{
-			temp = ft_substr(s, type, 1);
-			if (add_list(temp, type, token_list, n))
+			if (!add_list(ft_substr(s, i, 1), type, token_list, n))
 				return (0);
 			i++;
 		}
@@ -88,7 +88,6 @@ int	split_line(char *s, t_token **token_list)
 		while (ft_is_space(s[i]))// Skip spaces to find the start of next token
 			i++;
 	}
-	free(temp);
 	return (1);
 }
 

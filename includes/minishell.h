@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/02/23 19:47:18 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/02/26 17:59:57 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ typedef enum s_type
 	REDIR_OUT,//>
 	HEREDOC,// <<
 	APPEND,//>>
+	S_QUO,
+	D_QUO,
 }	t_type;
 
 typedef struct s_token
@@ -56,7 +58,7 @@ typedef struct s_token
 typedef struct s_data
 {
 	char		*line;
-	t_token		**token_list;
+	t_token		*token_list;//NOT **token_list????
 	char		**env;
 	char		*pwd;
 	char		*old_pwd;
@@ -85,5 +87,7 @@ void	token_add_back(t_token **head, t_token *new);
 int		add_list(char *str, int type, t_token **head, int n);
 void	print_list(t_token *token_list);
 void	free_token_list(t_token **list);
+//quote.c
+int		handle_quotes(char *s, int quote, t_token **head, int n);
 
 #endif
