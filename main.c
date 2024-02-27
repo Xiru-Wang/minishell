@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/02/26 17:58:25 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/02/27 12:46:14 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	main(int ac, char **av, char **env)
 {
 	t_data	*data;
 	(void)av;
-	char	s[] = "hi 42 | <>";
+	char	s[] = "	hi  42| <> \"* hello*\" <<  >> \"'?? ?'\" ";
 
 	data = (t_data *)malloc(sizeof(t_data));
 	if (ac != 1)
@@ -49,19 +49,14 @@ int	main(int ac, char **av, char **env)
 	init_data(data, env);
 	//minishell(&data);
 	data->line = ft_strtrim(s, " \t\n\v\f\r");
-	if (split_line(data->line, &data->token_list) == 0)
+	if (split_line(data->line, &data->token_list, data) == 0)
 	{
-		free_token_list(&data->token_list);//这是头指针
-		free(data->line);
-		free(data);
-		printf("exit: split_line == 0\n");
-		return (2);
+		free_exit(data);
+		printf("exit: split_line == 0\n");//debug
+		return (STDERR);
 	}
-	printf("print list\n");
-	print_list(data->token_list);//这是1st node
-	free_token_list(&data->token_list);//这是头指针
-	printf("success\n");
-	free(data->line);
-	free(data);
+	print_list(data->token_list);
+	free_exit(data);
+	printf("success\n");//debug
 	return (0);
 }

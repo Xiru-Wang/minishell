@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_lexer.c                                       :+:      :+:    :+:   */
+/*   lexer_tokens.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:47:18 by xiwang            #+#    #+#             */
-/*   Updated: 2024/02/26 18:01:53 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/02/27 12:39:26 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,22 +41,20 @@ static enum	s_type ft_type(char c)
 	return (WORD);
 }
 
-int	split_line(char *s, t_token **token_list)
+int	split_line(char *s, t_token **token_list, t_data *data)
 {
 	int	i, start, n;
-	int	type;
+	int	type, result;
 
 	i = 0;
 	n = 0;
 	while (s[i])
 	{
 		type = ft_type(s[i]);
-		//printf("s[%d] = %c\n", i, s[i]);
 		if (type == WORD || type == ARG)
 		{
-			//printf("%c\n", s[i]);
 			start = i;
-			while (s[i] && !ft_is_space(s[i]) && (type == WORD || type == ARG)) // skip rest of the word
+			while (s[i] && !ft_is_space(s[i]) && (ft_type(s[i]) == WORD || ft_type(s[i]) == ARG)) // skip rest of a word
 				i++;
 			if (add_list(ft_substr(s, start, i - start), type, token_list, n) == 0)
 				return (0);
@@ -74,10 +72,17 @@ int	split_line(char *s, t_token **token_list)
 				return (0);
 			i = i + 2;
 		}
-		else if (type == S_QUO)
-			i += handle_quotes((s + i), S_QUO, token_list, n);
-		else if (type == D_QUO)
-			i += handle_quotes((s + i), D_QUO, token_list, n);
+		else if (type == S_QUO || type == D_QUO)
+		{
+			result = handle_quotes((s + i), type, token_list, n);
+			if (result == -1)
+			{
+				printf("unclosed quote\n");
+				free_exit(data);
+				exit(EXIT_FAILURE);
+			}
+			i += result;
+		}
 		else
 		{
 			if (!add_list(ft_substr(s, i, 1), type, token_list, n))
@@ -85,7 +90,7 @@ int	split_line(char *s, t_token **token_list)
 			i++;
 		}
 		n++;
-		while (ft_is_space(s[i]))// Skip spaces to find the start of next token
+		while (ft_is_space(s[i])) // Skip spaces to find the start of next token
 			i++;
 	}
 	return (1);

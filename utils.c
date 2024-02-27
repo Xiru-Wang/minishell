@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 19:37:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/02/20 19:56:28 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/02/27 12:00:53 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,11 @@ void	free_double_ptr(char **ptr)
 		i++;
 	}
 	free(ptr);
+}
+
+void	free_exit(t_data *data)
+{
+	free_token_list(&data->token_list);
+	free(data->line);
+	free(data);
 }

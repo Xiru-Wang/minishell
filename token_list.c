@@ -67,7 +67,7 @@ void print_list(t_token *token_list)
 	while (token_list)
 	{
 		if (token_list->value)
-			printf("value: %s, index: %d\n", token_list->value, token_list->i);
+			printf("value: %s, index: %d, type: %d\n", token_list->value, token_list->i, token_list->type);
 		else
 			printf("value: (null), index: %d\n", token_list->i);
 		token_list = token_list->next;

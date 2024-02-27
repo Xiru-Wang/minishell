@@ -1,20 +1,18 @@
 #include "includes/minishell.h"
 
-// previos call: handle_quotes((s+i), QUOTE/D_QUO, head, n)
+// IN THE LOOP, only if s[0] == quote
 int	handle_quotes(char *s, int quote, t_token **head, int n)
 {
 	int	i;
 
-	i = 0;
-	//IN THE LOOP, only if s[0] == quote
-	while (s[i])
-	{
+	i = 1;
+	while (s[i] && s[i] != s[0])//Look for the closing quote
 		i++;
-		while (s[i] && s[i] != quote)//count the length till next quote
-			i++;
-		if (s[i] != quote)//unclosed
-			return (perror("quotes unclosed"), STDERR);
+	if (s[i] == s[0])
+	{
 		add_list(ft_substr(s, 1, i - 1), quote, head, n);
+		return (i + 1);// Return the position after the closing quote
 	}
-	return (i + 2);//+2 in order to skip a pair of quotes
+	else
+		return (-1);
 }

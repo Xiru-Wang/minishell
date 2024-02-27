@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/02/26 17:59:57 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/02/27 12:40:54 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 typedef enum s_type
 {
 	WORD,
-	ARG,//eg. -e -ls
+	ARG,//with dash eg.-ls
 	PIPE,
 	REDIR_IN,//<
 	REDIR_OUT,//>
@@ -78,10 +78,11 @@ typedef struct s_data
 int		ft_is_space(char c);
 int		if_all_space(char *s);
 void	free_double_ptr(char **ptr);
-//lexer
+void	free_exit(t_data *data);
+// lexer
 void	init_data(t_data *data, char **env);
-int		split_line(char *s, t_token **token_list);
-//token_list
+int		split_line(char *s, t_token **token_list, t_data *data);
+// token_list
 t_token	*create_token(char *s, int type, int n);
 void	token_add_back(t_token **head, t_token *new);
 int		add_list(char *str, int type, t_token **head, int n);
