@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   token_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/29 09:50:58 by xiruwang          #+#    #+#             */
+/*   Updated: 2024/02/29 09:58:31 by xiruwang         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "includes/minishell.h"
 
-t_token	*create_token(char *s, int type, int n)
+static t_token	*create_token(char *s, int type, int n)
 {
 	t_token	*token;
 
@@ -18,11 +30,10 @@ t_token	*create_token(char *s, int type, int n)
 	return (token);
 }
 
-void	token_add_back(t_token **head, t_token *new)
+static void	token_add_back(t_token **head, t_token *new)
 {
 	t_token	*temp;
 
-	//printf("start the token add back func\n");//debug
 	if (!head || !new)
 		return ;
 	if (*head == NULL)
@@ -30,7 +41,6 @@ void	token_add_back(t_token **head, t_token *new)
 	else
 	{
 		temp = *head;
-
 		while (temp->next != NULL)
 			temp = temp->next;
 		temp->next = new;
@@ -49,18 +59,6 @@ int	add_list(char *s, int type, t_token **head, int n)
 
 	return (1);
 }
-//这意味着循环会继续执行直到stack为NULL。
-//这种方式确保了链表中的每个节点都会被访问和打印，包括链表的最后一个节点
-
-// void	print_list(t_token *token_list)
-// {
-// 	while (token_list)
-// 	{
-// 		if (token_list->value != NULL)
-// 			printf("value: %s, index: %d\n", token_list->value, token_list->i);
-// 		token_list = token_list->next;
-// 	}
-// }
 
 void print_list(t_token *token_list)
 {
@@ -73,7 +71,6 @@ void print_list(t_token *token_list)
 		token_list = token_list->next;
 	}
 }
-
 
 void	free_token_list(t_token **list)
 {

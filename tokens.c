@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_tokens.c                                     :+:      :+:    :+:   */
+/*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:47:18 by xiwang            #+#    #+#             */
-/*   Updated: 2024/02/27 12:39:26 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/03/08 11:05:32 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,15 @@ void	init_data(t_data *data, char **env)
 {
 	data->token_list = NULL;
 	data->env = env;
+	data->cmd_list = NULL;
+	data->cmd_num = 0;
+	data->in = NULL;
+	data->out = NULL;
+	data->append = NULL;
+	data->line = NULL;
+	data->var_name = NULL;
 
-	//init_signals();
-	//return (1);
+	//init_signals()
 }
 
 static enum	s_type ft_type(char c)
@@ -41,76 +47,56 @@ static enum	s_type ft_type(char c)
 	return (WORD);
 }
 
+/*
+它提供了更强的类型安全和表达性。使用枚举类型的变量意味着这个变量只能接受那个枚举定义的值，
+这有助于避免错误地将不相关的整数值赋给变量，也使得你的代码意图更加明确。
+*/
 int	split_line(char *s, t_token **token_list, t_data *data)
 {
-	int	i, start, n;
-	int	type, result;
+	int	i, start, n, res;
+	enum s_type	type;
+	int		result;
 
 	i = 0;
 	n = 0;
+	res = 1;
 	while (s[i])
 	{
 		type = ft_type(s[i]);
 		if (type == WORD || type == ARG)
 		{
 			start = i;
-			while (s[i] && !ft_is_space(s[i]) && (ft_type(s[i]) == WORD || ft_type(s[i]) == ARG)) // skip rest of a word
+			while (s[i] && !is_space(s[i]) && (ft_type(s[i]) == WORD || ft_type(s[i]) == ARG)) // skip rest of a word
 				i++;
-			if (add_list(ft_substr(s, start, i - start), type, token_list, n) == 0)
-				return (0);
+			res = add_list(ft_substr(s, start, i - start), type, token_list, n);
 		}
 		else if (type == REDIR_IN && s[i + 1] && ft_type(s[i + 1]) == REDIR_IN)
 		{
-
-			if (!add_list(ft_substr(s, i, 2), HEREDOC, token_list, n))
-				return (0);
+			res = add_list(ft_substr(s, i, 2), HEREDOC, token_list, n);
 			i = i + 2;
 		}
 		else if ( type == REDIR_OUT && s[i + 1] && ft_type(s[i + 1]) == REDIR_OUT)
 		{
-			if (!add_list(ft_substr(s, i, 2), APPEND, token_list, n))
-				return (0);
+			res = add_list(ft_substr(s, i, 2), APPEND, token_list, n);
 			i = i + 2;
 		}
 		else if (type == S_QUO || type == D_QUO)
 		{
 			result = handle_quotes((s + i), type, token_list, n);
 			if (result == -1)
-			{
-				printf("unclosed quote\n");
-				free_exit(data);
-				exit(EXIT_FAILURE);
-			}
+				free_exit("unclosed quote", data, EXIT_FAILURE);
 			i += result;
 		}
 		else
 		{
-			if (!add_list(ft_substr(s, i, 1), type, token_list, n))
-				return (0);
+			res = add_list(ft_substr(s, i, 1), type, token_list, n);
 			i++;
 		}
+		if (res == 0)
+			return (0);
 		n++;
-		while (ft_is_space(s[i])) // Skip spaces to find the start of next token
+		while (is_space(s[i]))
 			i++;
 	}
 	return (1);
 }
-
-// int main()
-// {
-// 		char *line;
-// 		char **tokens;
-// 		line = "  hello 42 ? |>< cat|  	";
-
-// 		printf("before split_line\n");
-// 		tokens = split_line(line);
-// 		int i = 0;
-// 		while (tokens[i])
-// 		{
-// 			printf("token[%d]:%s\n", i, tokens[i]);
-// 			i++;
-// 		}
-// 		free_double_ptr(tokens);
-// 		printf("exit\n");
-// 		return (0);
-// }
