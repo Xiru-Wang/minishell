@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 15:22:28 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/03/08 11:23:46 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/03/10 16:28:29 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	call_cmd(t_data *data, t_cmd *cmd)
 	}
 	execve(path, cmd->s, data->env);
 	free(path);
-	free_exit("execve", data, STDERR);
+	free_exit("execve", data, STDERR_FILENO);
 	return (0);
 }
 

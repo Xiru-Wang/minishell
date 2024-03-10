@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/03/08 11:01:49 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/03/10 16:27:37 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,20 +58,20 @@ void	extract_redir(t_token **head, t_data *data)
 				free_exit("syntax error near unexpected token", data, EXIT_FAILURE);
 			if (temp->type == REDIR_IN)
 			{
-				if (data->in != NULL)//in case multiple <, only take the last one
-					free(data->in);
-				data->in = ft_strdup(next_token->value);
+				if (data->infile != NULL)//in case multiple <, only take the last one
+					free(data->infile);
+				data->infile = ft_strdup(next_token->value);
 			}
 			else if (temp->type == REDIR_OUT)
 			{
-				if (data->out != NULL)
-					free(data->out);// 先释放之前的内存（如果有）
-				data->out = ft_strdup(next_token->value);
+				if (data->outfile != NULL)
+					free(data->outfile);// 先释放之前的内存（如果有）
+				data->outfile = ft_strdup(next_token->value);
 			}
 			else if (temp->type == APPEND)
 			{
-				if (data->out != NULL)
-					free(data->out);// 先释放之前的内存（如果有）
+				if (data->outfile != NULL)
+					free(data->outfile);// 先释放之前的内存（如果有）
 				data->append = ft_strdup(next_token->value);
 			}
 			del_token(head, temp); // remove < >
@@ -109,7 +109,7 @@ void	fill_cmd(t_token **head, t_cmd *cmd, t_data *data)
 
 	temp = *head;
 	if (!temp || temp->type == PIPE)//1st cmd cannot be PIPE
-		free_exit("syntax error near unexpected token", data, STDERR);
+		free_exit("syntax error near unexpected token", data, STDERR_FILENO);
 	int i = 0;
 	while (temp && temp->type != PIPE)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:47:18 by xiwang            #+#    #+#             */
-/*   Updated: 2024/03/08 11:05:32 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/03/10 16:28:10 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void	init_data(t_data *data, char **env)
 	data->env = env;
 	data->cmd_list = NULL;
 	data->cmd_num = 0;
-	data->in = NULL;
-	data->out = NULL;
+	data->infile = NULL;
+	data->outfile = NULL;
 	data->append = NULL;
 	data->line = NULL;
 	data->var_name = NULL;
@@ -47,10 +47,6 @@ static enum	s_type ft_type(char c)
 	return (WORD);
 }
 
-/*
-它提供了更强的类型安全和表达性。使用枚举类型的变量意味着这个变量只能接受那个枚举定义的值，
-这有助于避免错误地将不相关的整数值赋给变量，也使得你的代码意图更加明确。
-*/
 int	split_line(char *s, t_token **token_list, t_data *data)
 {
 	int	i, start, n, res;

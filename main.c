@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/03/08 17:14:16 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/03/10 16:04:51 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	main(int ac, char **av, char **env)
 {
 	t_data	*data;
 	(void)av;
-	char	s[] = "ls -l < infile | wc -l | echo \"hello\" > outfile";
+	char	s[] = "ls -l< infile| wc -l | echo \"hello\" > outfile";
 
 	data = (t_data *)malloc(sizeof(t_data));
 	if (ac != 1)

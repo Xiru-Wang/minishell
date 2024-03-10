@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/06 13:57:24 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/03/08 11:35:01 by xiruwang         ###   ########.fr       */
+/*   Created: 2024/03/10 16:23:50 by xiwang            #+#    #+#             */
+/*   Updated: 2024/03/10 16:23:53 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	fork_exev(t_cmd *cmd, t_data *data)
 
 	pid = fork();
 	if (pid == -1)
-		free_exit("fork", data, STDERR);
+		free_exit("fork", data, STDERR_FILENO);
 	if (pid > 0)
 		last = pid;//parent
 	else if (pid == 0)

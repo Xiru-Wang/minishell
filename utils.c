@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 19:37:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/03/05 18:45:09 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/03/10 16:27:18 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,10 @@ void	free_exit(char *s, t_data *data, int code)
 		printf("%s\n", s);
 	free_token_list(&data->token_list);
 	free(data->line);
-	if (data->in)
-		free(data->in);
-	if (data->out)
-		free(data->out);
+	if (data->infile)
+		free(data->infile);
+	if (data->outfile)
+		free(data->outfile);
 	if (data->cmd_list)
 		free_cmd_list(&data->cmd_list);
 	free(data);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/29 10:00:01 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/03/07 17:10:55 by xiruwang         ###   ########.fr       */
+/*   Created: 2024/03/10 16:24:31 by xiwang            #+#    #+#             */
+/*   Updated: 2024/03/10 16:24:59 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ t_cmd	*creat_cmd(int size, t_data *data)
 	new->s[size] = NULL;
 	new->is_builtin = 0;
 	new->next = NULL;
-	new->infile = STDIN_FILENO;
-	new->outfile = STDOUT_FILENO;
+	new->infd = STDIN_FILENO;
+	new->outfd = STDOUT_FILENO;
 	new->id = 0;
 	return (new);
 }
