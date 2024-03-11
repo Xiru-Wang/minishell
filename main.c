@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/03/10 16:04:51 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/03/10 22:14:32 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int g_exit_code;
 
 // 	while (1)
 // 	{
+//		init_data(data, env);
 // 		s = readline("minishell>>");
 // 		if (s == NULL)
 // 			break ;
@@ -41,13 +42,13 @@ int	main(int ac, char **av, char **env)
 	t_data	*data;
 	(void)av;
 	char	s[] = "ls -l< infile| wc -l | echo \"hello\" > outfile";
-
-	data = (t_data *)malloc(sizeof(t_data));
 	if (ac != 1)
 	{
 		write(STDERR_FILENO, "No arguments allowed!\n", 22);
 		return (1);
 	}
+	//setup_sig();
+	data = (t_data *)malloc(sizeof(t_data));
 	init_data(data, env);
 	//minishell(&data);
 	data->line = ft_strtrim(s, " \t\n\v\f\r");
@@ -62,6 +63,8 @@ int	main(int ac, char **av, char **env)
 		printf("%s\n", data->infile);
 	if (data->outfile)//debug
 		printf("%s\n", data->outfile);
+	if (!data->cmd_list)
+		//...?
 	free_exit("success", data, EXIT_FAILURE);
 	return (0);
 }

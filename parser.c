@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/03/10 16:27:37 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/03/10 22:47:15 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_cmd	*generate_cmd(t_token **token, t_data *data)
 		size = count_args(*token);
 		new = creat_cmd(size, data);
 		if (!new)
-			free_exit("malloc error: new_cmd", data, EXIT_FAILURE);
+			free_exit("malloc error: new_cmd", data, STDERR_FILENO);
 		fill_cmd(token, new, data);//update token list
 		append_cmd(&data->cmd_list, new);//append to cmd list
 		i++;
@@ -83,25 +83,6 @@ void	extract_redir(t_token **head, t_data *data)
 	}
 }
 
-int		ft_bubiltin(char *s)
-{
-	if (ft_strncmp(s, "cd", 3) == 0)
-		return (1);
-	else if (ft_strncmp(s, "echo", 5) == 0)
-		return (1);
-	else if (ft_strncmp(s, "pwd", 4) == 0)
-		return (1);
-	else if (ft_strncmp(s, "export", 7) == 0)
-		return (1);
-	else if (ft_strncmp(s, "unset", 6) == 0)
-		return (1);
-	else if (ft_strncmp(s, "env", 4) == 0)
-		return (1);
-	else if (ft_strncmp(s, "exit", 5) == 0)
-		return (1);
-	return (0);
-}
-
 void	fill_cmd(t_token **head, t_cmd *cmd, t_data *data)
 {
 	t_token	*temp;
@@ -119,8 +100,9 @@ void	fill_cmd(t_token **head, t_cmd *cmd, t_data *data)
 			if (temp->type == WORD)//( i == 0 && temp->type == WORD)
 			{
 				cmd->s[i] = ft_strdup(temp->value);
-				if (i == 0 && ft_bubiltin(cmd->s[i]))
-					cmd->is_builtin = 1;
+				int n = ft_bubiltin(cmd->s[i]);
+				if (i == 0 && n > 0)
+					cmd->is_builtin = n;
 			}
 			else if (temp->type == ARG || temp->type == S_QUO)
 				cmd->s[i] = ft_strdup(temp->value);

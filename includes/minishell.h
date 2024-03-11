@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/03/08 11:25:19 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/03/10 22:33:09 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,6 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-# define STDIN 0
-# define STDOUT 1
-# define STDERR 2
-
 typedef enum s_type
 {
 	WORD,
@@ -37,6 +33,17 @@ typedef enum s_type
 	S_QUO,
 	D_QUO,
 }	t_type;
+
+typedef enum s_builtin
+{
+	CD = 1,
+	ECHO,
+	PWD,
+	EXPORT,
+	UNSET,
+	ENV,
+	EXIT,
+}	t_builtin;
 
 typedef struct s_token
 {
@@ -111,5 +118,7 @@ char	*handle_dollar(char *s, t_data *data);
 int	call_cmd(t_data *data, t_cmd *cmd);
 //executor utils
 void	assign_cmd_id(t_cmd *cmd);
+//builtin
+enum	t_builtin ft_bubiltin(char *s);
 
 #endif
