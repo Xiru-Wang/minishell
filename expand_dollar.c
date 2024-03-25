@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_dollar.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:20 by xiwang            #+#    #+#             */
-/*   Updated: 2024/03/24 18:13:59 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/03/25 18:07:46 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*handle_dollar(char *s, t_data *data)
 	char	*new;
 
 	if (check_valid_dollar(s) == 0) // if no valid dollar: do nothing
-		return (ft_strdup(s));
+		return (ft_strdup(s));//didnt remove quotes
 	else
 	{
 		new = get_new_s(s, data);

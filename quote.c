@@ -1,18 +1,40 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   quote.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/25 17:52:59 by xiwang            #+#    #+#             */
+/*   Updated: 2024/03/25 18:54:36 by xiwang           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "includes/minishell.h"
 
-// IN THE LOOP, only if s[0] == quote
-int	handle_quotes(char *s, int quote, t_token **head, int n)
+// WRONG DID NOT consider "hi""hi"->hihi
+//  IN THE LOOP, only if s[0] == quote
+// eg."hi"" "'hi'
+int check_unclosed_quotes(char *s, int quote, t_token **head, int n)
 {
 	int	i;
+	int	count;
+	char	c;
 
-	i = 1;
-	while (s[i] && s[i] != s[0])//Look for the closing quote
-		i++;
-	if (s[i] == s[0])
+	i = 0;
+	count = 1;
+	c = s[0];
+	while (s[i] && s[i]!= 32) // before space: new string
 	{
-		add_list(ft_substr(s, 1, i - 1), quote, head, n);
-		return (i + 1);// Return the position after the closing quote
+		if (s[i] == c)
+			count = 2;
+		i++;
+		c = s[i];//reset c to find next pair of quote
+		count = 1;
 	}
-	else
+	if (count = 1)
 		return (-1);
+	else
+		add_list(ft_substr(s, 0, i), quote, head, n);
+	return (i); // Return the position after the closing quote
 }
