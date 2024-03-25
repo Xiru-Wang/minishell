@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:31 by xiwang            #+#    #+#             */
-/*   Updated: 2024/03/10 16:24:59 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/03/24 23:02:02 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	count_args(t_token *list)
 {
 	int	size;
 
-	size = 0;
+	size = 1;
 	while (list && list->type != PIPE)
 	{
 		size++;
@@ -46,15 +46,17 @@ t_cmd	*creat_cmd(int size, t_data *data)
 	new = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!new)
 		return (NULL);
-	new->s = (char **)malloc((size + 1) * sizeof(char *));
-	if (!new->s)
-		free_exit("malloc error", data, EXIT_FAILURE);
-	new->s[size] = NULL;
+	new->s= NULL;
 	new->is_builtin = 0;
+	new->infile = NULL;
+	new->outfile = NULL;
+	new->hdfile = NULL;
 	new->next = NULL;
 	new->infd = STDIN_FILENO;
 	new->outfd = STDOUT_FILENO;
-	new->id = 0;
+	new->in_type = 0;
+	new->o_type = 0;
+	new->data = data;
 	return (new);
 }
 

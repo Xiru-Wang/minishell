@@ -1,5 +1,5 @@
 
-#include "includes/minishell.h"
+#include "../includes/minishell.h"
 
 enum s_builtin	ft_bubiltin(char *s)
 {

@@ -3,34 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:23:50 by xiwang            #+#    #+#             */
-/*   Updated: 2024/03/10 16:23:53 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/03/24 19:49:11 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
-
-/*
-cmd 1 < file1 << EOF | cmd 2 >> file2
-执行顺序
-根据上述解释，执行顺序如下：
-
-cmd 1 从 heredoc 读取输入，而不是从 file1。尽管 file1 被指定为输入，但 heredoc (<< EOF) 的存在使得输入来自于 heredoc 的内容。
-cmd 1 处理 heredoc 提供的输入，并将其输出传递给 cmd 2。
-cmd 2 接收来自 cmd 1 的输出作为输入，处理后，将结果追加到 file2。
-*/
 
 void	fork_exev(t_cmd *cmd, t_data *data);
 
 int executor(t_cmd *cmd, t_data *data)
 {
 	int	end[2];
-
-	assign_cmd_id(cmd);
-	if (data->infile && cmd->id == 0)
-			cmd->infd = open(data->infile, O_RDONLY);
+	//?? check bash's behavior at 42
+//	if ((data->infile || cmd->infile) && cmd->id == 0)
+//			cmd->infd = open(data->infile, O_RDONLY);
 	while (cmd->next != NULL)//create pipe if not the last cmd
 	{
 		pipe(end);
@@ -41,16 +30,33 @@ int executor(t_cmd *cmd, t_data *data)
 	}
 	if (data->outfile && cmd->next == NULL)//last cmd
 	{
-		if (data->append)//append只能最后一条命令？
-			cmd->outfd = open(data->append, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		else
-			cmd->outfd = open(data->outfile, O_WRONLY | O_CREAT |O_TRUNC, 0644);
-		if (cmd->outfd < 0)
-			free_exit("open", data, STDERR_FILENO);
+		//
 	}
 }
 		// if (pipe(end) == -1)
 		// 		free_exit("pipe", data, STDERR);
+
+void	get_outfd(t_cmd *cmd, t_data *data)
+{
+	if (cmd->o_type == APPEND)
+		cmd->outfd = open(cmd->outfile, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	else if (cmd->o_type == REDIR_OUT)
+		cmd->outfd = open(cmd->outfile, O_WRONLY | O_CREAT |O_TRUNC, 0644);
+	if (cmd->outfd < 0)
+		free_exit("minishell: outfile: Error", data, STDERR_FILENO);
+}
+
+void	get_infd(t_cmd *cmd, t_data *data)
+{
+	if (cmd->in_type == REDIR_IN)
+		cmd->infd = open(cmd->infile, O_RDONLY);
+	if (data->infile && cmd->id == 0)//??BUG
+		cmd->infd = open(data->infile, O_RDONLY);
+	else if (cmd->in_type == HEREDOC)
+		cmd->infile = cmd->hdfile;/////??????
+	if (cmd->infd < 0)
+		free_exit("minishell: infile: No such file or directory", data, STDERR_FILENO);
+}
 
 void	fork_exev(t_cmd *cmd, t_data *data)
 {
@@ -67,12 +73,12 @@ void	fork_exev(t_cmd *cmd, t_data *data)
 		if (cmd->infd != STDIN_FILENO)
 		{
 			dup2(cmd->infd, STDIN_FILENO);
-			close(cmd->infd);//?
+			close(cmd->infd);
 		}
 		if (cmd->outfd != STDOUT_FILENO)
 		{
 			dup2(cmd->outfd, STDOUT_FILENO);
-			close(cmd->outfd);//?
+			close(cmd->outfd);
 		}
 		//signal reset??
 		call_cmd(data, cmd);

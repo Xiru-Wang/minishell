@@ -6,13 +6,13 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:58 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/02/29 09:58:31 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/03/22 15:50:15 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-static t_token	*create_token(char *s, int type, int n)
+t_token	*create_token(char *s, int type, int n)
 {
 	t_token	*token;
 
@@ -30,7 +30,7 @@ static t_token	*create_token(char *s, int type, int n)
 	return (token);
 }
 
-static void	token_add_back(t_token **head, t_token *new)
+void	token_add_back(t_token **head, t_token *new)
 {
 	t_token	*temp;
 

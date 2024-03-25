@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/03/10 22:33:09 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/03/24 23:01:29 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,18 @@ typedef struct s_token
 typedef struct s_cmd
 {
 	char			**s;
-	int				is_builtin;
+	t_builtin		is_builtin;
 	struct s_cmd	*next;
 	int				infd;
 	int				outfd;
 	int				id;
+	t_type			o_type;
+	t_type			in_type;
+	char			*infile;
+	char			*outfile;
+	char			*delimiter;
+	char			*hdfile;
+	t_data			*data;
 } t_cmd;
 
 typedef struct s_data
@@ -85,6 +92,11 @@ int		is_space(char c);
 int		if_all_space(char *s);
 void	free_double_ptr(char **ptr);
 void	free_exit(char *s, t_data *data, int code);
+
+//token_util
+t_token *create_token(char *s, int type, int n);
+void token_add_back(t_token **head, t_token *new);
+int add_list(char *s, int type, t_token **head, int n);
 
 //tokens: convert a string to a token list
 void	init_data(t_data *data, char **env);
@@ -119,6 +131,8 @@ int	call_cmd(t_data *data, t_cmd *cmd);
 //executor utils
 void	assign_cmd_id(t_cmd *cmd);
 //builtin
-enum	t_builtin ft_bubiltin(char *s);
+t_builtin	ft_bubiltin(char *s);
+//heredoc
+void	create_hd(t_cmd *cmd, t_data *data);
 
 #endif
