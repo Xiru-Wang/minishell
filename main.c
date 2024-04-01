@@ -6,36 +6,32 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/03/10 22:14:32 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/01 19:45:23 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-int g_exit_code;
+void minishell(t_data *data)
+{
+	char	*s;
 
-// static void minishell(t_data *data)
-// {
-// 	char	*s;
-
-// 	while (1)
-// 	{
-//		init_data(data, env);
-// 		s = readline("minishell>>");
-// 		if (s == NULL)
-// 			break ;
-// 		add_history(s);
-// 		data->line = ft_strtrim(s, " \t\n\v\f\r");
-// 		free(s);
-// 		init_data(data, data->env);
-// 		if (split_line(data->line, &data->token_list, data) == 0)
-// 			free_exit("split_line", data, EXIT_FAILURE);
-// 		data->cmd_list = generate_cmd(&data->token_list, data);
-//		if (cmd_list)
-// 			executor();
-// 	}
-// 	//exit_shell();
-// }
+	while (1)
+	{
+		s = readline("minishell>>");
+		if (s == NULL)
+			break ;
+		add_history(s);
+		data->line = ft_strtrim(s, " \t\n\v\f\r");
+		free(s);
+		init_data(data, data->env);
+		if (split_line(data->line, &data->token_list, data) == 0)
+			free_exit("split_line", data, EXIT_FAILURE);
+ 		data->cmd_list = generate_cmd(&data->token_list, data);
+		executor(data->cmd_list);
+	}
+	//exit_shell();
+}
 
 int	main(int ac, char **av, char **env)
 {
@@ -51,20 +47,5 @@ int	main(int ac, char **av, char **env)
 	data = (t_data *)malloc(sizeof(t_data));
 	init_data(data, env);
 	//minishell(&data);
-	data->line = ft_strtrim(s, " \t\n\v\f\r");
-	//lexer
-	if (split_line(data->line, &data->token_list, data) == 0)
-		free_exit("exit: split_line == 0", data, EXIT_FAILURE);
-	print_list(data->token_list);//debug
-	//parser
-	data->cmd_list = generate_cmd(&data->token_list, data);
-	print_cmd_list(data->cmd_list);//debug
-	if (data->infile)//debug
-		printf("%s\n", data->infile);
-	if (data->outfile)//debug
-		printf("%s\n", data->outfile);
-	if (!data->cmd_list)
-		//...?
-	free_exit("success", data, EXIT_FAILURE);
 	return (0);
 }

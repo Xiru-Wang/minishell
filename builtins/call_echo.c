@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_echo.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:17 by xiwang            #+#    #+#             */
-/*   Updated: 2024/03/25 17:52:18 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/04/01 19:46:41 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ void call_echo(t_cmd *cmd)
 	while (cmd->s[i])
 	{
 		if (!ft_strncmp(cmd->s[i], "$?", 3))
-			ft_putnbr_fd(g_last_exit_code, STDOUT_FILENO);
+			ft_putnbr_fd(g_exit_code, STDOUT_FILENO);
 		else
 		{
-			ft_putstr_fd(cmd->s[i], STDOUT_FILENO); // 去除掉引号
+			ft_putstr_fd(cmd->s[i], STDOUT_FILENO);
 		}
 
-		if (cmd->s[i])//在输出每个参数之间添加空格,但避免在最后一个参数后面添加多余的空格
+		if (cmd->s[i])
 			ft_putchar_fd(' ', STDOUT_FILENO);
 		i++;
 	}

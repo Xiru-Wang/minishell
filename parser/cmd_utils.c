@@ -1,16 +1,56 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:31 by xiwang            #+#    #+#             */
-/*   Updated: 2024/03/24 23:02:02 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/01 18:17:56 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/minishell.h"
+#include "../includes/minishell.h"
+
+t_cmd	*init_cmd(t_data *data)
+{
+	t_cmd	*new;
+
+	new = (t_cmd *)malloc(sizeof(t_cmd));
+	if (!new)
+		return (NULL);
+	new->s= NULL;
+	new->is_builtin = 0;
+	new->next = NULL;
+	new->prev = NULL;
+	new->io_list = NULL;
+	new->last_fdin = -1;
+	new->last_fdout = -1;
+	new->delimiter = NULL;
+	new->hdfile = NULL;
+	new->data = data;
+	ft_memset(new->infd[MAX_FILES], 0, sizeof(MAX_FILES));
+	ft_memset(new->outfd[MAX_FILES], 0, sizeof(MAX_FILES));
+	return (new);
+}
+
+void	append_cmd(t_cmd **head, t_cmd *new)
+{
+	t_cmd	*temp;
+
+	if (!head || !new)
+		return ;
+	if (*head == NULL)
+		*head = new;
+	else
+	{
+		temp = *head;
+		while (temp->next != NULL)
+			temp = temp->next;
+		temp->next = new;
+		new->prev = temp;
+	}
+}
 
 int	count_pipe(t_token *list)
 {
@@ -39,61 +79,7 @@ int	count_args(t_token *list)
 	return (size);
 }
 
-t_cmd	*creat_cmd(int size, t_data *data)
-{
-	t_cmd	*new;
-
-	new = (t_cmd *)malloc(sizeof(t_cmd));
-	if (!new)
-		return (NULL);
-	new->s= NULL;
-	new->is_builtin = 0;
-	new->infile = NULL;
-	new->outfile = NULL;
-	new->hdfile = NULL;
-	new->next = NULL;
-	new->infd = STDIN_FILENO;
-	new->outfd = STDOUT_FILENO;
-	new->in_type = 0;
-	new->o_type = 0;
-	new->data = data;
-	return (new);
-}
-
-void	append_cmd(t_cmd **head, t_cmd *new)
-{
-	t_cmd	*temp;
-
-	if (!head || !new)
-		return ;
-	if (*head == NULL)
-		*head = new;
-	else
-	{
-		temp = *head;
-		while (temp->next != NULL)
-			temp = temp->next;
-		temp->next = new;
-	}
-}
-
-void	del_token(t_token **head, t_token *node)
-{
-	if (!head || !*head || !node)
-		return ;
-	//update the prev node's next
-	if (node->prev)
-		node->prev->next = node->next;
-	else
-		*head = node->next;
-	//update the next node's prev
-	if (node->next)
-		node->next->prev = node->prev;
-	free(node->value);
-	free(node);
-}
-
-void print_cmd_list(t_cmd *cmd, t_data *data)
+void	print_cmd_list(t_cmd *cmd, t_data *data)
 {
 	while (cmd)
 	{

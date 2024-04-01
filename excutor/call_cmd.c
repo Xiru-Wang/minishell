@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   call_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 15:22:28 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/03/10 16:28:29 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/04/01 18:22:34 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/minishell.h"
+#include "../includes/minishell.h"
 
 static char	*find_path(char *s, char **env);
 

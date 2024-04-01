@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_dollar.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:20 by xiwang            #+#    #+#             */
-/*   Updated: 2024/03/25 18:07:46 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/04/01 18:25:58 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ static char	*get_new_s(char *s, t_data *data)
 				new = remove_char(s, i);
 			else if (ft_isalpha(s[i + 1]) || s[i + 1] == '_')
 				new = replace_var(s, &i, data);//if var found i increase len of env
-			// 如果生成了新字符串，则更新current并释放旧字符串（如果不是初始字符串）
 			if (new && new != current)//if more than one $
 			{
 				if (current != s)
@@ -81,11 +80,6 @@ static char	*get_new_s(char *s, t_data *data)
 	}
 	return (current);
 }
-/*
-if (temp != s)这个条件检查是为了确保只有当temp不再指向原始字符串s时，
-才释放temp指向的内存。这样的逻辑处理可以防止错误地释放原始字符串s的内存，
-同时也确保了在多次处理$符号、需要多次更新temp指向的字符串时，能够正确管理内存。
-*/
 
 static char	*remove_char(char *s, int index)
 {
@@ -107,7 +101,7 @@ static char	*remove_char(char *s, int index)
 	return (new);
 }
 /*
-eg. "hello*$USER*42"
+eg. "hello*$USER*42" * . () ！etc,will be sepreator
      |  s1 |var|s2|
 start = 6: $
 len(var) = 5
@@ -123,7 +117,7 @@ static char	*replace_var(char *s, int *i, t_data *data)
 
 	start = *i + 1;//skip $
 	len = 0;
-	while (s[start + len] && s[start + len] != ' ' && s[start + len] != '$')
+	while (ft_isalnum(s[start + len]) || s[start + len] == '_')
 		len++;//USER:4
 	end = start + len;// 11
 	var_name = ft_substr(s, start, len);//USER

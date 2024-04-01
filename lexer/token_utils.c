@@ -6,13 +6,13 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:58 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/03/22 15:50:15 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/01 19:29:10 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/minishell.h"
+#include "../includes/minishell.h"
 
-t_token	*create_token(char *s, int type, int n)
+static t_token	*create_token(char *s, int type, int n)
 {
 	t_token	*token;
 
@@ -30,7 +30,7 @@ t_token	*create_token(char *s, int type, int n)
 	return (token);
 }
 
-void	token_add_back(t_token **head, t_token *new)
+static void	token_add_back(t_token **head, t_token *new)
 {
 	t_token	*temp;
 
@@ -48,7 +48,7 @@ void	token_add_back(t_token **head, t_token *new)
 	}
 }
 
-int	add_list(char *s, int type, t_token **head, int n)
+int	add_token_list(char *s, int type, t_token **head, int n)
 {
 	t_token	*new;
 
@@ -60,7 +60,23 @@ int	add_list(char *s, int type, t_token **head, int n)
 	return (1);
 }
 
-void print_list(t_token *token_list)
+void	del_token(t_token **head, t_token *node)
+{
+	if (!head || !*head || !node)
+		return ;
+	//update the prev node's next
+	if (node->prev)
+		node->prev->next = node->next;
+	else
+		*head = node->next;
+	//update the next node's prev
+	if (node->next)
+		node->next->prev = node->prev;
+	free(node->value);
+	free(node);
+}
+
+void print_token_list(t_token *token_list)
 {
 	while (token_list)
 	{
