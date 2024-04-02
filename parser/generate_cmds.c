@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/04/02 17:25:22 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/02 19:19:12 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@ static void	extract_redir(t_token **head, t_cmd *cmd, t_data *data);
 static void	create_io_list(t_cmd *cmd, t_token *temp);
 static void	fill_cmd(t_token **head, t_cmd *cmd);
 
-t_cmd *generate_cmds(t_token **token, t_data *data)
+t_cmd	*generate_cmds(t_token **token, t_data *data)
 {
 	int		i;
 	int		size;
 	t_cmd	*new;
-	t_token *temp;
+	t_token	*temp;
 
 	i = 0;
 	data->cmd_num = count_pipe(*token) + 1;//eg. 2 pipe = 3 cmds
@@ -42,7 +42,7 @@ t_cmd *generate_cmds(t_token **token, t_data *data)
 
 //loop thru the token list, find redirections and fill the cmd
 //once found, remove from token list
-static void extract_redir(t_token **head, t_cmd *cmd, t_data *data)
+static void	extract_redir(t_token **head, t_cmd *cmd, t_data *data)
 {
 	t_token	*temp;
 	t_token	*next;
@@ -53,14 +53,14 @@ static void extract_redir(t_token **head, t_cmd *cmd, t_data *data)
 		next = temp->next;
 		if (temp->type >= REDIR_IN && temp->type <= HEREDOC)
 		{
-			if (next == NULL || next->type != WORD)//nothing behind redirection sign
+			if (next == NULL || next->type != WORD || next->type != QUO)
 				free_exit("syntax error near unexpected token", data, STDERR_FILENO);
 			create_io_list(cmd, temp);
 			del_token(head, temp); // remove redirection sign
 			temp = next->next;
 			del_token(head, next);//remove filename
 		}
-		if (temp)//!!check if it's NULL before visit
+		if (temp)//!!check if it's NULL before visitS
 			temp = temp->next;
 	}
 }
@@ -121,7 +121,7 @@ static void	fill_cmd(t_token **head, t_cmd *cmd)
 			if (builtin)
 				cmd->is_builtin = builtin;
 		}
-		else if (temp->value == QUO)
+		else if (temp->type == QUO)
 			cmd->s[i] = remove_quo_expand(temp->value, cmd->data);
 		del_token(head, temp);
 		temp = next;//update temp
