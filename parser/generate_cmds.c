@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/04/01 19:35:37 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/02 17:25:22 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,24 +51,14 @@ static void extract_redir(t_token **head, t_cmd *cmd, t_data *data)
 	while (temp && temp->type != PIPE)
 	{
 		next = temp->next;
-		if (temp->type >= REDIR_IN && temp->type <= APPEND)
+		if (temp->type >= REDIR_IN && temp->type <= HEREDOC)
 		{
 			if (next == NULL || next->type != WORD)//nothing behind redirection sign
 				free_exit("syntax error near unexpected token", data, STDERR_FILENO);
 			create_io_list(cmd, temp);
 			del_token(head, temp); // remove redirection sign
-			temp = next->next;//temp move to the node after filename if there's
+			temp = next->next;
 			del_token(head, next);//remove filename
-		}
-		else if (temp->type == HEREDOC)
-		{
-			create_io_list(cmd, temp);
-			del_token(head, temp); // remove redirection sign
-			if (next && next->type == WORD)
-			{
-				temp = next->next;
-				del_token(head, next);
-			}
 		}
 		if (temp)//!!check if it's NULL before visit
 			temp = temp->next;
@@ -98,12 +88,9 @@ static void	create_io_list(t_cmd *cmd, t_token *temp)
 	else if (temp->type == HEREDOC)
 	{
 		cmd->io_list->type = HEREDOC;
-		if (next->type == WORD)//if delimiter exist
-		{
-			if (cmd->delimiter)
+		if (cmd->delimiter)
 				free(cmd->delimiter);
-			cmd->delimiter = ft_strdup(next->value);
-		}
+		cmd->delimiter = ft_strdup(next->value);
 	}
 }
 
@@ -126,9 +113,9 @@ static void	fill_cmd(t_token **head, t_cmd *cmd)
 	while (temp && temp->type != PIPE && size > 0)
 	{
 		next = temp->next;
-		if (temp->type == WORD) //( i == 0 && temp->type == WORD)
+		if (temp->type == WORD)
 		{
-			cmd->s[i] = ft_strdup(temp->value);//maybe s[0] == -l
+			cmd->s[i] = ft_strdup(temp->value);
 			if (i == 0)
 				builtin = ft_bubiltin(cmd->s[0]);
 			if (builtin)
@@ -140,7 +127,7 @@ static void	fill_cmd(t_token **head, t_cmd *cmd)
 		temp = next;//update temp
 		i++;
 	}
-	cmd->s[i] = NULL;//terminate 2d array. now i == size
+	cmd->s[i] = NULL;
 	if (temp && temp->type == PIPE)//move to next cmd
 		del_token(head, temp);
 }

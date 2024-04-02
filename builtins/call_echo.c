@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:17 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/01 19:46:41 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/02 13:59:20 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void call_echo(t_cmd *cmd)
 
 	i = 1;
 	flag = 0;
-	while (cmd->s[i])
+	while (cmd->s[i++])//skip valid -n args
 	{
 		k = 1;
 		if (cmd->s[i][0] == '-' && cmd->s[i][1] == 'n')//first arg must be -n
@@ -39,20 +39,15 @@ void call_echo(t_cmd *cmd)
 			else
 				break ;
 		}
-		i++;
 	}
-	while (cmd->s[i])
+	while (cmd->s[i++])
 	{
-		if (!ft_strncmp(cmd->s[i], "$?", 3))
+		if (!ft_strncmp(cmd->s[i], "$?", 2))//??if single quote?
 			ft_putnbr_fd(g_exit_code, STDOUT_FILENO);
 		else
-		{
 			ft_putstr_fd(cmd->s[i], STDOUT_FILENO);
-		}
-
 		if (cmd->s[i])
 			ft_putchar_fd(' ', STDOUT_FILENO);
-		i++;
 	}
 	if (flag == 0)
 		ft_putchar_fd('\n', STDOUT_FILENO);
