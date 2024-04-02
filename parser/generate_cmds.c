@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/04/02 19:19:12 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/02 19:28:30 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,7 @@ static void	fill_cmd(t_token **head, t_cmd *cmd);
 t_cmd	*generate_cmds(t_token **token, t_data *data)
 {
 	int		i;
-	int		size;
 	t_cmd	*new;
-	t_token	*temp;
 
 	i = 0;
 	data->cmd_num = count_pipe(*token) + 1;//eg. 2 pipe = 3 cmds
@@ -73,7 +71,7 @@ static void	create_io_list(t_cmd *cmd, t_token *temp)
 	t_token	*next;
 
 	next = temp->next;//if next exsit, call handle_redir
-	if (!add_io_list(cmd->io_list))
+	if (!add_io_list(&cmd->io_list))
 		free_exit("malloc error", cmd->data, STDERR_FILENO);
 	if (temp->type == REDIR_IN)
 	{

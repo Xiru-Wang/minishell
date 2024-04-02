@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:31 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/01 18:17:56 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/02 19:38:24 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,10 @@ t_cmd	*init_cmd(t_data *data)
 	new->delimiter = NULL;
 	new->hdfile = NULL;
 	new->data = data;
-	ft_memset(new->infd[MAX_FILES], 0, sizeof(MAX_FILES));
-	ft_memset(new->outfd[MAX_FILES], 0, sizeof(MAX_FILES));
+	//new->infd[MAX_FILES] = {0};
+	//new->outfd[MAX_FILES] = {0};
+	//ft_memset(new->infd[MAX_FILES], 0, sizeof(int));
+	//ft_memset(new->outfd[MAX_FILES], 0, sizeof(int));
 	return (new);
 }
 
@@ -79,6 +81,7 @@ int	count_args(t_token *list)
 	return (size);
 }
 
+/*
 void	print_cmd_list(t_cmd *cmd, t_data *data)
 {
 	while (cmd)
@@ -102,3 +105,4 @@ void	print_cmd_list(t_cmd *cmd, t_data *data)
 		}
 	}
 }
+*/

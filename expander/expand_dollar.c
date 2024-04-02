@@ -6,11 +6,11 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:20 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/01 18:25:58 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/02 19:39:33 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/minishell.h"
+#include "../includes/minishell.h"
 
 static int	check_valid_dollar(char *s);
 static char	*get_new_s(char *s, t_data *data);

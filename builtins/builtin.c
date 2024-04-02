@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:01 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/02 19:12:51 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/02 19:39:12 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,18 @@ void	call_builtin(t_cmd *cmd)
 	enum s_builtin	i;
 
 	i = cmd->is_builtin;
-	if (i == CD)
-		call_cd();
-	else if (i == ECHO)
+	// if (i == CD)
+	// 	call_cd();
+	if (i == ECHO)
 		call_echo(cmd);
-	else if (i == PWD)
-		call_pwd();
-	else if (i == EXPORT)
-		call_export();
-	else if (i == UNSET)
-		call_unset();
+	// else if (i == PWD)
+	// 	call_pwd();
+	// else if (i == EXPORT)
+	// 	call_export();
+	// else if (i == UNSET)
+	// 	call_unset();
 	else if (i == ENV)
 		call_env(cmd);
-	else if (i == EXIT)
-		call_exit();
+	// else if (i == EXIT)
+	// 	call_exit();
 }

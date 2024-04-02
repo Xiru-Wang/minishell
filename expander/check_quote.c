@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:59 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/02 19:10:42 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/02 19:42:33 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 // hi"hi"' '"hi"->hihi hi
 // echo '"$?"'$?" ". -> "$?"0 .
-int	check_quotes(char *s, int quote, t_token **head, int n)
+int	check_quotes(char *s, t_token **head, int n)
 {
 	int		i;
 	char	c;
@@ -41,12 +41,13 @@ int	check_quotes(char *s, int quote, t_token **head, int n)
 		if (s[i] >= PIPE && s[i] <= _SPACE)//meet token
 		{
 			if (quote_sign == 1)
-				add_list(ft_substr(s, 0, i), QUO, head, n);//quote can mix
+				add_token_list(ft_substr(s, 0, i), QUO, head, n);//quote can mix
 			else
-				add_list(ft_substr(s, 0, i), WORD, head, n);//quote can mix
+				add_token_list(ft_substr(s, 0, i), WORD, head, n);//quote can mix
 			return (i);
 		}
 	}
+	return (0);
 }
 
 char	*remove_quo_expand(char *s, t_data *data)

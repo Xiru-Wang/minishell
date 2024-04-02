@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/04/02 19:12:24 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/02 19:50:36 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stdbool.h>
 # include <stdlib.h>
 # include <fcntl.h>
-# include "../libft/libft.h"
+# include "../libs/libft/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <limits.h>
@@ -113,7 +113,7 @@ void	init_data(t_data *data, char **env);
 int		split_line(char *s, t_token **token_list, t_data *data);
 
 //check_quote
-int		check_quotes(char *s, int quote, t_token **head, int n);
+int		check_quotes(char *s, t_token **head, int n);
 char	*remove_quo_expand(char *s, t_data *data);
 
 //expand dollar
@@ -135,7 +135,7 @@ void	free_io_list(t_io **list);
 void	get_redir_fd_array(t_cmd *cmd);
 void	redirect_fds(t_cmd *cmd, int *end);
 //heredoc
-int		check_hd(t_data *data, t_cmd *cmd);
+int		check_hd(t_cmd *cmd);
 // call_cmd
 int		call_cmd(t_data *data, t_cmd *cmd);
 //executor

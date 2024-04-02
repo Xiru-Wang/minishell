@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:17 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/02 19:23:52 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/02 19:49:56 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,9 @@ void	call_echo(t_cmd *cmd)
 	}
 	while (cmd->s[i++])
 	{
-		if (!ft_strncmp(cmd->s[i], "$?", 2))//??if single quote?
-			ft_putnbr_fd(g_exit_code, STDOUT_FILENO);
-		else
-			ft_putstr_fd(cmd->s[i], STDOUT_FILENO);
+		// if (!ft_strncmp(cmd->s[i], "$?", 2))//??if single quote?
+		// 	ft_putnbr_fd(g_exit_code, STDOUT_FILENO);
+		ft_putstr_fd(cmd->s[i], STDOUT_FILENO);
 		if (cmd->s[i])
 			ft_putchar_fd(' ', STDOUT_FILENO);
 	}
