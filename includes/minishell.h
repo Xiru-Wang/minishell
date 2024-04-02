@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/04/02 18:30:00 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/02 19:12:24 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int		count_pipe(t_token *list);
 int		count_args(t_token *list);
 void	print_cmd_list(t_cmd *cmd);//debug
 //generate_cmd
-t_cmd *generate_cmds(t_token **token, t_data *data);
+t_cmd	*generate_cmds(t_token **token, t_data *data);
 
 //io_utils
 int		add_io_list(t_io **head);
@@ -141,8 +141,9 @@ int		call_cmd(t_data *data, t_cmd *cmd);
 //executor
 int		executor(t_cmd *cmd, t_data *data);
 // builtin
-enum s_builtin ft_bubiltin(char *s);
-void call_builtin(t_cmd *cmd);
-void call_echo(t_cmd *cmd);
+enum s_builtin	ft_bubiltin(char *s);
+void			call_builtin(t_cmd *cmd);
+void			call_echo(t_cmd *cmd);
+int call_env(t_cmd *cmd);
 
 #endif

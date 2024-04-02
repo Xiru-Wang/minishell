@@ -6,13 +6,13 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 14:03:17 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/04/02 14:03:19 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/02 19:06:50 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	mini_env(t_cmd *cmd)
+int	call_env(t_cmd *cmd)
 {
 	int	i;
 

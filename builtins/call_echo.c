@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:17 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/02 13:59:20 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/02 19:23:52 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 //eg> echo -nn -nnnn2 -n "hi " "dad" "blala    lala"
 //-nnnn2 -n hi  dad blala    lala%
 
-void call_echo(t_cmd *cmd)
+void	call_echo(t_cmd *cmd)
 {
 	int	i;
 	int	k;

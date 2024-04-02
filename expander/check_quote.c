@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:59 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/01 18:24:55 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/02 19:10:42 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	check_quotes(char *s, int quote, t_token **head, int n)
 			else
 				return (-1);//unclosed quote
 		}
-		if (s[i] >= PIPE && s[i] <= SPACE)//meet token
+		if (s[i] >= PIPE && s[i] <= _SPACE)//meet token
 		{
 			if (quote_sign == 1)
 				add_list(ft_substr(s, 0, i), QUO, head, n);//quote can mix

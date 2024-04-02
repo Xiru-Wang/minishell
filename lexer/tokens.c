@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:47:18 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/01 18:26:54 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/02 19:09:48 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static enum	s_type ft_type(char c)
 	else if (c == '>')
 		return (REDIR_OUT);
 	else if (is_space(c))
-		return (SPACE);
+		return (_SPACE);
 	return (WORD);
 }
 
