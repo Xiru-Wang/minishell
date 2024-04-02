@@ -3,44 +3,47 @@ GREEN=\033[1;32m
 RESET=\033[0m
 
 NAME = minishell
-CC = gcc -g
-CFLAGS = -Wall -Werror -Wextra
 
-PATH_LIBFT = libft
-LIBFT = $(PATH_LIBFT)/libft.a
-SRC = $(wildcard *.c)
-OBJS = $(SRC:.c=.o)
+CC = cc
+CFLAGS = -Wall -Wextra -Werror
+RM = rm -f
 
-# Add here any additional libraries needed
-# READLINE_LIB = -lreadline -ltermcap
+LIBFT_PATH = libs/libft
+LIBFT = $(LIBFT_PATH)/libft.a
+
+READLINE_PATH = /usr/include/readline
 READLINE_LIB = -lreadline
-#-lhistory
-# Include directories for header files
-INCLUDES = -Iincludes -I$(PATH_LIBFT)
+
+SRC_FILES = $(shell find . -name '*.c')
+OBJ_DIR = obj
+OBJS = $(SRC_FILES:%.c=$(OBJ_DIR)/%.o)
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME) $(INCLUDES) $(READLINE_LIB)
-# Make sure libft is compiled before compiling minishell
+$(NAME): $(OBJS) $(LIBFT)
+	$(CC) $(CFLAGS) -o $@ $^ -I$(READLINE_PATH) $(READLINE_LIB)
+
+$(OBJ_DIR)/%.o: %.c
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS) -c $< -o $@ -I$(READLINE_PATH)
+
 $(LIBFT):
-	echo "Making libft..."
-	$(MAKE) -C $(PATH_LIBFT)
+	$(MAKE) -C $(LIBFT_PATH)
 
 clean:
-	echo "Removing .o object files..."
-	rm -f $(OBJS)
-	$(MAKE) fclean -C $(PATH_LIBFT)
+	$(RM) $(OBJS)
+	$(MAKE) -C $(LIBFT_PATH) clean
 
 fclean: clean
-	echo "Removing minishell..."
-	rm -f $(NAME)
-
+	$(RM) $(NAME)
+	$(MAKE) -C $(LIBFT_PATH) fclean
 re: fclean all
 
-# You might want to add a rule for .c.o to specify how .c files are compiled into .o files.
-# For example:
-# %.o: %.c
-#   $(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+norm:
+	@norminette ./src
+	@norminette -R CheckForbiddenSourceHeader ./includes
 
-.PHONY: all clean fclean re
+val:
+	@valgrind --track-fds=yes ./minishell
+
+.PHONY: all clean fclean re norm
