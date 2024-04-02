@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/04/01 19:45:47 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/02 18:30:00 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef enum s_type
 	REDIR_OUT,
 	APPEND,
 	HEREDOC,
-	SPACE,
+	_SPACE,
 	QUO,
 }	t_type;
 
@@ -65,6 +65,8 @@ typedef struct s_io
 	struct s_io		*next;
 }	t_io;
 
+
+typedef struct s_data t_data;
 typedef struct s_cmd
 {
 	char			**s;

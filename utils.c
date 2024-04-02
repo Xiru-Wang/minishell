@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 19:37:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/04/01 19:46:59 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/02 18:41:17 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,23 +64,49 @@ void	free_double_ptr(char **ptr)
 // 	*list = NULL;
 // }
 
-void	free_cmd_list(t_cmd **cmd)
-{
-	t_cmd	*temp;
 
-	if ((*cmd) == NULL || cmd == NULL)
-		return ;
-	while (*cmd)
-	{
-		temp = (*cmd)->next;
-		if ((*cmd)->s)
-			free_double_ptr((*cmd)->s);
-		free_io_list((*cmd)->io_list);
-		free(*cmd);
-		*cmd = temp;
-	}
-	*cmd = NULL;
+void free_cmd_list(t_cmd **cmd)
+{
+    t_cmd *temp;
+    // First, check if the cmd pointer itself is NULL
+    if (cmd == NULL)
+        return;
+    // Then, check if the list pointed to by cmd is NULL
+    if (*cmd == NULL)
+        return;
+    while (*cmd)
+    {
+        temp = (*cmd)->next; // Save the next node
+        // Free the string array if it exists
+        if ((*cmd)->s)
+            free_double_ptr((*cmd)->s);
+        // Correctly call free_io_list by passing the address of the io_list member
+        if ((*cmd)->io_list)
+            free_io_list(&(*cmd)->io_list);
+        free(*cmd); // Free the current node
+        *cmd = temp; // Move to the next node
+    }
+    // The list is now empty, so *cmd is already NULL due to the loop
 }
+
+// ERROR VERSION
+/* void	free_cmd_list(t_cmd **cmd) */
+/* { */
+/*     t_cmd	*temp; */
+/*  */
+/*     if ((*cmd) == NULL || cmd == NULL) */
+/*         return ; */
+/*     while (*cmd) */
+/*     { */
+/*         temp = (*cmd)->next; */
+/*         if ((*cmd)->s) */
+/*             free_double_ptr((*cmd)->s); */
+/*         free_io_list((*cmd)->io_list); */
+/*         free(*cmd); */
+/*         *cmd = temp; */
+/*     } */
+/*     *cmd = NULL; */
+/* } */
 
 void	free_exit(char *s, t_data *data, int code)
 {
