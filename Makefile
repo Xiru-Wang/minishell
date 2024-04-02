@@ -14,7 +14,7 @@ LIBFT = $(LIBFT_PATH)/libft.a
 READLINE_PATH = /usr/include/readline
 READLINE_LIB = -lreadline
 
-SRC_FILES = $(shell find ./src -name '*.c')
+SRC_FILES = $(shell find src -name '*.c')
 OBJ_DIR = obj
 OBJS = $(SRC_FILES:%.c=$(OBJ_DIR)/%.o)
 
