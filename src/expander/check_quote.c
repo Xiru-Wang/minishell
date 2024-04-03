@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:59 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/02 19:52:19 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/03 17:35:06 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int	check_quotes(char *s, t_token **head, int n)
 	return (0);
 }
 
+// hi"hi"' '"hi"->hihi hi
+// echo blabla"waw"'mao'"$USER" ---> blablawawmaoxiruwang
 char	*remove_quo_expand(char *s, t_data *data)
 {
 	int		i, k, j;
@@ -74,6 +76,17 @@ char	*remove_quo_expand(char *s, t_data *data)
 			while (s[i] && s[i] != '\"')
 				i++;
 			temp = ft_substr(s, j, i - j);
+			s2 = handle_dollar(temp, data);
+			free(temp);
+			i++;
+			j = 0;
+			while (s2[j])
+				new[k++] = s2[j++];
+			free(s2);
+		}
+		else if (s[i] == '$' && s[i + 1])//TODO
+		{
+			temp = ft_substr(s, i, next_quo);
 			s2 = handle_dollar(temp, data);
 			free(temp);
 			i++;
