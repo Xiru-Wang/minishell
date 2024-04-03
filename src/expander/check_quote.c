@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:59 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/02 19:52:19 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/02 20:44:31 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	check_quotes(char *s, t_token **head, int n)
 	return (0);
 }
 
+// hi"hi"' '"hi"->hihi hi
 char	*remove_quo_expand(char *s, t_data *data)
 {
 	int		i, k, j;
