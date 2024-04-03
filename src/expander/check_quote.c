@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_quote.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:59 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/03 17:35:06 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/03 20:45:09 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 // hi"hi"' '"hi"->hihi hi
 // echo '"$?"'$?" ". -> "$?"0 .
-int	check_quotes(char *s, t_token **head, int n)
+int	check_unclosed_quotes(char *s, t_token **head, int n)
 {
 	int		i;
 	char	c;
@@ -50,54 +50,38 @@ int	check_quotes(char *s, t_token **head, int n)
 	return (0);
 }
 
-// hi"hi"' '"hi"->hihi hi
-// echo blabla"waw"'mao'"$USER" ---> blablawawmaoxiruwang
-char	*remove_quo_expand(char *s, t_data *data)
+char	*remove_quo(char *s)
 {
-	int		i, k, j;
-	char	*new, *temp, *s2;//expaned string
+	int		i, k;
+	char	c;
+	char	*new;
 
 	i = 0;
 	k = 0;
-	new = (char *)malloc(1024); // assume this size
+	while (s[i++])
+	{
+		if (s[i] == '\'' || s[i] == '\"')
+		{
+			c = s[i];
+			while (s[i] && s[i] != c)
+				i++;
+			k = k + 2;	
+		}
+	}
+	new = (char *)malloc(ft_strlen(s) - k + 1);
+	i = 0;
 	while (s[i])
 	{
-		if (s[i] == '\'')
+		if (s[i] == '\'' || s[i] == '\"')
 		{
-			i++;//skip left single quote
-			while (s[i] && s[i] != '\'')
-				new[k++] = s[i++];//copy content between S_QUO
-			i++; // skip right single quote
-		}
-		else if (s[i] == '\"')
-		{
-			i++;//skip left double quote
-			j = i;
-			while (s[i] && s[i] != '\"')
-				i++;
-			temp = ft_substr(s, j, i - j);
-			s2 = handle_dollar(temp, data);
-			free(temp);
+			c = s[i];
 			i++;
-			j = 0;
-			while (s2[j])
-				new[k++] = s2[j++];
-			free(s2);
+			while (s[i] && s[i] != c)
+				new[k++] = s[i++];
+			i++;	
 		}
-		else if (s[i] == '$' && s[i + 1])//TODO
-		{
-			temp = ft_substr(s, i, next_quo);
-			s2 = handle_dollar(temp, data);
-			free(temp);
-			i++;
-			j = 0;
-			while (s2[j])
-				new[k++] = s2[j++];
-			free(s2);
-		}
-		else
-			new[k++] = s[i++];
+		new[k++] = s[i++];
 	}
-	new[k] = 0;
+	new[k + 1] = 0;//?should i
 	return (new);
 }

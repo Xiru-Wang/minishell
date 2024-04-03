@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   generate_cmds.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/04/02 19:52:45 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/03 20:40:29 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,14 +113,14 @@ static void	fill_cmd(t_token **head, t_cmd *cmd)
 		next = temp->next;
 		if (temp->type == WORD)
 		{
-			cmd->s[i] = ft_strdup(temp->value);
+			cmd->s[i] = check_dollar_quo(temp->value, cmd->data, WORD);;
 			if (i == 0)
 				builtin = ft_bubiltin(cmd->s[0]);
 			if (builtin)
 				cmd->is_builtin = builtin;
 		}
 		else if (temp->type == QUO)
-			cmd->s[i] = remove_quo_expand(temp->value, cmd->data);
+			cmd->s[i] = check_dollar_quo(temp->value, cmd->data, QUO);
 		del_token(head, temp);
 		temp = next;//update temp
 		i++;

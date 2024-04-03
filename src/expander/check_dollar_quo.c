@@ -1,35 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_dollar.c                                    :+:      :+:    :+:   */
+/*   check_dollar_quo.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:20 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/02 19:52:23 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/03 20:56:59 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 static int	check_valid_dollar(char *s);
-static char	*get_new_s(char *s, t_data *data);
-static char	*remove_char(char *s, int index);
-static char	*replace_var(char *s, int *start, t_data *data);
-static char	*find_var(char *var, char **env);
+static char	*replace_vars(char *s, t_data *data);
+static int	count_var_len(char *var);
+static char	*replace_vars(char *s, t_data *data);
 
-char	*handle_dollar(char *s, t_data *data)
+char	*check_dollar_quo(char *s, t_data *data, enum s_type type)//should not free s here?
 {
+	char	*temp;
 	char	*new;
-
-	if (check_valid_dollar(s) == 0) // if no valid dollar: do nothing
-		return (ft_strdup(s));//didnt remove quotes
+	
+	if (check_valid_dollar(s) == 0 && type == WORD) // if no valid dollar: do nothing
+		return (ft_strdup(s));
+	else if (check_valid_dollar(s) == 0 && type == QUO)
+		return(remove_quo(s));
 	else
 	{
-		new = get_new_s(s, data);
-		if (new != s)
-			free(s);
-		return (new);
+		temp = replace_vars(s, data);
+		if (type == QUO)
+		{
+			new = remove_quo(temp);
+			free(temp);
+			return(new);
+		}
+		return (temp);	
 	}
 }
 
@@ -48,11 +54,60 @@ static int	check_valid_dollar(char *s)
 	return (0);
 }
 
+// hi"hi"' '"hi"->hihi hi
+// echo blabla"waw"'mao'"$USER" ---> blablawawmaoxiruwang
+static char	*replace_vars(char *s, t_data *data)//keep quotes, expand var first
+{
+	int		i, k, j, var_len;
+	char	*new, *var_name, *value;
+
+	i = 0;
+	k = 0;
+	new = (char *)malloc(1024);
+	while (s[i])
+	{
+		if (s[i] == '\'')//no expansion inside of ' '
+		{
+			new[k] = s[i];
+			i++;
+			while (s[i] && s[i] != '\'')
+				new[k++] = s[i++];//copy content between S_QUO
+			i++; 
+		}
+		else if (s[i] == '$' && s[i + 1] && (ft_isalnum(s[i + 1]) || s[i + 1] == '_'))
+		{
+			var_len = count_var_len(s + i);
+			value = expander(s + i, var_len, data);
+			j = 0;
+			while(value)
+				new[k++] = value[j++];
+			free(value);
+			i = i + var_len;
+		}
+		new[k++] = s[i++];
+	}
+	new[k + 1] = 0;
+	return (new);
+}
+
+static int	count_var_len(char *var)
+{
+	int	i;
+	
+	if (var[0] == '$')
+	{
+		i = 1;
+		while (ft_isalnum(var[i]) || var[i] == '_')
+			i++;
+	}
+	return (i);
+}
+
 /*
 if check_valid_dollar == true:
 situation1: remove
 situation2: replace
-*/
+
 static char	*get_new_s(char *s, t_data *data)
 {
 	char	*current;
@@ -80,7 +135,8 @@ static char	*get_new_s(char *s, t_data *data)
 	}
 	return (current);
 }
-
+*/
+/*
 static char	*remove_char(char *s, int index)
 {
 	int		i, k;
@@ -100,14 +156,8 @@ static char	*remove_char(char *s, int index)
 	new[k] = 0;
 	return (new);
 }
-/*
-eg. "hello*$USER*42" * . () ！etc,will be sepreator
-     |  s1 |var|s2|
-start = 6: $
-len(var) = 5
-end = 11
-strlen(s)=14
 */
+/*
 static char	*replace_var(char *s, int *i, t_data *data)
 {
 	char	*s1, *s2;
@@ -139,25 +189,12 @@ static char	*replace_var(char *s, int *i, t_data *data)
 	free(s2);
 	return (new);
 }
-
-static char	*find_var(char *var, char **env)//eg $USER
-{
-	char	*value;
-	int		i;
-	int		n;
-
-	if (!var)
-		return (NULL);
-	n = ft_strlen(var);//eg.USER
-	i = 0;
-	while (env[i])
-	{
-		if (ft_strncmp(var, env[i], n) == 0 && env[i][n] == '=')
-		{
-			value = ft_substr(env[i], n + 1, ft_strlen(env[i]) - (n + 1));//extract chars after = sign
-			return (value);
-		}
-		i++;
-	}
-	return (NULL);
-}
+*/
+/*
+eg. "hello*$USER*42" * . () ！etc,will be sepreator
+     |  s1 |var|s2|
+start = 6: $
+len(var) = 5
+end = 11
+strlen(s)=14
+*/

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/04/02 19:50:36 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/03 20:36:49 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,12 +113,12 @@ void	init_data(t_data *data, char **env);
 int		split_line(char *s, t_token **token_list, t_data *data);
 
 //check_quote
-int		check_quotes(char *s, t_token **head, int n);
-char	*remove_quo_expand(char *s, t_data *data);
-
+int		check_unclosed_quotes(char *s, t_token **head, int n);
+char	*remove_quo(char *s);
+//expander
+char	*expander(char *s, int len, t_data *data);
 //expand dollar
-char	*handle_dollar(char *s, t_data *data);
-
+char	*check_dollar_quo(char *s, t_data *data, enum s_type type);
 //cmd_utils
 t_cmd	*init_cmd(t_data *data);
 void	append_cmd(t_cmd **head, t_cmd *new);

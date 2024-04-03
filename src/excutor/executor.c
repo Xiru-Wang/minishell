@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:23:50 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/02 19:51:59 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/03 20:48:50 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	executor(t_cmd *cmd, t_data *data)
 	{
 		if (pipe(end) == -1)
 			free_exit("pipe failed", data, STDERR_FILENO);
-		check_hd(data, cmd);
+		check_hd(cmd);
 		get_redir_fd_array(cmd);
 		redirect_fds(cmd, end);
 		data->pid[i] = fork();
