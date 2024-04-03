@@ -1,5 +1,8 @@
-#include "./Unity/src/unity.h"
-#include "../includes/minishell.h"
+/* #include "../unity/src/unity.h" */
+/* #include "../includes/minishell.h" */
+
+#include "unity.h"
+#include "minishell.h"
 
 t_data *create_mock_data(void) {
     t_data *data = malloc(sizeof(t_data));
