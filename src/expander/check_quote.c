@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:59 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/03 20:45:09 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/04/03 21:24:45 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,11 @@ int	check_unclosed_quotes(char *s, t_token **head, int n)
 	return (0);
 }
 
-char	*remove_quo(char *s)
+
+//char	*remove_quo(char *s)
+// hi"hi"' '"hi"->hihi hi
+// echo blabla"waw"'mao'"$USER" ---> blablawawmaoxiruwang
+char	*remove_quo_expand(char *s, t_data *data)
 {
 	int		i, k;
 	char	c;
