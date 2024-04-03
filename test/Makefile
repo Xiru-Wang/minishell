@@ -15,8 +15,6 @@ endif
 
 .PHONY: clean
 .PHONY: test
-.PHONY: compile
-.PHONY: install
 
 PATHU = unity/src/
 PATHS = src/
@@ -25,7 +23,6 @@ PATHB = build/
 PATHD = build/depends/
 PATHO = build/objs/
 PATHR = build/results/
-OBJS = $(patsubst %,$(PATHO)%,$(_OBJS))
 
 BUILD_PATHS = $(PATHB) $(PATHD) $(PATHO) $(PATHR)
 
@@ -35,15 +32,12 @@ COMPILE=gcc -c
 LINK=gcc
 DEPEND=gcc -MM -MG -MF
 CFLAGS=-I. -I$(PATHU) -I$(PATHS) -DTEST
-_OBJS = main.o calc.o
 
 RESULTS = $(patsubst $(PATHT)test%.c,$(PATHR)test%.txt,$(SRCT) )
 
 PASSED = `grep -s PASS $(PATHR)*.txt`
 FAIL = `grep -s FAIL $(PATHR)*.txt`
 IGNORE = `grep -s IGNORE $(PATHR)*.txt`
-
-all: test compile install
 
 test: $(BUILD_PATHS) $(RESULTS)
 	@echo "-----------------------\nIGNORES:\n-----------------------"
@@ -84,20 +78,10 @@ $(PATHO):
 $(PATHR):
 	$(MKDIR) $(PATHR)
 
-compile: $(OBJS)
-
-install: $(OBJS)
-	$(LINK) -o calc.$(TARGET_EXTENSION) $(OBJS)
-
-format:
-	indent -linux $(PATHS)*.c $(PATHS)*.h $(PATHT)*.c
-	$(CLEANUP) $(PATHS)*~ $(PATHS)*~ $(PATHT)*~
-
 clean:
 	$(CLEANUP) $(PATHO)*.o
 	$(CLEANUP) $(PATHB)*.$(TARGET_EXTENSION)
 	$(CLEANUP) $(PATHR)*.txt
-	$(CLEANUP) calc.$(TARGET_EXTENSION)
 
 .PRECIOUS: $(PATHB)test%.$(TARGET_EXTENSION)
 .PRECIOUS: $(PATHD)%.d
