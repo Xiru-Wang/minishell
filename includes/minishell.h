@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/04/03 20:36:49 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/04/05 19:22:41 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,13 @@ int		check_unclosed_quotes(char *s, t_token **head, int n);
 char	*remove_quo(char *s);
 //expander
 char	*expander(char *s, int len, t_data *data);
-//expand dollar
-char	*check_dollar_quo(char *s, t_data *data, enum s_type type);
-//cmd_utils
+//expand dollar in quote mixs
+char	*handle_dollar_quo(char *s, t_data *data, enum s_type type);
+char	*replace_vars(char *s, t_data *data);
+int		check_valid_dollar(char *s);
+//heredoc_expander
+char	*replace_vars_simple(char *s, t_data *data);
+// cmd_utils
 t_cmd	*init_cmd(t_data *data);
 void	append_cmd(t_cmd **head, t_cmd *new);
 int		count_pipe(t_token *list);
