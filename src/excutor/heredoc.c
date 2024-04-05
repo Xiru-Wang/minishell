@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:49 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/05 19:13:54 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/05 19:29:42 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,9 @@ static int	create_hd(t_cmd *cmd, int expand_sign)
 	{
 		if (ft_strncmp(line, cmd->delimiter, ft_strlen(cmd->delimiter)) == 0)
 			break;
-		if (expand_sign == 0)
+		if (expand_sign == 0 && check_valid_dollar(line))
 		{
-			if (check_quotes(line))
-				new = check_dollar_quo(line, cmd->data, QUO);
-			else
-				new = check_dollar_quo(line, cmd->data, WORD);
+			new = replace_vars_simple(line, cmd->data);//expand inside of S_QUO
 			ft_putendl_fd(new, fd);//write to temp file
 			free(new);
 		}

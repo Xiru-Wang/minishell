@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_quote.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:59 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/05 18:44:08 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/05 19:33:27 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	check_unclosed_quotes(char *s, t_token **head, int n)
 //char	*remove_quo(char *s)
 // hi"hi"' '"hi"->hihi hi
 // echo blabla"waw"'mao'"$USER" ---> blablawawmaoxiruwang
-char	*remove_quo_expand(char *s, t_data *data)
+char	*remove_quo(char *s, t_data *data)
 {
 	int		i, k;
 	char	c;
@@ -72,7 +72,7 @@ char	*remove_quo_expand(char *s, t_data *data)
 			c = s[i];
 			while (s[i] && s[i] != c)
 				i++;
-			k = k + 2;	
+			k = k + 2;
 		}
 	}
 	new = (char *)malloc(ft_strlen(s) - k + 1);
@@ -85,7 +85,7 @@ char	*remove_quo_expand(char *s, t_data *data)
 			i++;
 			while (s[i] && s[i] != c)
 				new[k++] = s[i++];
-			i++;	
+			i++;
 		}
 		new[k++] = s[i++];
 	}
