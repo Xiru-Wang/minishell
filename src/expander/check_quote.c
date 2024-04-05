@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:59 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/03 21:24:45 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/04/05 18:44:08 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,9 @@ char	*remove_quo_expand(char *s, t_data *data)
 	int		i, k;
 	char	c;
 	char	*new;
+
+	// not used right now!
+	(void) data;
 
 	i = 0;
 	k = 0;

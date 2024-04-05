@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:47:18 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/02 19:52:34 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/05 19:14:42 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	split_line(char *s, t_token **token_list, t_data *data)
 		type = ft_type(s[i]);
 		if (type == WORD)//can be s long string/cmd_name/or args
 		{
-			result = check_quotes((s + i), token_list, n);
+			result = check_unclosed_quotes((s + i), token_list, n);
 			if (result == -1)
 				free_exit("unclosed quote", data, EXIT_FAILURE);
 			i += result;

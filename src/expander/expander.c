@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 20:34:04 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/03 20:36:32 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/04/05 18:41:54 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ char	*expander(char *s, int len, t_data *data)
 static char	*get_var_value(char *s, t_data *data)//char *s = $USER
 {
 	char	*new;
-	char	*temp;
 
 	if (s[0] == '$' && s[1])
 	{

@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:20 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/03 20:56:59 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/04/05 19:25:05 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,9 @@ static int	check_valid_dollar(char *s)
 static char	*replace_vars(char *s, t_data *data)//keep quotes, expand var first
 {
 	int		i, k, j, var_len;
-	char	*new, *var_name, *value;
+	char	*new;
+	/* char	*var_name; */
+	char	*value;
 
 	i = 0;
 	k = 0;
@@ -102,6 +104,46 @@ static int	count_var_len(char *var)
 	}
 	return (i);
 }
+
+/**
+ * Removes single and double quotes from a given string.
+ *
+ * This function takes a string as input and removes any single or double quotes
+ * from it. It allocates memory for a new string without the quotes and returns
+ * a pointer to the new string. If memory allocation fails, it returns NULL.
+ *
+ * @param s The input string from which quotes are to be removed.
+ * @return A pointer to the new string without quotes, or NULL if memory
+ * allocation fails.
+ */
+char	*remove_quo(char *s)
+{
+	int		i;
+	int		j;
+	int		len;
+	char	*new_str;
+
+	len = ft_strlen(s);
+	new_str = (char *)malloc(sizeof(char) * (len - 1));
+	if (new_str == NULL)
+		return (NULL);
+
+	i = 0;
+	j = 0;
+	while (s[i] != '\0')
+	{
+		if (s[i] != '"' && s[i] != '\'')
+		{
+			new_str[j] = s[i];
+			j++;
+		}
+		i++;
+	}
+	new_str[j] = '\0';
+
+	return (new_str);
+}
+
 
 /*
 if check_valid_dollar == true:

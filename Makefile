@@ -2,41 +2,71 @@ RED=\033[1;31m
 GREEN=\033[1;32m
 RESET=\033[0m
 
+# Executables
 NAME = minishell
+TEST_NAME = utest_minishell
 
-CC = cc
+# Compiler settings
+CC = gcc
 CFLAGS = -Wall -Wextra -Werror
-RM = rm -f
 
-LIBFT_PATH = libs/libft
-LIBFT = $(LIBFT_PATH)/libft.a
+# Directories
+SRC_DIR = src
+TEST_DIR = tests
+INCLUDE_DIR = includes
+LIBFT_DIR = libs/libft
+CRITERION_INCLUDE_DIR = criterion/include
+CRITERION_LIB_DIR = criterion/lib
+OBJ_DIR = obj
 
+# Readline settings
 READLINE_PATH = /usr/include/readline
 READLINE_LIB = -lreadline
 
-SRC_FILES = $(shell find src -name '*.c')
-OBJ_DIR = obj
-OBJS = $(SRC_FILES:%.c=$(OBJ_DIR)/%.o)
+# Source files
+SRCS = $(shell find $(SRC_DIR) -name '*.c')
+TEST_SRCS = $(shell find $(TEST_DIR) -name 'test_*.c')
 
-all: $(NAME)
+# Object files
+OBJS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRCS))
+TEST_OBJS = $(patsubst $(TEST_DIR)/%.c,$(OBJ_DIR)/%.o,$(TEST_SRCS))
 
-$(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) -o $@ $^ -I$(READLINE_PATH) $(READLINE_LIB)
+# Test dependencies (exclude main.o)
+TEST_DEPS = $(filter-out $(OBJ_DIR)/main.o,$(OBJS))
 
-$(OBJ_DIR)/%.o: %.c
+# Library flags
+LIBFT_FLAGS = -L$(LIBFT_DIR) -lft
+CRITERION_FLAGS = -L$(CRITERION_LIB_DIR) -lcriterion
+
+all: create_dirs $(NAME)
+
+$(NAME): $(OBJS)
+	$(MAKE) -C $(LIBFT_DIR)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT_FLAGS) -I$(READLINE_PATH) $(READLINE_LIB) -o $(NAME)
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -c $< -o $@ -I$(READLINE_PATH)
+	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) -I$(READLINE_PATH) -c $< -o $@
 
-$(LIBFT):
-	$(MAKE) -C $(LIBFT_PATH)
+test: create_dirs $(TEST_NAME)
+
+export LD_LIBRARY_PATH=:./criterion/lib
+
+$(TEST_NAME): $(TEST_OBJS) $(TEST_DEPS)
+	$(MAKE) -C $(LIBFT_DIR)
+	$(CC) $(CFLAGS) $(TEST_OBJS) $(TEST_DEPS) $(LIBFT_FLAGS) $(CRITERION_FLAGS) -I$(READLINE_PATH) $(READLINE_LIB) -o $(TEST_NAME)
+
+$(OBJ_DIR)/%.o: $(TEST_DIR)/%.c
+	$(CC) $(CFLAGS) -I$(INCLUDE_DIR) -I$(CRITERION_INCLUDE_DIR) -I$(READLINE_PATH) -c $< -o $@
 
 clean:
-	$(RM) $(OBJS)
-	$(MAKE) -C $(LIBFT_PATH) clean
+	$(MAKE) -C $(LIBFT_DIR) clean
+	rm -rf $(OBJ_DIR)
 
 fclean: clean
-	$(RM) $(NAME)
-	$(MAKE) -C $(LIBFT_PATH) fclean
+	$(MAKE) -C $(LIBFT_DIR) fclean
+	rm -f $(NAME) $(TEST_NAME)
+
 re: fclean all
 
 norm:
@@ -46,4 +76,4 @@ norm:
 val:
 	@valgrind --track-fds=yes ./minishell
 
-.PHONY: all clean fclean re norm
+.PHONY: all create_dirs test clean fclean re norm val

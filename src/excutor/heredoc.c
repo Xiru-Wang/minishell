@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:49 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/03 21:15:36 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/04/05 19:13:54 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	check_hd(t_cmd *cmd)
 
 //1. write content to heredoc from keyboard
 //2. later read data from heredoc
-static int	check_quotes(char *line)
+static int		check_quotes(char *line)
 {
 	while(*line)
 	{
