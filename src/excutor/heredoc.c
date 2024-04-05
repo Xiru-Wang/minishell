@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:49 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/05 19:29:42 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/05 20:16:08 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,20 +44,6 @@ int	check_hd(t_cmd *cmd)
 		temp = temp->next;
 	}
 	return (1);
-}
-
-//1. write content to heredoc from keyboard
-//2. later read data from heredoc
-static int		check_quotes(char *line)
-{
-	while(*line)
-	{
-		if (*line == '\'' || *line == '\"')
-			return (1);
-		line ++;
-	}
-	//what if unclosed quo??
-	return (0);
 }
 
 static int	create_hd(t_cmd *cmd, int expand_sign)

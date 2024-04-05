@@ -1,6 +1,9 @@
 #include "../../includes/minishell.h"
 //for here_doc
 //var expand even if in the single quote
+static char	*remove_char(char *s, int index);
+static char	*replacer(char *s, int *i, t_data *data);
+
 char	*replace_vars_simple(char *s, t_data *data)
 {
 	char	*temp;
@@ -65,24 +68,27 @@ static char	*replacer(char *s, int *i, t_data *data)
 	int		start, end;
 	int		len;
 
-	start = *i + 1;//skip $
+	start = *i + 1; // skip $
 	len = 0;
 	while (ft_isalnum(s[start + len]) || s[start + len] == '_')
-		len++;//USER:4
-	end = start + len;// 11
-	var_name = ft_substr(s, start, len);//USER
-	value = find_var(var_name, data->env);//replace USER
+		len++; // USER:4
+	end = start + len; // 11
+	var_name = ft_substr(s, start, len); // USER
+	value = find_var(var_name, len, data->env); // replace USER
 	free(var_name);
-	s1 = ft_substr(s, 0, *i);// 6chars:"hello*"
-	s2 = ft_substr(s, end, ft_strlen(s) - end);//14-11=3char:"*42"
-	if (!value) // not exsit, remove $var_name
+	s1 = ft_substr(s, 0, *i); // 6chars:"hello*"
+	s2 = ft_substr(s, end, ft_strlen(s) - end); // 14-11=3char:"*42"
+	if (!value) // not exist, remove $var_name
+	{
 		new = ft_strjoin(s1, s2);
+		*i = end;
+	}
 	else
 	{
 		temp = ft_strjoin(s1, value);
 		new = ft_strjoin(temp, s2);
 		free(temp);
-		*i += ft_strlen(value);
+		*i = end + ft_strlen(value);
 		free(value);
 	}
 	free(s1);

@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/04/05 19:28:38 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/05 21:19:48 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,35 +115,49 @@ int		split_line(char *s, t_token **token_list, t_data *data);
 //check_quote
 int		check_unclosed_quotes(char *s, t_token **head, int n);
 char	*remove_quo(char *s);
+
 //expander
 char	*expander(char *s, int len, t_data *data);
+char	*find_var(char *var, int len, char **env);
+
 //expand dollar in quote mixs
 char	*handle_dollar_quo(char *s, t_data *data, enum s_type type);
 char	*replace_vars(char *s, t_data *data);
 int		check_valid_dollar(char *s);
+
 //heredoc_expander
 char	*replace_vars_simple(char *s, t_data *data);
+
 // cmd_utils
 t_cmd	*init_cmd(t_data *data);
 void	append_cmd(t_cmd **head, t_cmd *new);
 int		count_pipe(t_token *list);
 int		count_args(t_token *list);
 void	print_cmd_list(t_cmd *cmd);//debug
+								   //
 //generate_cmd
 t_cmd	*generate_cmds(t_token **token, t_data *data);
 
 //io_utils
 int		add_io_list(t_io **head);
 void	free_io_list(t_io **list);
+
 //io_redir
 void	get_redir_fd_array(t_cmd *cmd);
 void	redirect_fds(t_cmd *cmd, int *end);
+
 //heredoc
 int		check_hd(t_cmd *cmd);
+
 // call_cmd
 int		call_cmd(t_data *data, t_cmd *cmd);
+
 //executor
 int		executor(t_cmd *cmd, t_data *data);
+
+//check_dollar_quo
+char	*replace_vars_complex(char *s, t_data *data);
+
 // builtin
 enum s_builtin	ft_bubiltin(char *s);
 void			call_builtin(t_cmd *cmd);

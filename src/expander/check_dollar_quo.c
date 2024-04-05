@@ -6,14 +6,13 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:20 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/05 19:32:45 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/05 21:20:01 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 static int	count_var_len(char *var);
-static char	*replace_vars_complex(char *s, t_data *data);
 static char *expand_dollar(char *s, int *len, t_data *data);
 static int	len_single_quo(char *s);
 
@@ -57,15 +56,32 @@ int	check_valid_dollar(char *s)
 	return (0);
 }
 
-// hi"hi"' '"hi"->hihi hi
-// echo blabla"waw"'mao'"$USER" ---> blablawawmaoxiruwang
-static char	*replace_vars_complex(char *s, t_data *data)// s = $USER
+// this function should handle this case
+// in: bla'$USER'waw"$USER""$?"over
+// out: bla'$USER'wawUSERNAME0over
+
+/**
+ * Replaces variables in a given string with their corresponding values from a
+ * provided data structure.
+ *
+ * This function takes a string `s` and a pointer to a `t_data` structure `data`
+ * as input. It iterates through the characters of the input string `s`, looking
+ * for variables enclosed in '$' symbols. When a variable is found, it replaces
+ * it with its corresponding value from the `data` structure. The resulting
+ * string with replaced variables is returned.
+ *
+ * @param s The input string in which variables need to be replaced
+ * @param data A pointer to a `t_data` structure containing variable-value pairs
+ * @return A new string with variables replaced by their corresponding values
+ */
+char	*replace_vars_complex(char *s, t_data *data)
 {
 	int		i, var_len, flag;
-	char	*dst, *value, *s1, *s2;
+	char	*dst, *value;
 
 	flag = 0;
 	dst = ft_calloc(1, 1);
+	i = 0;
 	while (s[i])
 	{
 		if (s[i] == '\'')
@@ -73,15 +89,15 @@ static char	*replace_vars_complex(char *s, t_data *data)// s = $USER
 		else if (s[i] == '$' && check_valid_dollar(s + i))
 		{
 			flag = 1;
-			ft_strlcat(dst, s, i - 1 + 1); // copy before dollar
+			ft_strlcat(dst, s, ft_strlen(dst) + i + 1);
 			var_len = 0;
 			value = expand_dollar(s + i, &var_len, data);
 			if (value)
 			{
-				ft_strlcat(dst, value, i + ft_strlen(value) + 1);//copy expaned value
+				ft_strlcat(dst, value, ft_strlen(dst) + ft_strlen(value) + 1);
 				free(value);
 			}
-			ft_strlcat(dst, s + i + var_len, i + ft_strlen(s) + ft_strlen(value) - var_len + 1);
+			ft_strlcat(dst, s + i + var_len, ft_strlen(dst) + ft_strlen(s + i + var_len) + 1);
 			//copy the rest
 			i = i + var_len;
 		}
@@ -89,6 +105,7 @@ static char	*replace_vars_complex(char *s, t_data *data)// s = $USER
 	}
 	if (flag)
 		return (dst);
+	free(dst);
 	return (ft_strdup(s));
 }
 
@@ -112,18 +129,22 @@ static int	len_single_quo(char *s)
 static char	*expand_dollar(char *s, int *len, t_data *data)
 {
 	int		var_len;
+	char	*var_name;
 	char	*value;
 
 	if (*s == '$')
 	{
-		s++;//skip dollar
+		s++; // skip dollar
 		if (ft_isdigit(*s)) // skip 1st digit
 		{
 			*len = 2;
 			return (NULL);
 		}
-		*len = count_var_len(s);
-		value = expander(s, len, data);
+		var_len = count_var_len(s);
+		var_name = ft_substr(s, 0, var_len);
+		value = find_var(var_name, var_len, data->env);
+		free(var_name);
+		*len = 1 + var_len; // include the $ in the length
 		return (value);
 	}
 	return (NULL);
@@ -152,44 +173,3 @@ static int count_var_len(char *var)
         i++;
     return (i);
 }
-
-
-/**
- * Removes single and double quotes from a given string.
- *
- * This function takes a string as input and removes any single or double quotes
- * from it. It allocates memory for a new string without the quotes and returns
- * a pointer to the new string. If memory allocation fails, it returns NULL.
- *
- * @param s The input string from which quotes are to be removed.
- * @return A pointer to the new string without quotes, or NULL if memory
- * allocation fails.
- */
-char	*remove_quo(char *s)
-{
-	int		i;
-	int		j;
-	int		len;
-	char	*new_str;
-
-	len = ft_strlen(s);
-	new_str = (char *)malloc(sizeof(char) * (len - 1));
-	if (new_str == NULL)
-		return (NULL);
-
-	i = 0;
-	j = 0;
-	while (s[i] != '\0')
-	{
-		if (s[i] != '"' && s[i] != '\'')
-		{
-			new_str[j] = s[i];
-			j++;
-		}
-		i++;
-	}
-	new_str[j] = '\0';
-
-	return (new_str);
-}
-

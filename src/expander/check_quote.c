@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:59 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/05 19:33:27 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/05 20:37:54 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,41 +54,56 @@ int	check_unclosed_quotes(char *s, t_token **head, int n)
 //char	*remove_quo(char *s)
 // hi"hi"' '"hi"->hihi hi
 // echo blabla"waw"'mao'"$USER" ---> blablawawmaoxiruwang
-char	*remove_quo(char *s, t_data *data)
+int count_quotes(char *s)
 {
-	int		i, k;
-	char	c;
-	char	*new;
-
-	// not used right now!
-	(void) data;
+	int		i;
+	int		count;
 
 	i = 0;
-	k = 0;
-	while (s[i++])
-	{
-		if (s[i] == '\'' || s[i] == '\"')
-		{
-			c = s[i];
-			while (s[i] && s[i] != c)
-				i++;
-			k = k + 2;
-		}
-	}
-	new = (char *)malloc(ft_strlen(s) - k + 1);
-	i = 0;
+	count = 0;
 	while (s[i])
 	{
 		if (s[i] == '\'' || s[i] == '\"')
 		{
-			c = s[i];
+			char c = s[i];
+			i++;
+			while (s[i] && s[i] != c)
+				i++;
+			if (s[i] == c)
+				i++;
+			count += 2;
+		}
+		else
+			i++;
+	}
+	return (count);
+}
+
+char *remove_quo(char *s)
+{
+	int		i;
+	int		k;
+	char	*new;
+	int		count;
+	
+	i = 0;
+	k = 0;
+	count = count_quotes(s);
+	new = (char *)malloc(ft_strlen(s) - count + 1);
+	while (s[i])
+	{
+		if (s[i] == '\'' || s[i] == '\"')
+		{
+			char c = s[i];
 			i++;
 			while (s[i] && s[i] != c)
 				new[k++] = s[i++];
-			i++;
+			if (s[i] == c)
+				i++;
 		}
-		new[k++] = s[i++];
+		else
+			new[k++] = s[i++];
 	}
-	new[k + 1] = 0;//?should i
+	new[k] = '\0';
 	return (new);
 }

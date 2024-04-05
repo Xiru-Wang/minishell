@@ -6,13 +6,11 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 20:34:04 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/05 19:37:10 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/05 19:59:10 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-static char	*find_var(char *var, int len, char **env);
 
 char	*expander(char *s, int len, t_data *data)
 {
@@ -25,11 +23,22 @@ char	*expander(char *s, int len, t_data *data)
 	return (value);
 }
 
-static char	*find_var(char *var, int len, char **env)
+/**
+ * Finds the value of a given environment variable in the provided environment
+ * array.
+ *
+ * This function searches for the specified variable in the environment array
+ * and returns its value.
+ *
+ * @param var The variable to search for in the environment array.
+ * @param len The length of the variable name.
+ * @param env The environment array to search in.
+ * @return The value of the variable if found, NULL otherwise.
+ */
+char	*find_var(char *var, int len, char **env)
 {
 	char	*value;
 	int		i;
-	int		n;
 
 	if (!var)
 		return (NULL);
@@ -45,3 +54,4 @@ static char	*find_var(char *var, int len, char **env)
 	}
 	return (NULL);
 }
+
