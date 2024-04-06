@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:20 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/05 21:20:01 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/06 21:23:41 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,53 +60,41 @@ int	check_valid_dollar(char *s)
 // in: bla'$USER'waw"$USER""$?"over
 // out: bla'$USER'wawUSERNAME0over
 
-/**
- * Replaces variables in a given string with their corresponding values from a
- * provided data structure.
- *
- * This function takes a string `s` and a pointer to a `t_data` structure `data`
- * as input. It iterates through the characters of the input string `s`, looking
- * for variables enclosed in '$' symbols. When a variable is found, it replaces
- * it with its corresponding value from the `data` structure. The resulting
- * string with replaced variables is returned.
- *
- * @param s The input string in which variables need to be replaced
- * @param data A pointer to a `t_data` structure containing variable-value pairs
- * @return A new string with variables replaced by their corresponding values
- */
-char	*replace_vars_complex(char *s, t_data *data)
+char *replace_vars_complex(char *s, t_data *data)
 {
-	int		i, var_len, flag;
-	char	*dst, *value;
+    int     i, var_len, flag;
+    char    *dst, *value;
 
-	flag = 0;
-	dst = ft_calloc(1, 1);
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == '\'')
-			i += len_single_quo(s + i);
-		else if (s[i] == '$' && check_valid_dollar(s + i))
-		{
-			flag = 1;
-			ft_strlcat(dst, s, ft_strlen(dst) + i + 1);
-			var_len = 0;
-			value = expand_dollar(s + i, &var_len, data);
-			if (value)
-			{
-				ft_strlcat(dst, value, ft_strlen(dst) + ft_strlen(value) + 1);
-				free(value);
-			}
-			ft_strlcat(dst, s + i + var_len, ft_strlen(dst) + ft_strlen(s + i + var_len) + 1);
-			//copy the rest
-			i = i + var_len;
-		}
-		i++;
-	}
-	if (flag)
-		return (dst);
-	free(dst);
-	return (ft_strdup(s));
+    flag = 0;
+    dst = ft_calloc(1, 1);
+    i = 0;
+    while (s[i])
+    {
+        if (s[i] == '\'')
+            i += len_single_quo(s + i);
+        else if (s[i] == '$' && check_valid_dollar(s + i))
+        {
+            flag = 1;
+            var_len = 0;
+            value = expand_dollar(s + i, &var_len, data);
+            if (value)
+            {
+                ft_strlcat(dst, value, ft_strlen(dst) + ft_strlen(value) + 1);
+                free(value);
+            }
+            i = i + var_len;
+        }
+        else
+        {
+            char temp[2] = {s[i], '\0'};
+            ft_strlcat(dst, temp, ft_strlen(dst) + 2);
+            i++;
+        }
+    }
+    if (flag)
+        return (dst);
+    free(dst);
+    return (ft_strdup(s));
 }
 
 //count chars from 1st s_quo to next s_quo
@@ -145,6 +133,13 @@ static char	*expand_dollar(char *s, int *len, t_data *data)
 		value = find_var(var_name, var_len, data->env);
 		free(var_name);
 		*len = 1 + var_len; // include the $ in the length
+		while (s[var_len] && (s[var_len] == '\"' || s[var_len] == '\''))
+		{
+			(*len)++;
+			var_len++;
+		}
+		if (value == NULL)
+			return (ft_strdup("")); // return an empty string if variable not found
 		return (value);
 	}
 	return (NULL);

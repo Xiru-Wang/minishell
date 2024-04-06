@@ -88,7 +88,7 @@ Test(replace_vars_complex, mixed_quotes)
         "HOST=HOSTNAME"
     };
     t_data data = { .env = create_fake_env(env_vars, 2) };
-    char *expected = "bla'$USER'wawUSERNAMEHOSTNAMEover";
+    char *expected = "bla$USERwawUSERNAMEHOSTNAMEover";
     char *result = replace_vars_complex(input, &data);
     cr_assert_str_eq(result, expected, "Expected: %s, Got: %s", expected, result);
     free(result);
@@ -98,11 +98,15 @@ Test(replace_vars_complex, mixed_quotes)
 Test(replace_vars_complex, undefined_variable)
 {
     char *input = "Hello, $USER! $UNDEFINED variable.";
-	const char *env_vars[] = { "USER=John" };
+	const char *env_vars[] = { "USER=Max" };
     t_data data = { .env = create_fake_env(env_vars, 1) };
-    char *expected = "Hello, John! variable.";
+    char *expected = "Hello, Max!  variable.";
     char *result = replace_vars_complex(input, &data);
     cr_assert_str_eq(result, expected, "Expected: %s, Got: %s", expected, result);
     free(result);
 	free_fake_env(data.env);
 }
+
+// TODO: also handle this:
+    /* char *input = "\"bla'$USER'waw\"$USER\"\"$HOST\"over\""; */
+	//bla'janschroeder'wawjanschroederProd-6275621257over
