@@ -6,15 +6,15 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:20 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/06 21:23:41 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/07 00:41:11 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 static int	count_var_len(char *var);
-static char *expand_dollar(char *s, int *len, t_data *data);
-static int	len_single_quo(char *s);
+static char	*expand_dollar(char *s, int *len, t_data *data);
+static int	len_within_quo(char *s, char c);
 
 char	*handle_dollar_quo(char *s, t_data *data, enum s_type type)//should not free s here?
 {
@@ -38,32 +38,13 @@ char	*handle_dollar_quo(char *s, t_data *data, enum s_type type)//should not fre
 	}
 }
 
-// remove: $123 -> 23
-// replace/delete $USER/$hiii
-//check whole string if there's any valid sign to remove/expand
-int	check_valid_dollar(char *s)
-{
-	while (*s)
-	{
-		if (*s == '$' && *(s + 1))
-		{
-			s++;
-			if (*s && (ft_isalnum(*s) || *s == '_'))
-				return (1);
-		}
-		s++;
-	}
-	return (0);
-}
-
 // this function should handle this case
 // in: bla'$USER'waw"$USER""$?"over
 // out: bla'$USER'wawUSERNAME0over
-
 char *replace_vars_complex(char *s, t_data *data)
 {
-    int     i, var_len, flag;
-    char    *dst, *value;
+    int     i, var_len, flag, k;
+    char    *dst, *value, *temp;
 
     flag = 0;
     dst = ft_calloc(1, 1);
@@ -71,55 +52,81 @@ char *replace_vars_complex(char *s, t_data *data)
     while (s[i])
     {
         if (s[i] == '\'')
-            i += len_single_quo(s + i);
-        else if (s[i] == '$' && check_valid_dollar(s + i))
+            i += len_within_quo(s + i, '\'');
+		else if (s[i] == '\"')
+		{
+			k = len_within_quo(s + i, '\"');
+			if (check_valid_dollar_limit(s + i, k))
+			{
+				flag = 1;
+				temp = ft_substr(s, i, i + k);
+				value = replace_vars_simple(temp, data);
+				if (value)
+					combine_strings(dst, s, value, &i, k);
+				free(temp);
+			}
+			else
+				i = i + k;
+		}
+		else if (s[i] == '$' && s[i + 1] && char_is_valid(s[i + 1]))
         {
             flag = 1;
-            var_len = 0;
-            value = expand_dollar(s + i, &var_len, data);
+            k = 0;
+            value = expand_dollar(s + i, &k, data);
             if (value)
-            {
-                ft_strlcat(dst, value, ft_strlen(dst) + ft_strlen(value) + 1);
-                free(value);
-            }
-            i = i + var_len;
+				combine_strings(dst, s, value, &i, k);
         }
-        else
-        {
-            char temp[2] = {s[i], '\0'};
-            ft_strlcat(dst, temp, ft_strlen(dst) + 2);
-            i++;
-        }
-    }
-    if (flag)
+		i++;
+	}
+	if (flag)
         return (dst);
     free(dst);
     return (ft_strdup(s));
 }
 
+void combine_strings(char *dst, char *s, char *value, int *i, int k)
+{
+	ft_strlcat(dst, s, ft_strlen(dst) + *i + 1);//before
+	ft_strlcat(dst, value, ft_strlen(dst) + ft_strlen(value) + 1);//insert content
+	*i = *i + k;
+	ft_strlcat(dst, s + *i, ft_strlen(dst) + ft_strlen(s) - *i + 1);//after
+	free(value);
+}
+
 //count chars from 1st s_quo to next s_quo
-static int	len_single_quo(char *s)
+static int	len_within_quo(char *s, char c)
 {
 	int	len;
 
 	len = 0;
-	if (*s == '\'') // len_s_quo
+	if (*s == c) // len_s_quo
 	{
 		len++;
-		while (*s && *s != '\'')
+		while (*s && *s != c)
 			len++;
-		if (*s == '\'')
+		if (*s == c)
 			len++;
 	}
 	return (len);
 }
 
-static char	*expand_dollar(char *s, int *len, t_data *data)
+static int count_var_len(char *var)
+{
+    int i;
+
+    i = 0;
+    while (ft_isalnum(var[i]) || var[i] == '_')
+        i++;
+    return (i);
+}
+
+char	*expand_dollar(char *s, int *len, t_data *data)
 {
 	int		var_len;
 	char	*var_name;
 	char	*value;
 
+	value = NULL;
 	if (*s == '$')
 	{
 		s++; // skip dollar
@@ -133,16 +140,8 @@ static char	*expand_dollar(char *s, int *len, t_data *data)
 		value = find_var(var_name, var_len, data->env);
 		free(var_name);
 		*len = 1 + var_len; // include the $ in the length
-		while (s[var_len] && (s[var_len] == '\"' || s[var_len] == '\''))
-		{
-			(*len)++;
-			var_len++;
-		}
-		if (value == NULL)
-			return (ft_strdup("")); // return an empty string if variable not found
-		return (value);
 	}
-	return (NULL);
+	return (value);
 }
 
 /**
@@ -159,12 +158,3 @@ static char	*expand_dollar(char *s, int *len, t_data *data)
  * @return The length of the variable name, including alphanumeric characters
  * and underscores.
  */
-static int count_var_len(char *var)
-{
-    int i;
-
-    i = 0;
-    while (ft_isalnum(var[i]) || var[i] == '_')
-        i++;
-    return (i);
-}

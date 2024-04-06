@@ -6,13 +6,11 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 15:22:28 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/04/02 19:51:55 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/06 23:15:12 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-static char	*find_path(char *s, char **env);
 
 int	call_cmd(t_data *data, t_cmd *cmd)
 {
@@ -31,7 +29,7 @@ int	call_cmd(t_data *data, t_cmd *cmd)
 	return (0);
 }
 
-static char	*find_path(char *s, char **env)
+char	*find_path(char *s, char **env)
 {
 	char	**paths;
 	char	*temp;

@@ -1,9 +1,39 @@
 #include "../../includes/minishell.h"
 //for here_doc
 //var expand even if in the single quote
-static char	*remove_char(char *s, int index);
-static char	*replacer(char *s, int *i, t_data *data);
+//static char	*remove_char(char *s, int index);
+//static char	*replacer(char *s, int *i, t_data *data);
 
+//in this function: vars expand without careing quotes
+char *replace_vars_simple(char *s, t_data *data)
+{
+	int     i, var_len, flag, k;
+    char    *dst, *value, *temp;
+
+    flag = 0;
+    dst = ft_calloc(1, 1);
+    i = 0;
+    while (s[i])
+    {
+		if (s[i] == '$' && s[i + 1] && char_is_valid(s[i + 1]))
+        {
+            flag = 1;
+            k = 0;
+            value = expand_dollar(s + i, &k, data);
+            if (value)
+				combine_strings(dst, s, value, &i, k);
+			else
+				i = i + k;
+		}
+		i++;
+	}
+	if (flag)
+        return (dst);
+    free(dst);
+    return (ft_strdup(s));
+}
+
+/*
 char	*replace_vars_simple(char *s, t_data *data)
 {
 	char	*temp;
@@ -14,7 +44,7 @@ char	*replace_vars_simple(char *s, t_data *data)
 	temp = s;
 	while (temp[i])
 	{
-		if (temp[i] == '$' && check_valid_dollar(temp + i))
+		if (temp[i] == '$' && temp [i + 1] && char_is_valid(temp[i + 1]))
 		{
 			i++;
 			if (ft_isdigit(temp[i]))
@@ -61,6 +91,7 @@ len(var) = 5
 end = 11
 strlen(s)=14
 */
+/*
 static char	*replacer(char *s, int *i, t_data *data)
 {
 	char	*s1, *s2;
@@ -95,3 +126,4 @@ static char	*replacer(char *s, int *i, t_data *data)
 	free(s2);
 	return (new);
 }
+*/
