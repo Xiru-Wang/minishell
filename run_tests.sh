@@ -23,6 +23,7 @@ run_tests() {
 }
 
 # Build the test executable
+export LD_LIBRARY_PATH=:./criterion/lib
 make test
 echo 
 
