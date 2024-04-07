@@ -41,8 +41,8 @@ Test(replace_vars_complex, no_variables)
 
 Test(replace_vars_complex, single_variable)
 {
-    char *input = "Hello, $USER!";
-    const char *env_vars[] = { "USER=John" };
+    char *input = "Hello, $TESTUSER!";
+    const char *env_vars[] = { "TESTUSER=John" };
     set_env_vars(env_vars, 1);
     char *expected = "Hello, John!";
     char *result = replace_vars_complex(input);
@@ -53,10 +53,10 @@ Test(replace_vars_complex, single_variable)
 
 Test(replace_vars_complex, multiple_variables)
 {
-    char *input = "$GREETING, $USER! It's $DAY.";
+    char *input = "$GREETING, $TESTUSER! It's $DAY.";
     const char *env_vars[] = {
         "GREETING=Hi",
-        "USER=Alice",
+        "TESTUSER=Alice",
         "DAY=Monday"
     };
     set_env_vars(env_vars, 3);
@@ -69,8 +69,8 @@ Test(replace_vars_complex, multiple_variables)
 
 Test(replace_vars_complex, single_quotes)
 {
-    char *input = "Hello, '$USER'!";
-    char *expected = "Hello, '$USER'!";
+    char *input = "Hello, '$TESTUSER'!";
+    char *expected = "Hello, '$TESTUSER'!";
     char *result = replace_vars_complex(input);
     cr_assert_str_eq(result, expected, "Expected: %s, Got: %s", expected, result);
     free(result);
@@ -78,13 +78,13 @@ Test(replace_vars_complex, single_quotes)
 
 Test(replace_vars_complex, mixed_quotes)
 {
-    char *input = "bla'$USER'waw\"$USER\"\"$HOST\"over";
+    char *input = "bla'$TESTUSER'waw\"$TESTUSER\"\"$TESTHOST\"over";
     const char *env_vars[] = {
-        "USER=USERNAME",
-        "HOST=HOSTNAME"
+        "TESTUSER=USERNAME",
+        "TESTHOST=HOSTNAME"
     };
     set_env_vars(env_vars, 2);
-    char *expected = "bla$USERwawUSERNAMEHOSTNAMEover";
+    char *expected = "bla$TESTUSERwawUSERNAMEHOSTNAMEover";
     char *result = replace_vars_complex(input);
     cr_assert_str_eq(result, expected, "Expected: %s, Got: %s", expected, result);
     free(result);
@@ -93,8 +93,8 @@ Test(replace_vars_complex, mixed_quotes)
 
 Test(replace_vars_complex, undefined_variable)
 {
-    char *input = "Hello, $USER! $UNDEFINED variable.";
-    const char *env_vars[] = { "USER=Max" };
+    char *input = "Hello, $TESTUSER! $UNDEFINED variable.";
+    const char *env_vars[] = { "TESTUSER=Max" };
     set_env_vars(env_vars, 1);
     char *expected = "Hello, Max!  variable.";
     char *result = replace_vars_complex(input);

@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:20 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/07 15:18:53 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/07 17:24:41 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,55 @@ char	*handle_dollar_quo(char *s, enum s_type type)//should not free s here?
 // this function should handle this case
 // in: bla'$USER'waw"$USER""$?"over
 // out: bla'$USER'wawUSERNAME0over
+
+/* char *replace_vars_complex(char *s) */
+/* { */
+/*     int     i, flag, k; */
+/*     char    *dst, *value, *temp; */
+/*  */
+/*     flag = 0; */
+/*     dst = ft_calloc(1, 1); */
+/*     i = 0; */
+/*     while (s[i]) */
+/*     { */
+/*         if (s[i] == '\'') */
+/*             i += len_within_quo(s + i, '\''); */
+/*         else if (s[i] == '\"') */
+/*         { */
+/*             k = len_within_quo(s + i, '\"'); */
+/*             temp = ft_substr(s, i, k); */
+/*             value = replace_vars_simple(temp); // Expand variables within double quotes */
+/*             if (value) */
+/*             { */
+/*                 flag = 1; */
+/*                 ft_strlcat(dst, value, ft_strlen(dst) + ft_strlen(value) + 1); */
+/*                 free(value); */
+/*             } */
+/*             free(temp); */
+/*             i += k; */
+/*         } */
+/*         else if (s[i] == '$' && s[i + 1] && char_is_valid(s[i + 1])) */
+/*         { */
+/*             flag = 1; */
+/*             k = 0; */
+/*             value = expand_dollar(s + i, &k); */
+/*             if (value) */
+/*                 combine_strings(dst, s, value, &i, k); */
+/*         } */
+/*         else */
+/*         { */
+/*             ft_strlcat(dst, s + i, ft_strlen(dst) + 2); */
+/*             i++; */
+/*         } */
+/*     } */
+/*     if (flag) */
+/*         return (dst); */
+/*     free(dst); */
+/*     return (ft_strdup(s)); */
+/* } */
+
+/* Expected: bla$USERwawUSERNAMEHOSTNAMEover, 
+ * Got:		 bla'$TESTUSER'waw"$TESTUSER""$TESTHOST"over */
 char *replace_vars_complex(char *s)
 {
 	int     i, flag, k;
@@ -58,7 +107,7 @@ char *replace_vars_complex(char *s)
 			if (check_valid_dollar_limit(s + i, k))
 			{
 				flag = 1;
-				temp = ft_substr(s, i, i + k);
+				temp = ft_substr(s, i, k);
 				value = replace_vars_simple(temp);
 				if (value)
 					combine_strings(dst, s, value, &i, k);
