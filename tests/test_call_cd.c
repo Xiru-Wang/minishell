@@ -118,16 +118,15 @@ Test(call_cd_tests, test_update_env_var)
     data.env[2] = NULL;
 
     update_env_var(&data, "PWD", "/tmp");
-    cr_assert_str_eq(find_var("PWD", 3, data.env), "PWD=/tmp");
+    cr_assert_str_eq(getenv("PWD"), "/tmp");
 
     update_env_var(&data, "OLDPWD", "/home/user");
-    cr_assert_str_eq(find_var("OLDPWD", 6, data.env), "OLDPWD=/home/user");
+    cr_assert_str_eq(getenv("OLDPWD"), "/home/user");
 
     update_env_var(&data, "NEW_VAR", "value");
-    cr_assert_str_eq(find_var("NEW_VAR", 7, data.env), "NEW_VAR=value");
+    cr_assert_str_eq(getenv("NEW_VAR"), "value");
 
     for (int i = 0; data.env[i] != NULL; i++)
         free(data.env[i]);
     free(data.env);
 }
-
