@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:20 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/07 00:41:11 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/07 14:51:24 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,12 @@ char	*expand_dollar(char *s, int *len, t_data *data)
 		{
 			*len = 2;
 			return (NULL);
+		}
+		if (*s == '?') // skip 1st digit
+		{
+			*len = 2;
+			value = ft_itoa(g_exit_code);
+			return (value);
 		}
 		var_len = count_var_len(s);
 		var_name = ft_substr(s, 0, var_len);
