@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:49 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/07 15:23:25 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/07 19:20:10 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int	create_hd(t_cmd *cmd, int expand_sign)
 			break;
 		if (expand_sign == 0 && check_valid_dollar(line))
 		{
-			new = replace_vars_simple(line);//expand inside of S_QUO
+			new = expand_simple(line, cmd->data->env);//expand inside of S_QUO
 			ft_putendl_fd(new, fd);//write to temp file
 			free(new);
 		}

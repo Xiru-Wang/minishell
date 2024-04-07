@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:59 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/07 00:36:57 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/07 18:14:38 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,13 @@ int	check_unclosed_quotes(char *s, t_token **head, int n)
 
 	i = 0;
 	quote_sign = 0;
-	while (s[i++])
+	while (s[i])
 	{
 		if (s[i] == '\'' || s[i] == '\"')
 		{
 			c = s[i];
-			while (s[i])
-				if (s[i] != c)
-					i++;
+			while (s[i] && s[i] != c)
+				i++;
 			if (s[i] == c)//found closing quote
 			{
 				i++;
@@ -44,6 +43,7 @@ int	check_unclosed_quotes(char *s, t_token **head, int n)
 				add_token_list(ft_substr(s, 0, i), WORD, head, n);//quote can mix
 			return (i);
 		}
+		i++;
 	}
 	return (0);
 }

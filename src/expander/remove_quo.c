@@ -25,7 +25,7 @@ static int	count_valid_quotes(char *s)
 	return (count);
 }
 
-char *remove_quo(char *s)
+char	*remove_quo(char *s)
 {
 	int		i;
 	int		k;
