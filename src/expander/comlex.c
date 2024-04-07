@@ -6,18 +6,18 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:20 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/07 19:22:32 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/07 19:43:41 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static int	len_within_quo(char *s, char c);
 static char	*replace_vars_complex(char *s, char **env);
 static char *handle_single_quote(char *s, int *i);
 static char *handle_double_quote(char *s, int *i, char **env);
+static char *handle_dollar(char *s, int *i, char **env);
 
-char	*expand_complex(char *s, enum s_type type, t_data *data)//should not free s here?
+char	*expand_complex(char *s, enum s_type type, t_data *data) // should not free s here?
 {
 	char	*temp;
 	char	*new;
@@ -159,20 +159,3 @@ static char	*replace_vars_complex(char *s, char **env)
 	return (dst);
 }
 */
-
-//count chars from 1st s_quo to next s_quo
-static int	len_within_quo(char *s, char c)
-{
-	int	len;
-
-	len = 0;
-	if (*s == c)
-	{
-		len++;
-		while (*s && *s != c)
-			len++;
-		if (*s == c)
-			len++;
-	}
-	return (len);
-}

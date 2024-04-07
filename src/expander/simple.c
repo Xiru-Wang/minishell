@@ -30,6 +30,22 @@ char	*expand_simple(char *s, char **env)
 	return (dst);
 }
 
+int	len_within_quo(char *s, char c)
+{
+	int	len;
+
+	len = 0;
+	if (*s == c)
+	{
+		len++;
+		while (*s && *s != c)
+			len++;
+		if (*s == c)
+			len++;
+	}
+	return (len);
+}
+
 char	*expand_dollar(char *s, int *len, char **env)
 {
 	int		var_len;

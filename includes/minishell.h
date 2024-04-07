@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/04/07 19:36:28 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/07 19:42:39 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,8 @@ char	*remove_quo(char *s);
 //simple_expander
 char	*expand_simple(char *s, char **env);
 char	*expand_dollar(char *s, int *len, char **env);
-//complex_expander
+int		len_within_quo(char *s, char c);
+// complex_expander
 char	*expand_complex(char *s, enum s_type type, t_data *data);
 //expander_utils
 char	*char_to_str(char c);
