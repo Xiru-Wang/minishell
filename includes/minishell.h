@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/04/07 00:48:31 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/07 14:48:09 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ typedef struct s_data
 	t_cmd		*cmd_list;
 	pid_t		*pid;
 	int			cmd_num;
+	char		*pwd;
+	char		*old_pwd;
 }	t_data;
 
 // utils
@@ -160,6 +162,16 @@ int		check_hd(t_cmd *cmd);
 // call_cmd
 int		call_cmd(t_data *data, t_cmd *cmd);
 char	*find_path(char *s, char **env);
+
+// call_cd
+void	add_new_env_var(t_data *data, const char *var_name, const char *new_value, int i);
+char	*handle_cd_oldpwd(t_data *data);
+int		change_directory(t_data *data, char *path);
+void	add_new_env_var(t_data *data, const char *var_name, const char *new_value, int i);
+void	print_cd_error(char *path);
+void	update_pwd_variables(t_data *data);
+void	update_env_var(t_data *data, const char *var_name, const char *new_value);
+int		call_cd(t_data *data, t_cmd *cmd);
 
 //executor
 int		executor(t_cmd *cmd, t_data *data);

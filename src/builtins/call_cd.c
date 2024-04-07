@@ -6,10 +6,125 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:07 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/02 19:51:39 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/07 14:47:38 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../includes/minishell.h" 
+#include <errno.h>
 
+int call_cd(t_data *data, t_cmd *cmd)
+{
+	char *path;
+	int ret;
 
+	if (cmd->s[1] == NULL || ft_strncmp(cmd->s[1], "~", 1) == 0)
+		path = getenv("HOME");
+	else if (ft_strncmp(cmd->s[1], "-", 1) == 0)
+		path = handle_cd_oldpwd(data);
+	else
+		path = cmd->s[1];
+
+	ret = change_directory(data, path);
+	if (ret == -1)
+		print_cd_error(path);
+	else
+		update_pwd_variables(data);
+
+	return (ret == -1);
+}
+
+char *handle_cd_oldpwd(t_data *data)
+{
+	if (data->old_pwd == NULL)
+	{
+		ft_putendl_fd("minishell: cd: OLDPWD not set", STDERR_FILENO);
+		return (NULL);
+	}
+	ft_putendl_fd(data->old_pwd, STDOUT_FILENO);
+	return (data->old_pwd);
+}
+
+int change_directory(t_data *data, char *path)
+{
+	int ret;
+
+	ret = chdir(path);
+	if (ret == -1)
+		return (-1);
+
+	if (data->old_pwd != NULL)
+		free(data->old_pwd);
+	data->old_pwd = data->pwd;
+	data->pwd = getcwd(NULL, 0);
+
+	return (0);
+}
+
+void print_cd_error(char *path)
+{
+	ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
+	ft_putstr_fd(path, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	ft_putendl_fd(strerror(errno), STDERR_FILENO);
+}
+
+void update_pwd_variables(t_data *data)
+{
+	update_env_var(data, "PWD", data->pwd);
+
+	if (find_var("OLDPWD", 6, data->env) != NULL)
+		update_env_var(data, "OLDPWD", data->old_pwd);
+}
+
+void update_env_var(t_data *data, const char *var_name, const char *new_value)
+{
+	int i;
+	size_t var_len;
+	char *new_var;
+
+	var_len = ft_strlen(var_name);
+	i = 0;
+
+	while (data->env[i] != NULL)
+	{
+		if (ft_strncmp(data->env[i], var_name, var_len) == 0 && data->env[i][var_len] == '=')
+		{
+			free(data->env[i]);
+			new_var = ft_strjoin(var_name, "=");
+			data->env[i] = ft_strjoin(new_var, new_value);
+			free(new_var);
+			return;
+		}
+		i++;
+	}
+
+	add_new_env_var(data, var_name, new_value, i);
+}
+
+void add_new_env_var(t_data *data, const char *var_name, const char *new_value, int i)
+{
+	char *new_var;
+	char *env_var;
+	char **new_env;
+
+	new_var = ft_strjoin(var_name, "=");
+	env_var = ft_strjoin(new_var, new_value);
+	free(new_var);
+	new_env = malloc(sizeof(char *) * (i + 2));
+	if (new_env == NULL)
+	{
+		free(env_var);
+		return;
+	}
+	i = 0;
+	while (data->env[i] != NULL)
+	{
+		new_env[i] = data->env[i];
+		i++;
+	}
+	new_env[i] = env_var;
+	new_env[i + 1] = NULL;
+	free(data->env);
+	data->env = new_env;
+}
