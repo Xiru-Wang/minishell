@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:07 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/07 14:47:38 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/07 15:09:09 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void update_pwd_variables(t_data *data)
 {
 	update_env_var(data, "PWD", data->pwd);
 
-	if (find_var("OLDPWD", 6, data->env) != NULL)
+	if (getenv("OLDPWD") != NULL)
 		update_env_var(data, "OLDPWD", data->old_pwd);
 }
 

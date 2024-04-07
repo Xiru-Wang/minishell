@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/04/07 14:48:09 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/07 15:19:47 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,14 +121,13 @@ int		check_unclosed_quotes(char *s, t_token **head, int n);
 char	*remove_quo(char *s);
 
 //expander
-char	*expander(char *s, int len, t_data *data);
-char	*find_var(char *var, int len, char **env);
+char	*expander(char *s, int len);
 
 //expand dollar in quote mixs
-char	*handle_dollar_quo(char *s, t_data *data, enum s_type type);
-char *replace_vars_complex(char *s, t_data *data);
+char	*handle_dollar_quo(char *s, enum s_type type);
+char	*replace_vars_complex(char *s);
 void combine_strings(char *dst, char *s, char *value, int *i, int k);
-char *expand_dollar(char *s, int *len, t_data *data);
+char *expand_dollar(char *s, int *len);
 
 //expander_utils
 int check_valid_dollar(char *s);
@@ -136,7 +135,7 @@ int char_is_valid(char c);
 int check_valid_dollar_limit(char *s, int max);
 
 //heredoc_expander
-char	*replace_vars_simple(char *s, t_data *data);
+char	*replace_vars_simple(char *s);
 
 // cmd_utils
 t_cmd	*init_cmd(t_data *data);
@@ -175,9 +174,6 @@ int		call_cd(t_data *data, t_cmd *cmd);
 
 //executor
 int		executor(t_cmd *cmd, t_data *data);
-
-//check_dollar_quo
-char	*replace_vars_complex(char *s, t_data *data);
 
 // builtin
 enum s_builtin	ft_bubiltin(char *s);
