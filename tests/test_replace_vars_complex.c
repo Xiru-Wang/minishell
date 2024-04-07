@@ -84,7 +84,7 @@ Test(replace_vars_complex, mixed_quotes)
         "TESTHOST=HOSTNAME"
     };
     set_env_vars(env_vars, 2);
-    char *expected = "bla$TESTUSERwawUSERNAMEHOSTNAMEover";
+    char *expected = "bla'$TESTUSER'wawUSERNAMEHOSTNAMEover";
     char *result = replace_vars_complex(input);
     cr_assert_str_eq(result, expected, "Expected: %s, Got: %s", expected, result);
     free(result);

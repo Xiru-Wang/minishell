@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/04/07 15:19:47 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/07 17:47:38 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,7 @@ int		call_cmd(t_data *data, t_cmd *cmd);
 char	*find_path(char *s, char **env);
 
 // call_cd
+char	*find_env_var(t_data *data, const char *var_name);
 void	add_new_env_var(t_data *data, const char *var_name, const char *new_value, int i);
 char	*handle_cd_oldpwd(t_data *data);
 int		change_directory(t_data *data, char *path);
