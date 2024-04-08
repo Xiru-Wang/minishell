@@ -99,4 +99,3 @@ static int	get_outfd(t_io *redir)
 	}
 	return (fd);
 }
-

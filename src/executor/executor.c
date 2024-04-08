@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:23:50 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/03 20:48:50 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/04/08 22:28:35 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,10 @@ The strategy for your shell is to have the parent process
 do all the piping and redirection before forking the processes.
 In this way the children will inherit the redirection.
 */
+static int	call_parent(t_cmd *cmd, t_data *data);
+static int	pipe_wait(int *pid, int pipe_num);
 
-int	executor(t_cmd *cmd, t_data *data)
+int executor(t_cmd *cmd, t_data *data)
 {
 	int		i;
 	int		end[2];
@@ -42,18 +44,29 @@ int	executor(t_cmd *cmd, t_data *data)
 			else
 				call_cmd(data, cmd);
 		}
-		cmd = cmd->next;
-		i++;
+		else
+		{
+			close(end[1]);
+			cmd = cmd->next;
+			i++;
+		}
 	}
-	//TODO
-	//pipe_wait(data->pid, (data->cmd_num - 1));
-	//call_parent();
+	pipe_wait(data->pid, (data->cmd_num - 1));
+	call_parent(cmd, data);
 	return (0);
 }
 
-//TODO
-/*
-int	pipe_wait(int *pid, int pipe_num)
+static int	call_parent(t_cmd *cmd, t_data *data)
+{
+	check_hd(cmd);
+	get_redir_fd_array(cmd);
+	if (cmd->is_builtin)
+		call_builtin(cmd);
+	else
+		call_cmd(data, cmd);
+}
+
+static int	pipe_wait(int *pid, int pipe_num)
 {
 	int	i;
 	int	status;
@@ -66,7 +79,6 @@ int	pipe_wait(int *pid, int pipe_num)
 	}
 	waitpid(pid[i], &status, 0);
 	if (WIFEXITED(status))
-		g_global.error_num = WEXITSTATUS(status);
+		g_exit_code = WEXITSTATUS(status);
 	return (EXIT_SUCCESS);
 }
-*/
