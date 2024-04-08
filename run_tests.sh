@@ -5,7 +5,8 @@ test_suites=(
   "call_cd"
   "call_env"
   "remove_quo"
-  "replace_vars_complex"
+  "expand_complex"
+  "expand_simple"
 )
 
 # ANSI color codes
@@ -24,6 +25,7 @@ run_tests() {
 
 # Build the test executable
 export LD_LIBRARY_PATH=:./criterion/lib
+make
 make test
 echo 
 

@@ -6,13 +6,29 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:20 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/07 19:43:41 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/08 09:13:47 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static char	*replace_vars_complex(char *s, char **env);
+// TODO: FIX
+/*
+### expand_complex ###
+
+[----] tests/test_expand_complex.c:105: Assertion Failed
+[----]
+[----]   Expected: Hello, Alice! It's Sunday., Got: $GREETING, Alice! It's Sunday.GREETING=Hello
+[----]
+[----] tests/test_expand_complex.c:73: Assertion Failed
+[----]
+[----]   Expected: Hello, Alice!, Got: Hello, Alice!USER=Alice
+[----]
+[FAIL] expand_complex::multiple_variables_quo: (0.00s)
+[FAIL] expand_complex::single_variable_quo: (0.00s)
+[====] Synthesis: Tested: 6 | Passing: 4 | Failing: 2 | Crashing: 0
+*/
+
 static char *handle_single_quote(char *s, int *i);
 static char *handle_double_quote(char *s, int *i, char **env);
 static char *handle_dollar(char *s, int *i, char **env);
@@ -41,7 +57,7 @@ char	*expand_complex(char *s, enum s_type type, t_data *data) // should not free
 
 /* Expected: bla$USERwawUSERNAMEHOSTNAMEover,
  * Got:		 bla'$TESTUSER'waw"$TESTUSER""$TESTHOST"over */
-static char	*replace_vars_complex(char *s, char **env)
+char	*replace_vars_complex(char *s, char **env)
 {
 	int i;
 	char *dst, *value, *temp;
@@ -91,12 +107,12 @@ static char *handle_double_quote(char *s, int *i, char **env)
 	value = NULL;
 	if (check_valid_dollar_limit(s + *i, k))
 	{
-        temp = ft_substr(s, *i, k);
-        value = expand_simple(temp, env);
-        free(temp);
-    }
-    else
-        value = ft_substr(s, *i, k);
+		temp = ft_substr(s, *i, k);
+		value = expand_simple(temp, env);
+		free(temp);
+	}
+	else
+		value = ft_substr(s, *i, k);
 	*i += k;
 	return (value);
 }
