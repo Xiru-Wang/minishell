@@ -1,29 +1,5 @@
 #include "../../includes/minishell.h"
 
-// TODO: FIX
-
-/*
-
-### expand_simple ###
-
-[----] tests/test_expand_simple.c:75: Assertion Failed
-[----]
-[----]   Expected: Hello, '$USER', "John"!, Got: Hello, 'John', "John"!
-[----]
-[----] tests/test_expand_simple.c:55: Assertion Failed
-[----]
-[----]   Expected: Hello, '$USER'!, Got: Hello, 'John'!
-[----]
-[FAIL] expand_simple::mixed_quotes: (0.00s)
-[FAIL] expand_simple::single_quotes: (0.00s)
-[====] Synthesis: Tested: 6 | Passing: 4 | Failing: 2 | Crashing: 0
-
-minishell_maomi on  main [!?]
-❯ echo Hello, '$USER', "$USER"!
-Hello, $USER, janschroeder!
-
-*/
-
 static int	count_var_len(char *var);
 
 // in this function: vars expand without careing quotes

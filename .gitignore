@@ -26,9 +26,10 @@ minishell
 
 # Shared objects (inc. Windows DLLs)
 *.dll
-*.so
-*.so.*
 *.dylib
+# NOTE: need to keep this for Criterion
+# *.so
+# *.so.*
 
 # Executables
 *.exe

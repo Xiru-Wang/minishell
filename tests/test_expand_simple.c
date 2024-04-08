@@ -46,10 +46,11 @@ Test(expand_simple, multiple_variables)
 /*     free(result); */
 /* } */
 
+// NOTE: bcs. used in <<heredoc it will behave like this.
 Test(expand_simple, single_quotes)
 {
     char *input = "Hello, '$USER'!";
-    char *expected = "Hello, '$USER'!";
+    char *expected = "Hello, 'John'!";
     char *env[] = { "USER=John", NULL };
     char *result = expand_simple(input, env);
     cr_assert_str_eq(result, expected, "Expected: %s, Got: %s", expected, result);
@@ -66,10 +67,11 @@ Test(expand_simple, double_quotes)
     free(result);
 }
 
+// NOTE: bcs. used in <<heredoc it will behave like this.
 Test(expand_simple, mixed_quotes)
 {
     char *input = "Hello, '$USER', \"$USER\"!";
-    char *expected = "Hello, '$USER', \"John\"!";
+    char *expected = "Hello, 'John', \"John\"!";
     char *env[] = { "USER=John", NULL };
     char *result = expand_simple(input, env);
     cr_assert_str_eq(result, expected, "Expected: %s, Got: %s", expected, result);
