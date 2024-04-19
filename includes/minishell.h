@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/04/08 22:05:00 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/19 16:55:49 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 
 # define MAX_FILES 10 //OPEN_MAX
 
-extern int	g_exit_code;
+//int	g_exit_code;
 
 typedef enum s_type
 {
