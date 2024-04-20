@@ -3,12 +3,12 @@
 #include "../criterion/include/criterion/redirect.h"
 #include <sys/stat.h>
 
-void setup(void)
+void setup_call_cd(void)
 {
     // Set up any necessary data or environment for the tests
 }
 
-void teardown(void)
+void teardown_call_cd(void)
 {
     // Clean up any allocated resources or reset the environment
 }

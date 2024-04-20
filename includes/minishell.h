@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/04/19 16:55:49 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/20 12:06:15 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,7 @@ int		executor(t_cmd *cmd, t_data *data);
 enum s_builtin	ft_bubiltin(char *s);
 void			call_builtin(t_cmd *cmd);
 void			call_echo(t_cmd *cmd);
-int		call_env(t_cmd *cmd);
+int				call_env(t_cmd *cmd);
+int				call_exit(t_cmd *cmd, t_data *data);
 
 #endif

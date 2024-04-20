@@ -4,6 +4,7 @@
 test_suites=(
   "call_cd"
   "call_env"
+  "call_exit"
   "remove_quo"
   "expand_complex"
   "expand_simple"

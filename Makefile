@@ -50,8 +50,6 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 
 test: create_dirs $(TEST_NAME)
 
-export LD_LIBRARY_PATH=:./criterion/lib
-
 $(TEST_NAME): $(TEST_OBJS) $(TEST_DEPS)
 	$(MAKE) -C $(LIBFT_DIR)
 	$(CC) $(CFLAGS) $(TEST_OBJS) $(TEST_DEPS) $(LIBFT_FLAGS) $(CRITERION_FLAGS) -I$(READLINE_PATH) $(READLINE_LIB) -o $(TEST_NAME)
