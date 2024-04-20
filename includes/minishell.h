@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/04/20 12:06:15 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/20 12:31:57 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,17 @@ typedef struct s_data
 
 // utils
 int		is_space(char c);
+int		is_str_digit(char *str);
 int		if_all_space(char *s);
 void	free_double_ptr(char **ptr);
 void	free_cmd_list(t_cmd **cmd);
 void	free_exit(char *s, t_data *data, int code);
+
+char	**ft_arrdup(char **arr);
+
+// utils_free
+void	free_arr(char **arr);
+void	free_data(t_data *data);
 
 //token_util
 int		add_token_list(char *s, int type, t_token **head, int n);
