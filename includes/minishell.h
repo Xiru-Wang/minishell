@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/04/21 13:08:35 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/21 20:52:11 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ typedef struct s_data
 	char		*old_pwd;
 }	t_data;
 
+
 // utils
 int		is_space(char c);
 int		is_str_digit(char *str);
@@ -118,6 +119,7 @@ int		add_token_list(char *s, int type, t_token **head, int n);
 void	del_token(t_token **head, t_token *node);
 void	print_token_list(t_token *token_list);//debug
 void	free_token_list(t_token **list);
+enum	s_type ft_type(char c);
 
 // tokens
 void	init_data(t_data *data, char **env);
@@ -145,8 +147,9 @@ t_cmd	*init_cmd(t_data *data);
 void	append_cmd(t_cmd **head, t_cmd *new);
 int		count_pipe(t_token *list);
 int		count_args(t_token *list);
-void	print_cmd_list(t_cmd *cmd);//debug
-								   //
+
+void	print_cmd_list(t_cmd *cmd, t_data *data);
+
 //generate_cmd
 t_cmd	*generate_cmds(t_token **token, t_data *data);
 

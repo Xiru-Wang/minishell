@@ -9,6 +9,7 @@ test_suites=(
   # "remove_quo"
   # "expand_complex"
   "expand_simple"
+  "split_line"
 )
 
 # ANSI color codes

@@ -6,12 +6,55 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:59 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/07 18:14:38 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/21 19:24:54 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+int check_unclosed_quotes(char *s, t_token **head, int n)
+{
+	int i;
+	char c;
+	int quote_sign;
+
+	i = 0;
+	quote_sign = 0;
+	while (s[i])
+	{
+		if (s[i] == '\'' || s[i] == '\"')
+		{
+			c = s[i];
+			i++;
+			while (s[i] && s[i] != c)
+				i++;
+			if (s[i] == c)
+			{
+				i++;
+				quote_sign = 1;
+			}
+			else
+				return (-1);
+		}
+		else if (ft_type(s[i]) != WORD)
+		{
+			if (quote_sign == 1)
+				add_token_list(ft_substr(s, 0, i), QUO, head, n);
+			else if (i > 0)
+				add_token_list(ft_substr(s, 0, i), WORD, head, n);
+			return (i);
+		}
+		else
+			i++;
+	}
+	if (quote_sign == 1)
+		add_token_list(ft_substr(s, 0, i), QUO, head, n);
+	else if (i > 0)
+		add_token_list(ft_substr(s, 0, i), WORD, head, n);
+	return (i);
+}
+
+/*
 int	check_unclosed_quotes(char *s, t_token **head, int n)
 {
 	int		i;
@@ -47,3 +90,4 @@ int	check_unclosed_quotes(char *s, t_token **head, int n)
 	}
 	return (0);
 }
+*/
