@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/04/21 11:24:28 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/21 13:08:35 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,8 @@ void	update_env_var(t_data *data, const char *var_name, const char *new_value);
 int		call_cd(t_data *data, t_cmd *cmd);
 
 //executor
-int		executor(t_cmd *cmd, t_data *data);
+// int		executor(t_cmd *cmd, t_data *data);
+int		executor(t_data *data);
 
 // builtin
 enum s_builtin	ft_bubiltin(char *s);
@@ -186,5 +187,19 @@ void			call_echo(t_cmd *cmd);
 int				call_env(t_cmd *cmd);
 int				call_exit(t_cmd *cmd, t_data *data);
 int				call_export(t_cmd *cmd, t_data *data);
+
+// signals
+void	init_signals(void);
+
+// global var
+typedef struct s_global
+{
+	int	error_num;
+	int	stop_heredoc;
+	int	in_cmd;
+	int	in_heredoc;
+}	t_global;
+
+extern t_global	g_exit_status;
 
 #endif

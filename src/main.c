@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/04/19 16:57:13 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/21 13:08:43 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ void minishell(t_data *data)
 	{
 		s = readline("minishell>>");
 		if (s == NULL)
+		{
+			printf("exit\n");
 			break ;
+		}
 		add_history(s);
 		data->line = ft_strtrim(s, " \t\n\v\f\r");
 		free(s);
@@ -29,7 +32,7 @@ void minishell(t_data *data)
 			free_exit("split_line", data, EXIT_FAILURE);
 		data->cmd_list = generate_cmds(&data->token_list, data);
 		if (data->cmd_list)
-			executor(data->cmd_list, data);
+			executor(data);
 	}
 	//exit_shell();
 }
@@ -43,7 +46,8 @@ int	main(int ac, char **av, char **env)
 		write(STDERR_FILENO, "No arguments allowed!\n", 22);
 		return (1);
 	}
-	//setup_sig();
+
+	init_signals();
 	data = (t_data *)malloc(sizeof(t_data));
 	init_data(data, env);
 	/* welcome_msg(); */
