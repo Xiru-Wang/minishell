@@ -19,7 +19,7 @@ static t_data *create_data(const char *vars[], size_t count)
 }
 
 // Helper function to free the t_data structure
-static void free_data(t_data *data)
+static void free_test_data(t_data *data)
 {
     for (size_t i = 0; data->env[i] != NULL; i++)
     {
@@ -37,7 +37,7 @@ Test(expand_complex, no_variables_word)
     char *result = expand_complex(input, WORD, data);
     cr_assert_str_eq(result, expected, "Expected: %s, Got: %s", expected, result);
     free(result);
-    free_data(data);
+    free_test_data(data);
 }
 
 Test(expand_complex, no_variables_quo)
@@ -48,7 +48,7 @@ Test(expand_complex, no_variables_quo)
     char *result = expand_complex(input, QUO, data);
     cr_assert_str_eq(result, expected, "Expected: %s, Got: %s", expected, result);
     free(result);
-    free_data(data);
+    free_test_data(data);
 }
 
 Test(expand_complex, single_variable_word)
@@ -60,7 +60,7 @@ Test(expand_complex, single_variable_word)
     char *result = expand_complex(input, WORD, data);
     cr_assert_str_eq(result, expected, "Expected: %s, Got: %s", expected, result);
     free(result);
-    free_data(data);
+    free_test_data(data);
 }
 
 Test(expand_complex, single_variable_quo)
@@ -72,7 +72,7 @@ Test(expand_complex, single_variable_quo)
     char *result = expand_complex(input, QUO, data);
     cr_assert_str_eq(result, expected, "Expected: %s, Got: %s", expected, result);
     free(result);
-    free_data(data);
+    free_test_data(data);
 }
 
 Test(expand_complex, multiple_variables_word)
@@ -88,7 +88,7 @@ Test(expand_complex, multiple_variables_word)
     char *result = expand_complex(input, WORD, data);
     cr_assert_str_eq(result, expected, "Expected: %s, Got: %s", expected, result);
     free(result);
-    free_data(data);
+    free_test_data(data);
 }
 
 Test(expand_complex, multiple_variables_quo)
@@ -104,7 +104,7 @@ Test(expand_complex, multiple_variables_quo)
     char *result = expand_complex(input, QUO, data);
     cr_assert_str_eq(result, expected, "Expected: %s, Got: %s", expected, result);
     free(result);
-    free_data(data);
+    free_test_data(data);
 }
 
 // TODO: CRASH!
@@ -117,7 +117,7 @@ Test(expand_complex, multiple_variables_quo)
 /*     char *result = expand_complex(input, WORD, data); */
 /*     cr_assert_str_eq(result, expected, "Expected: %s, Got: %s", expected, result); */
 /*     free(result); */
-/*     free_data(data); */
+/*     free_test_data(data); */
 /* } */
 
 // TODO: CRASH!
@@ -130,5 +130,5 @@ Test(expand_complex, multiple_variables_quo)
 /*     char *result = expand_complex(input, QUO, data); */
 /*     cr_assert_str_eq(result, expected, "Expected: %s, Got: %s", expected, result); */
 /*     free(result); */
-/*     free_data(data); */
+/*     free_test_data(data); */
 /* } */

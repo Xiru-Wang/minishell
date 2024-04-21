@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/04/20 12:31:57 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/21 11:24:28 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,5 +185,6 @@ void			call_builtin(t_cmd *cmd);
 void			call_echo(t_cmd *cmd);
 int				call_env(t_cmd *cmd);
 int				call_exit(t_cmd *cmd, t_data *data);
+int				call_export(t_cmd *cmd, t_data *data);
 
 #endif
