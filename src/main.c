@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/04/21 19:42:19 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/27 17:36:18 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void minishell(t_data *data)
 		//FIX:
 		/* print_cmd_list(data->cmd_list); */
 		if (data->cmd_list)
-			executor(data);
+			executor(data->cmd_list, data);
 	}
 	//exit_shell();
 }
