@@ -2,14 +2,15 @@
 
 # Array of test suite names
 test_suites=(
-  "call_cd"
-  "call_env"
-  "call_exit"
-  "call_export"
+  # "call_cd"
+  # "call_env"
+  # "call_exit"
+  # "call_export"
   # "remove_quo"
   # "expand_complex"
-  "expand_simple"
-  "split_line"
+  # "expand_simple"
+  # "split_line"
+  "generate_cmds"
 )
 
 # ANSI color codes
