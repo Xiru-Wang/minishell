@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/04/07 19:23:59 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/04/27 18:55:39 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,12 @@
 static void	extract_redir(t_token **head, t_cmd *cmd, t_data *data);
 static void	create_io_list(t_cmd *cmd, t_token *temp);
 static void	fill_cmd(t_token **head, t_cmd *cmd);
+
+
+// input:			ls -l | grep 'hi' > test.txt
+// token_list:		"ls", "-l", "|", "grep", "'hi'", ">", "test.txt"
+// cmd0:			"ls -l",
+// cmd1: io_list:	"> test.txt", "grep hi"
 
 t_cmd	*generate_cmds(t_token **token, t_data *data)
 {

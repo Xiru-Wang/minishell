@@ -30,16 +30,7 @@ static t_token *add_token(t_token **head, char *value, t_type type) {
     return new_token;
 }
 
-/* static void free_tokens(t_token *head) { */
-/*     while (head) { */
-/*         t_token *next = head->next; */
-/*         free(head->value); */
-/*         free(head); */
-/*         head = next; */
-/*     } */
-/* } */
-
-Test(minishell_commands, simple_command, .init = setup_generate_cmds, .fini = teardown_generate_cmds) {
+Test(generate_cmds, simple_command, .init = setup_generate_cmds, .fini = teardown_generate_cmds) {
     add_token(&test_data->token_list, "hello", WORD);
     add_token(&test_data->token_list, "echo", WORD);
 
@@ -50,7 +41,7 @@ Test(minishell_commands, simple_command, .init = setup_generate_cmds, .fini = te
     cr_assert_str_eq(test_data->cmd_list->s[1], "hello", "Second command should be 'hello'. Expected 'hello', got '%s'", test_data->cmd_list->s[1]);
 }
 
-Test(minishell_commands, command_with_redirection, .init = setup_generate_cmds, .fini = teardown_generate_cmds) {
+Test(generate_cmds, command_with_redirection, .init = setup_generate_cmds, .fini = teardown_generate_cmds) {
     add_token(&test_data->token_list, "file.txt", WORD);
     add_token(&test_data->token_list, ">", REDIR_OUT);
     add_token(&test_data->token_list, "echo", WORD);
@@ -58,7 +49,11 @@ Test(minishell_commands, command_with_redirection, .init = setup_generate_cmds, 
     test_data->cmd_list = generate_cmds(&test_data->token_list, test_data);
     
     cr_assert_not_null(test_data->cmd_list, "Command list should not be null.");
-    cr_assert_not_null(test_data->cmd_list->io_list, "IO list should not be null.");
-    cr_assert_eq(test_data->cmd_list->io_list->type, REDIR_OUT, "Redirection type should be REDIR_OUT. Expected %d, got %d", REDIR_OUT, test_data->cmd_list->io_list->type);
-    cr_assert_str_eq(test_data->cmd_list->io_list->filename, "file.txt", "Output should be redirected to 'file.txt'. Expected 'file.txt', got '%s'", test_data->cmd_list->io_list->filename);
+    if (test_data->cmd_list && test_data->cmd_list->io_list) {
+        cr_assert_not_null(test_data->cmd_list->io_list, "IO list should not be null.");
+        cr_assert_eq(test_data->cmd_list->io_list->type, REDIR_OUT, "Redirection type should be REDIR_OUT. Expected %d, got %d", REDIR_OUT, test_data->cmd_list->io_list->type);
+        cr_assert_str_eq(test_data->cmd_list->io_list->filename, "file.txt", "Output should be redirected to 'file.txt'. Expected 'file.txt', got '%s'", test_data->cmd_list->io_list->filename);
+    } else {
+        cr_assert_fail("Command parsing failed before setting up redirection.");
+    }
 }
