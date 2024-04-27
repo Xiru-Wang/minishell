@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:31 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/21 20:51:34 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/27 17:48:06 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,27 +82,27 @@ int	count_args(t_token *list)
 }
 
 //FIX:
-/* void	print_cmd_list(t_cmd *cmd, t_data *data) */
-/* { */
-/*     while (cmd) */
-/*     { */
-/*         if (!cmd) */
-/*             return ; */
-/*         int k = 0; */
-/*         while (cmd) */
-/*         { */
-/*             printf("******cmd%d*****\n", k); */
-/*             int i = 0; */
-/*             while (cmd->s[i]) */
-/*             { */
-/*                 printf("%s ", cmd->s[i]); */
-/*                 i++; */
-/*             } */
-/*             printf("\n"); */
-/*             printf("\ncmd_redir = %d\n", cmd->is_builtin); */
-/*             cmd = cmd->next; */
-/*             k++; */
-/*         } */
-/*     } */
-/* } */
-/*  */
+void	print_cmd_list(t_cmd *cmd, t_data *data)
+{
+	while (cmd)
+	{
+		if (!cmd)
+			return ;
+		int k = 0;
+		while (cmd)
+		{
+			printf("******cmd%d*****\n", k);
+			int i = 0;
+			while (cmd->s[i])
+			{
+				printf("%s ", cmd->s[i]);
+				i++;
+			}
+			printf("\n");
+			printf("\ncmd_redir = %d\n", cmd->is_builtin);
+			cmd = cmd->next;
+			k++;
+		}
+	}
+}
+
