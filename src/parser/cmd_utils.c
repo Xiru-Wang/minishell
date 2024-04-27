@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:31 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/27 17:48:06 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/27 17:58:02 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	count_args(t_token *list)
 }
 
 //FIX:
-void	print_cmd_list(t_cmd *cmd, t_data *data)
+void	print_cmd_list(t_cmd *cmd)
 {
 	while (cmd)
 	{
@@ -95,11 +95,10 @@ void	print_cmd_list(t_cmd *cmd, t_data *data)
 			int i = 0;
 			while (cmd->s[i])
 			{
-				printf("%s ", cmd->s[i]);
+				printf("%s: cmd[%d]\n", cmd->s[i], k);
 				i++;
 			}
-			printf("\n");
-			printf("\ncmd_redir = %d\n", cmd->is_builtin);
+			printf("cmd_redir = %d\n", cmd->is_builtin);
 			cmd = cmd->next;
 			k++;
 		}

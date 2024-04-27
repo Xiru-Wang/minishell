@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/04/27 17:35:37 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/27 17:50:23 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ void	append_cmd(t_cmd **head, t_cmd *new);
 int		count_pipe(t_token *list);
 int		count_args(t_token *list);
 
-void	print_cmd_list(t_cmd *cmd, t_data *data);
+void	print_cmd_list(t_cmd *cmd);
 
 //generate_cmd
 t_cmd	*generate_cmds(t_token **token, t_data *data);
