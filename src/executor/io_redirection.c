@@ -31,27 +31,77 @@ void get_redir_fd_array(t_cmd *cmd)
 		}
 		temp = temp->next;
 	}
-	cmd->infd[i] = 0;
-	cmd->infd[k] = 0;
 }
 
-//infile has priority, if no infile, check pipe
-void	redirect_fds(t_cmd *cmd, int *end)
+
+void redirect_fds(t_cmd *cmd, int *end)
 {
-	if (!cmd->io_list)
-		return ;
-	if (cmd->infd[cmd->last_fdin])
-		dup2(cmd->infd[cmd->last_fdin], STDIN_FILENO);
+	// Handle input redirection
+	if (cmd->last_fdin >= 0 && cmd->infd[cmd->last_fdin] != 0)
+	{
+		printf("Input redirection: cmd->infd[cmd->last_fdin] = %d\n", cmd->infd[cmd->last_fdin]);
+		if (dup2(cmd->infd[cmd->last_fdin], STDIN_FILENO) == -1)
+		{
+			perror("dup2");
+			exit(EXIT_FAILURE);
+		}
+	}
 	else if (cmd->prev)
-		dup2(end[0], STDIN_FILENO);
-	close(end[0]);
-	if (cmd->outfd[cmd->last_fdout])
-		dup2(cmd->outfd[cmd->last_fdout], STDOUT_FILENO);
+	{
+		printf("Pipe input: end[0] = %d\n", end[0]);
+		if (dup2(end[0], STDIN_FILENO) == -1)
+		{
+			perror("dup2");
+			exit(EXIT_FAILURE);
+		}
+	}
+
+	// Handle output redirection
+	if (cmd->last_fdout >= 0 && cmd->outfd[cmd->last_fdout] != 0)
+	{
+		printf("Output redirection: cmd->outfd[cmd->last_fdout] = %d\n", cmd->outfd[cmd->last_fdout]);
+		if (dup2(cmd->outfd[cmd->last_fdout], STDOUT_FILENO) == -1)
+		{
+			perror("dup2");
+			exit(EXIT_FAILURE);
+		}
+	}
 	else if (cmd->next)
-		dup2(end[1], STDOUT_FILENO);
-	close(end[1]);
-	close_fds(cmd);//close all opened infiles & outfiles
+	{
+		printf("Pipe output: end[1] = %d\n", end[1]);
+		if (dup2(end[1], STDOUT_FILENO) == -1)
+		{
+			perror("dup2");
+			exit(EXIT_FAILURE);
+		}
+	}
+
+	// Close unnecessary file descriptors
+	if (cmd->prev)
+		close(end[0]);
+	if (cmd->next)
+		close(end[1]);
+	close_fds(cmd);
 }
+
+/* void	redirect_fds(t_cmd *cmd, int *end) */
+/* { */
+/*     if (!cmd->io_list) */
+/*         return ; */
+/*     if (cmd->infd[cmd->last_fdin]) */
+/*         dup2(cmd->infd[cmd->last_fdin], STDIN_FILENO); */
+/*     else if (cmd->prev) */
+/*         dup2(end[0], STDIN_FILENO); */
+/*     if (cmd->outfd[cmd->last_fdout]) */
+/*         dup2(cmd->outfd[cmd->last_fdout], STDOUT_FILENO); */
+/*     else if (cmd->next) */
+/*         dup2(end[1], STDOUT_FILENO); */
+/*     if (cmd->prev) */
+/*         close(end[0]); */
+/*     if (cmd->next) */
+/*         close(end[1]); */
+/*     close_fds(cmd);//close all opened infiles & outfiles */
+/* } */
 
 static void	close_fds(t_cmd *cmd)
 {

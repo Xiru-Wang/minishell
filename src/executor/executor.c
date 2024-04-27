@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:23:50 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/27 19:44:45 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/27 20:53:47 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ In this way the children will inherit the redirection.
 
 int	g_exit_code;
 static int	pipe_wait(int *pid, int pipe_num);
+
 
 int	executor(t_cmd *cmd, t_data *data)
 {
@@ -50,7 +51,10 @@ int	executor(t_cmd *cmd, t_data *data)
 			if (cmd->is_builtin)
 				call_builtin(cmd);
 			else
+			{
 				call_cmd(data, cmd);
+				exit(EXIT_FAILURE);
+			}
 			exit(EXIT_SUCCESS);
 		}
 		else
@@ -80,10 +84,9 @@ static int	pipe_wait(int *pid, int pipe_num)
 			perror("waitpid");
 			return (EXIT_FAILURE);
 		}
+		if (WIFEXITED(status))
+			g_exit_code = WEXITSTATUS(status);
 		i++;
 	}
-	waitpid(pid[i], &status, 0);
-	if (WIFEXITED(status))
-		g_exit_code = WEXITSTATUS(status);
 	return (EXIT_SUCCESS);
 }

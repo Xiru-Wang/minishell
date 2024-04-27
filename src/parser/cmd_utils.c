@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:31 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/27 17:58:02 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/04/27 20:28:18 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,8 @@ t_cmd	*init_cmd(t_data *data)
 	new->delimiter = NULL;
 	new->hdfile = NULL;
 	new->data = data;
-	//new->infd[MAX_FILES] = {0};
-	//new->outfd[MAX_FILES] = {0};
-	//ft_memset(new->infd[MAX_FILES], 0, sizeof(int));
-	//ft_memset(new->outfd[MAX_FILES], 0, sizeof(int));
+	ft_memset(new->infd, 0, sizeof(new->infd));
+	ft_memset(new->outfd, 0, sizeof(new->outfd));
 	return (new);
 }
 
