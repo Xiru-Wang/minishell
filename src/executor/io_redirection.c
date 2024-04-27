@@ -38,12 +38,14 @@ void get_redir_fd_array(t_cmd *cmd)
 //infile has priority, if no infile, check pipe
 void	redirect_fds(t_cmd *cmd, int *end)
 {
-	if (cmd->io_list && cmd->infd[cmd->last_fdin])
+	if (!cmd->io_list)
+		return ;
+	if (cmd->infd[cmd->last_fdin])
 		dup2(cmd->infd[cmd->last_fdin], STDIN_FILENO);
 	else if (cmd->prev)
 		dup2(end[0], STDIN_FILENO);
 	close(end[0]);
-	if (cmd->io_list && cmd->outfd[cmd->last_fdout])
+	if (cmd->outfd[cmd->last_fdout])
 		dup2(cmd->outfd[cmd->last_fdout], STDOUT_FILENO);
 	else if (cmd->next)
 		dup2(end[1], STDOUT_FILENO);
