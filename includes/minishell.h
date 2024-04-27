@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/04/21 20:52:11 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/04/24 18:55:49 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ int		call_cd(t_data *data, t_cmd *cmd);
 
 //executor
 // int		executor(t_cmd *cmd, t_data *data);
-int		executor(t_data *data);
+int		executor(t_cmd *cmd, t_data *data);
 
 // builtin
 enum s_builtin	ft_bubiltin(char *s);
