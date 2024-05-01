@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:31 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/27 20:28:18 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/01 17:42:24 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ int	count_args(t_token *list)
 	return (size);
 }
 
-//FIX:
 void	print_cmd_list(t_cmd *cmd)
 {
 	while (cmd)
@@ -89,14 +88,9 @@ void	print_cmd_list(t_cmd *cmd)
 		int k = 0;
 		while (cmd)
 		{
-			printf("******cmd%d*****\n", k);
 			int i = 0;
 			while (cmd->s[i])
-			{
-				printf("%s: cmd[%d]\n", cmd->s[i], k);
 				i++;
-			}
-			printf("cmd_redir = %d\n", cmd->is_builtin);
 			cmd = cmd->next;
 			k++;
 		}
