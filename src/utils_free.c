@@ -6,7 +6,7 @@
 /*   By: jschroed <jschroed@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:36:51 by jschroed          #+#    #+#             */
-/*   Updated: 2024/04/20 12:36:53 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/01 16:53:32 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void free_cmd_list(t_cmd **cmd)
 {
     t_cmd *temp;
     // First, check if the cmd pointer itself is NULL
-    if (cmd == NULL)
+	if (cmd == NULL || *cmd == NULL)
         return;
     // Then, check if the list pointed to by cmd is NULL
     if (*cmd == NULL)

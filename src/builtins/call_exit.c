@@ -6,7 +6,7 @@
 /*   By: jschroed <jschroed@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:37:05 by jschroed          #+#    #+#             */
-/*   Updated: 2024/04/20 12:38:49 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/01 17:14:33 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ static int determine_exit_code(char **str)
 			exit_code = 255;
 		}
 	}
-	free_double_ptr(str);
 	return exit_code;
 }
 
@@ -68,6 +67,7 @@ int call_exit(t_cmd *cmd, t_data *data)
 {
 	char **str;
 	int exit_code;
+	(void) data;
 
 	ft_putendl_fd("exit", STDERR_FILENO);
 	if (cmd->s[1] && cmd->s[2])
@@ -76,7 +76,11 @@ int call_exit(t_cmd *cmd, t_data *data)
 		return (EXIT_FAILURE);
 	}
 	str = ft_arrdup(cmd->s);
+	if (str == NULL)
+		return (EXIT_FAILURE);
 	exit_code = determine_exit_code(str);
-	free_data(data);
+	free_double_ptr(str);
+	//FIX:
+	/* free_data(data); */
 	return exit_code;
 }

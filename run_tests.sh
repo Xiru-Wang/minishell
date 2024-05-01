@@ -5,7 +5,7 @@ test_suites=(
   # "call_cd"
   # "call_env"
   "call_echo"
-  # "call_exit"
+  "call_exit"
   # "call_export"
   # "remove_quo"
   # "expand_complex"

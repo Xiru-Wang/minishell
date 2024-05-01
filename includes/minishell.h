@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/04/27 17:50:23 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/01 17:39:24 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,14 +196,6 @@ int				call_export(t_cmd *cmd, t_data *data);
 void	init_signals(void);
 
 // global var
-typedef struct s_global
-{
-	int	error_num;
-	int	stop_heredoc;
-	int	in_cmd;
-	int	in_heredoc;
-}	t_global;
-
-extern t_global	g_exit_status;
+extern int g_exit_code;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:01 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/21 11:26:56 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/01 17:03:37 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,12 @@ void	call_builtin(t_cmd *cmd)
 		call_cd(cmd->data, cmd);
 	if (i == ECHO)
 		call_echo(cmd);
-	// else if (i == PWD)
-	// 	call_pwd();
+	//TODO:
+	/* else if (i == PWD) */
+		/* call_pwd(); */
 	else if (i == EXPORT)
 		call_export(cmd, cmd->data);
+	//TODO:
 	// else if (i == UNSET)
 	// 	call_unset();
 	else if (i == ENV)

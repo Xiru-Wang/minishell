@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:23:50 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/01 16:01:54 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/01 17:37:29 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ do all the piping and redirection before forking the processes.
 In this way the children will inherit the redirection.
 */
 
-int	g_exit_code;
 static int	pipe_wait(int *pid, int pipe_num);
 
 int executor(t_cmd *cmd, t_data *data)
