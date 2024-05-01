@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:31 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/01 17:42:24 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/01 19:13:43 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,14 +85,12 @@ void	print_cmd_list(t_cmd *cmd)
 	{
 		if (!cmd)
 			return ;
-		int k = 0;
 		while (cmd)
 		{
 			int i = 0;
 			while (cmd->s[i])
 				i++;
 			cmd = cmd->next;
-			k++;
 		}
 	}
 }

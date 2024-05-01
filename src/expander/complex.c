@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:20 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/01 18:37:18 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/01 19:07:38 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,12 @@ static char	*handle_double_quote(char *s, int *i, char **env)
 
 	k = len_within_quo(s + *i, '\"');
 	value = NULL;
-	printf("CHECK_VALID_DOLLAR_LIMITSE\n");
 	if (check_valid_dollar_limit(s + *i, k))
 	{
 		temp = ft_substr(s, *i, k);
-		printf("BEFORE EXPAND SIMPLE\n");
+		printf("temp:%s\n", temp);
 		value = expand_simple(temp, env);
+		printf("value:%s\n", value);
 		free(temp);
 	}
 	else

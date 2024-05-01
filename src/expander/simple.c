@@ -18,8 +18,11 @@ char	*expand_simple(char *s, char **env)
 		{
 			k = 0;
 			value = expand_dollar(s + i, &k, env);
-			ft_strlcat(dst, value, ft_strlen(dst) + ft_strlen(value) + 1);
-			free(value);
+			if (value)
+			{
+				ft_strlcat(dst, value, ft_strlen(dst) + ft_strlen(value) + 1);
+				free(value);
+			}
 			i = i + k;
 		}
 		value = char_to_str(s[i]);
@@ -61,7 +64,8 @@ char    *expand_dollar(char *s, int *len, char **env)
 		if (*s == '?')
 		{
 			value = ft_itoa(g_exit_code);
-			*len = ft_strlen(value) + 1; // length of "$?"
+			*len = 2;
+			//*len = ft_strlen(value) + 1; // length of "$?"
 		}
 		else if (ft_isdigit(*s)) // skip 1st digit
 		{
