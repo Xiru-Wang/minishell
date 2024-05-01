@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:23:50 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/27 20:53:47 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/01 15:22:04 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,32 +22,25 @@ In this way the children will inherit the redirection.
 int	g_exit_code;
 static int	pipe_wait(int *pid, int pipe_num);
 
-
-int	executor(t_cmd *cmd, t_data *data)
+int executor(t_cmd *cmd, t_data *data)
 {
-	int	i;
-	int	end[2];
+	int i;
+	int end[2];
 
 	i = 0;
 	while (cmd)
 	{
 		if (cmd->next)
-			if (pipe(end) == -1)//create pipe in parent
+			if (pipe(end) == -1)
 				free_exit("pipe failed", data, STDERR_FILENO);
 		check_hd(cmd);
 		get_redir_fd_array(cmd);
-		redirect_fds(cmd, end);
 		data->pid[i] = fork();
 		if (data->pid[i] == -1)
 			free_exit("fork failed", data, STDERR_FILENO);
-		// printf("pid[%d]: %d\n", i, data->pid[i]);
 		if (data->pid[i] == 0)
 		{
-			if (!cmd->next)
-				close(end[0]);
-			if (cmd->prev)
-				close(end[1]);
-
+			redirect_fds(cmd, end);
 			if (cmd->is_builtin)
 				call_builtin(cmd);
 			else
@@ -60,9 +53,9 @@ int	executor(t_cmd *cmd, t_data *data)
 		else
 		{
 			if (cmd->prev)
-				close(end[1]);  // Close the write end of the previous command's pipe
+				close(end[0]);  // Close the read end of the previous command's pipe
 			if (cmd->next)
-				close(end[0]);  // Close the read end of the current command's pipe
+				close(end[1]);  // Close the write end of the current command's pipe
 		}
 		cmd = cmd->next;
 		i++;

@@ -33,7 +33,6 @@ void get_redir_fd_array(t_cmd *cmd)
 	}
 }
 
-
 void redirect_fds(t_cmd *cmd, int *end)
 {
 	// Handle input redirection
@@ -45,6 +44,7 @@ void redirect_fds(t_cmd *cmd, int *end)
 			perror("dup2");
 			exit(EXIT_FAILURE);
 		}
+		close(cmd->infd[cmd->last_fdin]);
 	}
 	else if (cmd->prev)
 	{
@@ -54,6 +54,7 @@ void redirect_fds(t_cmd *cmd, int *end)
 			perror("dup2");
 			exit(EXIT_FAILURE);
 		}
+		close(end[0]);
 	}
 
 	// Handle output redirection
@@ -65,6 +66,7 @@ void redirect_fds(t_cmd *cmd, int *end)
 			perror("dup2");
 			exit(EXIT_FAILURE);
 		}
+		close(cmd->outfd[cmd->last_fdout]);
 	}
 	else if (cmd->next)
 	{
@@ -74,13 +76,10 @@ void redirect_fds(t_cmd *cmd, int *end)
 			perror("dup2");
 			exit(EXIT_FAILURE);
 		}
+		close(end[1]);
 	}
 
 	// Close unnecessary file descriptors
-	if (cmd->prev)
-		close(end[0]);
-	if (cmd->next)
-		close(end[1]);
 	close_fds(cmd);
 }
 
