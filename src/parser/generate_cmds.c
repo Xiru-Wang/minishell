@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   generate_cmds.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/04/27 18:55:39 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/01 15:30:40 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	extract_redir(t_token **head, t_cmd *cmd, t_data *data)
 		next = temp->next;
 		if (temp->type >= REDIR_IN && temp->type <= HEREDOC)
 		{
-			if (next == NULL || next->type != WORD || next->type != QUO)
+			if (next == NULL || (next->type != WORD && next->type != QUO))
 				free_exit("syntax error near unexpected token", data, STDERR_FILENO);
 			create_io_list(cmd, temp);
 			del_token(head, temp); // remove redirection sign
