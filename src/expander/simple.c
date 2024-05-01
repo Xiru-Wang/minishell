@@ -30,6 +30,7 @@ char	*expand_simple(char *s, char **env)
 	return (dst);
 }
 
+// should check len within double quotes
 int	len_within_quo(char *s, char c)
 {
 	int	len;
@@ -37,11 +38,12 @@ int	len_within_quo(char *s, char c)
 	len = 0;
 	if (*s == c)
 	{
-		len++;
+		s++;
 		while (*s && *s != c)
+		{
 			len++;
-		if (*s == c)
-			len++;
+			s++;
+		}
 	}
 	return (len);
 }

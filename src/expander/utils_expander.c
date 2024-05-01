@@ -39,14 +39,12 @@ int	check_valid_dollar_limit(char *s, int max)//check max len of the string
 	int	i;
 
 	i = 0;
+	printf("INSIDE VALID DOLLAR LIMIT\n");
+	printf("%d\n", max);
 	while (s[i] && i < max)
 	{
-		if (s[i] == '$' && s[i + 1])
-		{
-			i++;
-			if (char_is_valid(*s))
-				return (1);
-		}
+		if (s[i] == '$' && s[i + 1] && char_is_valid(s[i + 1]))
+			return (1);
 		i++;
 	}
 	return (0);
