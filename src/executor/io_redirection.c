@@ -47,12 +47,29 @@ void get_redir_fd_array(t_cmd *cmd)
 	}
 }
 
-void redirect_fds(t_cmd *cmd, int *end)
+/**
+ * Redirects input for a command.
+ *
+ * This function redirects the input for a given command by either duplicating
+ * the file descriptor associated with the input file or by using a pipe to read
+ * input from the previous command.
+ *
+ * @param cmd A pointer to the command structure containing information about
+ * the command
+ * @param end An array of integers representing the file descriptors for the
+ * pipe
+ *
+ * @return void
+ *
+ * @throws perror("dup2") if an error occurs while duplicating the file
+ * descriptor
+ * @throws exit(EXIT_FAILURE) if an error occurs while closing the file
+ * descriptor
+ */
+static void redirect_input(t_cmd *cmd, int *end)
 {
-	// Handle input redirection
 	if (cmd->last_fdin >= 0 && cmd->infd[cmd->last_fdin] != 0)
 	{
-		printf("Input redirection: cmd->infd[cmd->last_fdin] = %d\n", cmd->infd[cmd->last_fdin]);
 		if (dup2(cmd->infd[cmd->last_fdin], STDIN_FILENO) == -1)
 		{
 			perror("dup2");
@@ -62,7 +79,6 @@ void redirect_fds(t_cmd *cmd, int *end)
 	}
 	else if (cmd->prev)
 	{
-		printf("Pipe input: end[0] = %d\n", end[0]);
 		if (dup2(end[0], STDIN_FILENO) == -1)
 		{
 			perror("dup2");
@@ -70,11 +86,29 @@ void redirect_fds(t_cmd *cmd, int *end)
 		}
 		close(end[0]);
 	}
+}
 
-	// Handle output redirection
+/**
+ * Redirects the output of a command to a specified file descriptor or pipe.
+ *
+ * This function takes a command structure and an array of file descriptors as
+ * input. It checks if the command has a specified output file descriptor and
+ * redirects the output of the command to that file descriptor. If no output
+ * file descriptor is specified, it redirects the output to a pipe.
+ *
+ * @param cmd A pointer to the command structure containing information about
+ * the command's output file descriptors.
+ * @param end An array of file descriptors representing the pipe endpoints.
+ *
+ * @return void
+ *
+ * @throws perror() error message if dup2() fails to duplicate the file
+ * descriptor.
+ */
+static void redirect_output(t_cmd *cmd, int *end)
+{
 	if (cmd->last_fdout >= 0 && cmd->outfd[cmd->last_fdout] != 0)
 	{
-		printf("Output redirection: cmd->outfd[cmd->last_fdout] = %d\n", cmd->outfd[cmd->last_fdout]);
 		if (dup2(cmd->outfd[cmd->last_fdout], STDOUT_FILENO) == -1)
 		{
 			perror("dup2");
@@ -84,7 +118,6 @@ void redirect_fds(t_cmd *cmd, int *end)
 	}
 	else if (cmd->next)
 	{
-		printf("Pipe output: end[1] = %d\n", end[1]);
 		if (dup2(end[1], STDOUT_FILENO) == -1)
 		{
 			perror("dup2");
@@ -92,34 +125,45 @@ void redirect_fds(t_cmd *cmd, int *end)
 		}
 		close(end[1]);
 	}
+}
 
-	// Close unnecessary file descriptors
+/**
+ * Redirects file descriptors for input and output for a given command.
+ *
+ * This function takes a command structure pointer and an integer pointer as
+ * arguments. It first redirects the input file descriptor for the command using
+ * the redirect_input function. Then, it redirects the output file descriptor
+ * for the command using the redirect_output function. Finally, it closes any
+ * file descriptors that are no longer needed for the command using the
+ * close_fds function.
+ *
+ * @param cmd A pointer to a command structure containing information about the
+ * command to be executed.
+ * @param end A pointer to an integer indicating the end of the command
+ * execution.
+ *
+ * @return void
+ */
+void redirect_fds(t_cmd *cmd, int *end)
+{
+	redirect_input(cmd, end);
+	redirect_output(cmd, end);
 	close_fds(cmd);
 }
 
-/* void	redirect_fds(t_cmd *cmd, int *end) */
-/* { */
-/*     if (!cmd->io_list) */
-/*         return ; */
-/*     if (cmd->infd[cmd->last_fdin]) */
-/*         dup2(cmd->infd[cmd->last_fdin], STDIN_FILENO); */
-/*     else if (cmd->prev) */
-/*         dup2(end[0], STDIN_FILENO); */
-/*     if (cmd->outfd[cmd->last_fdout]) */
-/*         dup2(cmd->outfd[cmd->last_fdout], STDOUT_FILENO); */
-/*     else if (cmd->next) */
-/*         dup2(end[1], STDOUT_FILENO); */
-/*     if (cmd->prev) */
-/*         close(end[0]); */
-/*     if (cmd->next) */
-/*         close(end[1]); */
-/*     close_fds(cmd);//close all opened infiles & outfiles */
-/* } */
-
-static void	close_fds(t_cmd *cmd)
+/**
+ * Closes file descriptors associated with a given command.
+ *
+ * This function takes a pointer to a command structure and closes all file
+ * descriptors associated with it.
+ *
+ * @param cmd A pointer to a command structure containing file descriptors to be
+ * closed.
+ */
+static void close_fds(t_cmd *cmd)
 {
-	int	i;
-	int	k;
+	int i;
+	int k;
 
 	i = 0;
 	k = 0;
@@ -135,23 +179,45 @@ static void	close_fds(t_cmd *cmd)
 	}
 }
 
-static int	get_infd(char *s)
+/**
+ * Opens a file for reading and returns the file descriptor.
+ *
+ * This function takes a string representing the file path and attempts to open
+ * the file for reading using the open() system call. If the file cannot be
+ * opened, an error message is printed to stderr and 0 is returned.
+ *
+ * @param s A string representing the file path to be opened for reading
+ * @return The file descriptor of the opened file, or 0 if the file cannot be
+ * opened
+ */
+static int get_infd(char *s)
 {
-	int	fd;
+	int fd;
 
 	fd = open(s, O_RDONLY);
 	if (fd < 0)
 	{
-		ft_putstr_fd("minishell: infile: No such file or directory\n",
-			STDERR_FILENO);
-		return (0);
+		ft_putstr_fd("minishell: infile: No such file or directory\n", \
+				STDERR_FILENO);
+		return 0;
 	}
 	return (fd);
 }
 
-static int	get_outfd(t_io *redir)
+/**
+ * @brief Get the file descriptor for output redirection
+ *
+ * This function takes a pointer to a t_io struct representing a redirection and
+ * opens the specified file for writing. If the redirection type is APPEND, the
+ * file is opened in append mode. If the redirection type is not APPEND, the
+ * file is opened in truncate mode.
+ *
+ * @param redir A pointer to a t_io struct representing the output redirection
+ * @return The file descriptor for the opened file, or 0 if an error occurs
+ */
+static int get_outfd(t_io *redir)
 {
-	int	fd;
+	int fd;
 
 	if (redir->type == APPEND)
 		fd = open(redir->filename, O_CREAT | O_RDWR | O_APPEND, 0644);
@@ -160,7 +226,7 @@ static int	get_outfd(t_io *redir)
 	if (fd < 0)
 	{
 		ft_putstr_fd("minishell: outfile: Error\n", STDERR_FILENO);
-		return (0);
+		return 0;
 	}
 	return (fd);
 }

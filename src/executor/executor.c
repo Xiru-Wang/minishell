@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:23:50 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/01 15:28:15 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/01 16:01:54 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,22 @@ int executor(t_cmd *cmd, t_data *data)
 	return (0);
 }
 
-static int	pipe_wait(int *pid, int pipe_num)
+/**
+ * Waits for multiple child processes to finish and updates the global exit code
+ *
+ * This function waits for the specified number of child processes to finish and
+ * updates the global exit code based on the exit status of each child process.
+ *
+ * @param pid An array of process IDs representing the child processes to wait
+ * for
+ * @param pipe_num The number of child processes to wait for
+ * @return Returns EXIT_SUCCESS if all child processes were successfully waited
+ * for, otherwise returns EXIT_FAILURE
+ */
+static int pipe_wait(int *pid, int pipe_num)
 {
-	int	i;
-	int	status;
+	int i;
+	int status;
 
 	i = 0;
 	while (i <= pipe_num)
@@ -83,3 +95,4 @@ static int	pipe_wait(int *pid, int pipe_num)
 	}
 	return (EXIT_SUCCESS);
 }
+
