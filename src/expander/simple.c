@@ -46,42 +46,44 @@ int	len_within_quo(char *s, char c)
 	return (len);
 }
 
-char	*expand_dollar(char *s, int *len, char **env)
+char    *expand_dollar(char *s, int *len, char **env)
 {
-	int		var_len;
-	char	*var_name;
-	char	*value;
+	int        var_len;
+	char    *var_name;
+	char    *value;
 
 	value = NULL;
 	if (*s == '$')
 	{
 		s++; // skip dollar
-		if (ft_isdigit(*s)) // skip 1st digit
+		if (*s == '?')
+		{
+			value = ft_itoa(g_exit_code);
+			*len = ft_strlen(value) + 1; // length of "$?"
+		}
+		else if (ft_isdigit(*s)) // skip 1st digit
 		{
 			*len = 2;
 			return (NULL);
 		}
-		/* if (*s == '?') // skip 1st digit */
-		/* { */
-		/*     *len = 2; */
-		/*     value = ft_itoa(g_exit_code); */
-		/*     return (value); */
-		/* } */
-		var_len = count_var_len(s);
-		var_name = ft_substr(s, 0, var_len);
-		value = find_env(var_name, env);
-		free(var_name);
-		*len = 1 + var_len; // include the $ in the length
+		else
+		{
+			var_len = count_var_len(s);
+			var_name = ft_substr(s, 0, var_len);
+			value = find_env(var_name, env);
+			free(var_name);
+			*len = 1 + var_len; // include the $ in the length
+		}
 	}
 	return (value);
 }
 
 static int	count_var_len(char *var)
 {
-    int i;
+	int i;
 
-    i = 0;
-    while (ft_isalnum(var[i]) || var[i] == '_')
-        i++;
-    return (i);
+	i = 0;
+	while (ft_isalnum(var[i]) || var[i] == '_')
+		i++;
+	return (i);
 }

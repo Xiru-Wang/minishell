@@ -1,33 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   comlex.c                                           :+:      :+:    :+:   */
+/*   complex.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:20 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/08 11:59:14 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/01 18:15:24 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-// TODO: FIX
-/*
-### expand_complex ###
-
-[----] tests/test_expand_complex.c:105: Assertion Failed
-[----]
-[----]   Expected: Hello, Alice! It's Sunday., Got: $GREETING, Alice! It's Sunday.GREETING=Hello
-[----]
-[----] tests/test_expand_complex.c:73: Assertion Failed
-[----]
-[----]   Expected: Hello, Alice!, Got: Hello, Alice!USER=Alice
-[----]
-[FAIL] expand_complex::multiple_variables_quo: (0.00s)
-[FAIL] expand_complex::single_variable_quo: (0.00s)
-[====] Synthesis: Tested: 6 | Passing: 4 | Failing: 2 | Crashing: 0
-*/
 
 static char *handle_single_quote(char *s, int *i);
 static char *handle_double_quote(char *s, int *i, char **env);
@@ -64,25 +47,28 @@ char	*replace_vars_complex(char *s, char **env)
 
 	i = 0;
 	dst = ft_calloc(sizeof(char), 1);
-    value = NULL;
- 	temp = NULL;
-    while (s[i])
-    {
-        if (s[i] == '\'')
-            value = handle_single_quote(s, &i);
-        else if (s[i] == '\"')
-            value = handle_double_quote(s, &i, env);
-        else if (s[i] == '$' && s[i + 1] && char_is_valid(s[i + 1]))
-            value = handle_dollar(s, &i, env);
-        else
-        {
-            value = char_to_str(s[i]);
-            i++;
-        }
-        temp = dst;
-        dst = ft_strjoin(temp, value);
-        free(temp);
-        free(value);
+	value = NULL;
+	temp = NULL;
+	while (s[i])
+	{
+		if (s[i] == '\'')
+			value = handle_single_quote(s, &i);
+		else if (s[i] == '\"')
+			value = handle_double_quote(s, &i, env);
+		else if (s[i] == '$' && s[i + 1] && char_is_valid(s[i + 1]))
+			value = handle_dollar(s, &i, env);
+		else
+		{
+			value = char_to_str(s[i]);
+			i++;
+		}
+		if (value != NULL)
+		{
+			temp = dst;
+			dst = ft_strjoin(temp, value);
+			free(temp);
+			free(value);
+		}
 	}
 	return (dst);
 }
@@ -94,6 +80,7 @@ static char *handle_single_quote(char *s, int *i)
 
 	k = len_within_quo(s + *i, '\'');
 	value = ft_substr(s, *i, k);
+	/* *i += k + 1; */
 	*i += k;
 	return (value);
 }
@@ -113,6 +100,7 @@ static char	*handle_double_quote(char *s, int *i, char **env)
 	}
 	else
 		value = ft_substr(s, *i, k);
+	/* *i += k + 1; */
 	*i += k;
 	return (value);
 }
@@ -124,6 +112,8 @@ static char *handle_dollar(char *s, int *i, char **env)
 
 	k = 0;
 	value = expand_dollar(s + *i, &k, env);
+	if (value == NULL)
+		value = ft_strdup("");
 	*i += k;
 	return (value);
 }
