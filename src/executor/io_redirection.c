@@ -6,30 +6,44 @@ static void	close_fds(t_cmd *cmd);
 
 //loop io_list to create fdin arrays and fdout arrays
 //data stream will only go into the last fd
+/**
+ * Populates the input and output file descriptor arrays of a given command
+ * structure.
+ *
+ * This function iterates through the list of I/O redirections in the command
+ * structure and assigns file descriptors to the corresponding arrays based on
+ * the type of redirection.
+ *
+ * @param cmd A pointer to the command structure containing the I/O redirection
+ * list
+ * @return void
+ */
 void get_redir_fd_array(t_cmd *cmd)
 {
-	t_io	*temp;
-	int i;
-	int k;
+	t_io *temp; // Temporary pointer to traverse the I/O list
+	int i; // Index for input file descriptor array
+	int k; // Index for output file descriptor array
 
 	i = 0;
 	k = 0;
 	temp = cmd->io_list;
+
+	// Iterate through the I/O list
 	while (temp)
 	{
-		if (temp->type == REDIR_IN ||temp->type == HEREDOC)
+		if (temp->type == REDIR_IN || temp->type == HEREDOC)
 		{
-			cmd->infd[i] = get_infd(temp->filename);
-			cmd->last_fdin = i;
+			cmd->infd[i] = get_infd(temp->filename); // Assign input file descriptor
+			cmd->last_fdin = i; // Update last input file descriptor index
 			i++;
 		}
 		else if (temp->type == REDIR_OUT || temp->type == APPEND)
 		{
-			cmd->outfd[k] = get_outfd(temp);
-			cmd->last_fdout = k;
+			cmd->outfd[k] = get_outfd(temp); // Assign output file descriptor
+			cmd->last_fdout = k; // Update last output file descriptor index
 			k++;
 		}
-		temp = temp->next;
+		temp = temp->next; // Move to the next I/O redirection
 	}
 }
 

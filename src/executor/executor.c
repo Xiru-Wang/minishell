@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:23:50 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/01 15:22:04 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/01 15:28:15 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ int executor(t_cmd *cmd, t_data *data)
 		else
 		{
 			if (cmd->prev)
-				close(end[0]);  // Close the read end of the previous command's pipe
+				close(end[0]);
 			if (cmd->next)
-				close(end[1]);  // Close the write end of the current command's pipe
+				close(end[1]);
 		}
 		cmd = cmd->next;
 		i++;
