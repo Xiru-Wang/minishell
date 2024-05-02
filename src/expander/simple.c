@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   simple.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/02 19:18:49 by xiwang            #+#    #+#             */
+/*   Updated: 2024/05/02 20:10:26 by xiwang           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 static int	count_var_len(char *var);
@@ -33,7 +45,7 @@ char	*expand_simple(char *s, char **env)
 	return (dst);
 }
 
-// should check len within double quotes
+//should check len within double quotes(include quotes)
 int	len_within_quo(char *s, char c)
 {
 	int	len;
@@ -48,26 +60,25 @@ int	len_within_quo(char *s, char c)
 			s++;
 		}
 	}
-	return (len);
+	return (len + 2);
 }
 
-char    *expand_dollar(char *s, int *len, char **env)
+char	*expand_dollar(char *s, int *len, char **env)
 {
-	int        var_len;
-	char    *var_name;
-	char    *value;
+	int		var_len;
+	char	*var_name;
+	char	*value;
 
 	value = NULL;
 	if (*s == '$')
 	{
-		s++; // skip dollar
+		s++;
 		if (*s == '?')
 		{
 			value = ft_itoa(g_exit_code);
 			*len = 2;
-			//*len = ft_strlen(value) + 1; // length of "$?"
 		}
-		else if (ft_isdigit(*s)) // skip 1st digit
+		else if (ft_isdigit(*s))
 		{
 			*len = 2;
 			return (NULL);
@@ -78,7 +89,7 @@ char    *expand_dollar(char *s, int *len, char **env)
 			var_name = ft_substr(s, 0, var_len);
 			value = find_env(var_name, env);
 			free(var_name);
-			*len = 1 + var_len; // include the $ in the length
+			*len = 1 + var_len;
 		}
 	}
 	return (value);
@@ -86,7 +97,7 @@ char    *expand_dollar(char *s, int *len, char **env)
 
 static int	count_var_len(char *var)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (ft_isalnum(var[i]) || var[i] == '_')

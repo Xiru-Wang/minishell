@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_expander.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/02 19:19:05 by xiwang            #+#    #+#             */
+/*   Updated: 2024/05/02 19:28:31 by xiwang           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -10,7 +21,7 @@ char	*char_to_str(char c)
 	return (temp);
 }
 
-int	check_valid_dollar(char *s)//check whole string
+int	check_valid_dollar(char *s)
 {
 	while (*s)
 	{
@@ -25,7 +36,8 @@ int	check_valid_dollar(char *s)//check whole string
 	return (0);
 }
 
-int	char_is_valid(char c)//check the char after $
+//check var_name after $
+int	char_is_valid(char c)
 {
 	if (ft_isalnum(c) || c == '_' || c == '?')
 		return (1);
@@ -33,13 +45,12 @@ int	char_is_valid(char c)//check the char after $
 		return (0);
 }
 
-// if  "'$USER'" -> '$USER'
-int	check_valid_dollar_limit(char *s, int max)//check max len of the string
+// if "'$USER'" -> 'xiwang'
+int	check_valid_dollar_limit(char *s, int max)
 {
 	int	i;
 
 	i = 0;
-	printf("INSIDE VALID DOLLAR LIMIT\n");
 	printf("%d\n", max);
 	while (s[i] && i < max)
 	{
