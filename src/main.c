@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/01 17:53:21 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/02 18:51:06 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,8 @@ void minishell(t_data *data)
 		data->pid = ft_calloc(data->cmd_num, sizeof(pid_t));
 		if (data->cmd_list)
 			executor(data->cmd_list, data);
-		// TODO: how to break the loop? only exit of signals? 
-		/* if (g_exit_code == -1) */
-		/*     break; */
 	}
 	//exit_shell();
-	/* exit(EXIT_SUCCESS); */
 }
 
 int	main(int ac, char **av, char **env)
@@ -53,9 +49,9 @@ int	main(int ac, char **av, char **env)
 		write(STDERR_FILENO, "No arguments allowed!\n", 22);
 		return (1);
 	}
-	init_signals();
 	data = (t_data *)malloc(sizeof(t_data));
 	init_data(data, env);
+	sig_init();
 	/* welcome_msg(); */
 	minishell(data);
 	return (0);

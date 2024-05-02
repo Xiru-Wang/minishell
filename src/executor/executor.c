@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:23:50 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/01 17:37:29 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/02 18:57:43 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,9 @@ int executor(t_cmd *cmd, t_data *data)
 			free_exit("fork failed", data, STDERR_FILENO);
 		if (data->pid[i] == 0)
 		{
+			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
+
 			redirect_fds(cmd, end);
 			if (cmd->is_builtin)
 				call_builtin(cmd);

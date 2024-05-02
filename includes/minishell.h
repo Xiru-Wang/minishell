@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/01 17:39:24 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/02 18:48:43 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,8 @@ int				call_exit(t_cmd *cmd, t_data *data);
 int				call_export(t_cmd *cmd, t_data *data);
 
 // signals
-void	init_signals(void);
+void	sig_handler(int signum);
+void	sig_init(void);
 
 // global var
 extern int g_exit_code;
