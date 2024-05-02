@@ -1,13 +1,30 @@
 #include "../../includes/minishell.h"
 
-void	sig_handler(int signum)
+void sig_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
-		write(STDERR_FILENO, "\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
+		if (isatty(STDIN_FILENO))
+		{
+			// In interactive mode
+			write(STDERR_FILENO, "\n", 1);
+			rl_on_new_line();
+			rl_replace_line("", 0);
+			rl_redisplay();
+		}
+		else
+		{
+			// In non-interactive mode, terminate the shell process
+			write(STDERR_FILENO, "\n", 1);
+			exit(EXIT_FAILURE);
+		}
+	}
+	else if (signum == SIGQUIT)
+	{
+		// In non-interactive mode, ignore SIGQUIT
+		if (!isatty(STDIN_FILENO))
+			return;
+		// In interactive mode, do nothing
 	}
 }
 
