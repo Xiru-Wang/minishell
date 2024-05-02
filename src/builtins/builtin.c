@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:01 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/02 19:56:36 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/02 20:33:07 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	call_builtin(t_cmd *cmd)
 	i = cmd->is_builtin;
 	if (i == CD)
 		call_cd(cmd->data, cmd);
-	if (i == ECHO)
+	else if (i == ECHO)
 		call_echo(cmd);
 	//TODO:
 	/* else if (i == PWD) */

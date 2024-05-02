@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:23:50 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/02 20:02:29 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/02 20:47:36 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,14 @@ int executor(t_cmd *cmd, t_data *data)
 				free_exit("pipe failed", data, STDERR_FILENO);
 		check_hd(cmd);
 		get_redir_fd_array(cmd);
+
+		//NOTE: find a way to make this better...
+		if (cmd->is_builtin == EXIT)
+		{
+			call_exit(cmd, data);
+			return (1);
+		}
+
 		data->pid[i] = fork();
 		if (data->pid[i] == -1)
 			free_exit("fork failed", data, STDERR_FILENO);
