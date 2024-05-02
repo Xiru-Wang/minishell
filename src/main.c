@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/02 18:51:06 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/02 19:19:32 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void minishell(t_data *data)
 		s = readline("minishell>>");
 		if (s == NULL)
 		{
-			printf("exit\n");
+			write(STDERR_FILENO, "exit\n", 5);
 			break ;
 		}
 		add_history(s);
@@ -37,7 +37,9 @@ void minishell(t_data *data)
 		if (data->cmd_list)
 			executor(data->cmd_list, data);
 	}
+	// free_data(data);
 	//exit_shell();
+	exit(EXIT_SUCCESS);
 }
 
 int	main(int ac, char **av, char **env)
