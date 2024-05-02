@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:23:50 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/02 18:57:43 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/02 20:02:29 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,9 @@ static int pipe_wait(int *pid, int pipe_num)
 			perror("waitpid");
 			return (EXIT_FAILURE);
 		}
-		if (WIFEXITED(status))
+		if (WIFEXITED(status) && i == pipe_num)
 			g_exit_code = WEXITSTATUS(status);
 		i++;
 	}
 	return (EXIT_SUCCESS);
 }
-

@@ -6,7 +6,7 @@
 /*   By: jschroed <jschroed@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:37:05 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/01 17:14:33 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/02 19:55:24 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,5 +82,5 @@ int call_exit(t_cmd *cmd, t_data *data)
 	free_double_ptr(str);
 	//FIX:
 	/* free_data(data); */
-	return exit_code;
+	exit(exit_code);
 }

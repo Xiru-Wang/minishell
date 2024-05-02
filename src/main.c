@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/02 19:19:32 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/02 20:16:58 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ void minishell(t_data *data)
 		data->pid = ft_calloc(data->cmd_num, sizeof(pid_t));
 		if (data->cmd_list)
 			executor(data->cmd_list, data);
+		/* if (g_exit_code == EXIT_SUCCESS || g_exit_code == EXIT_FAILURE) */
+		/*     break; */
 	}
 	// free_data(data);
 	//exit_shell();
