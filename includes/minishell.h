@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/02 18:48:43 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/03 18:20:47 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,12 +186,13 @@ int		executor(t_cmd *cmd, t_data *data);
 
 // builtin
 enum s_builtin	ft_bubiltin(char *s);
-void			call_builtin(t_cmd *cmd);
-void			call_echo(t_cmd *cmd);
+int				call_builtin(t_cmd *cmd);
+int				call_echo(t_cmd *cmd);
 int				call_env(t_cmd *cmd);
 int				call_exit(t_cmd *cmd, t_data *data);
 int				call_export(t_cmd *cmd, t_data *data);
-
+int				call_pwd(t_cmd *cmd);
+int				call_unset(t_cmd *cmd, t_data *data);
 // signals
 void	sig_handler(int signum);
 void	sig_init(void);

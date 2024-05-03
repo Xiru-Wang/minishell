@@ -10,7 +10,7 @@
  * @return The position of the '=' character in the string, or -1 if the
  * character is not found.
  */
-static int equal_sign(char *str)
+static int	equal_sign(char *str)
 {
 	int i;
 
@@ -29,14 +29,14 @@ static int equal_sign(char *str)
  * @param str The string from which quotes are to be removed
  * @param quote The quote character to be removed from the string
  */
-void delete_quotes(char *str, char quote)
+void	delete_quotes(char *str, char quote)
 {
 	char *read;
 	char *write;
 
 	read = str;
 	write = str;
-	while (*read) 
+	while (*read)
 	{
 		if (*read != quote)
 			*write++ = *read;
@@ -46,7 +46,7 @@ void delete_quotes(char *str, char quote)
 }
 
 // Check if the environment variable name is valid
-static int is_valid_identifier(char c)
+static int	is_valid_identifier(char c)
 {
 	return (ft_isalnum(c) || c == '_');
 }
@@ -64,7 +64,7 @@ static int is_valid_identifier(char c)
  * @return An integer representing the exit status of the function
  * (EXIT_FAILURE)
  */
-static int export_error(char *str)
+static int	export_error(char *str)
 {
 	ft_putstr_fd("minishell: export: `", STDERR_FILENO);
 	ft_putstr_fd(str, STDERR_FILENO);
@@ -86,17 +86,17 @@ static int export_error(char *str)
  * @return Returns EXIT_SUCCESS if the string is a valid environment variable
  * string, otherwise returns an error code.
  */
-static int check_parameter(char *str)
+static int	check_parameter(char *str)
 {
     int i;
 
     if (ft_isdigit(str[0]) || str[0] == '=')
-        return export_error(str);
+        return (export_error(str));
     i = 0;
     while (str[i] && str[i] != '=')
     {
         if (!is_valid_identifier(str[i]))
-            return export_error(str);
+            return (export_error(str));
         i++;
     }
     return (str[i] == '=' ? EXIT_SUCCESS : export_error(str));
@@ -104,7 +104,7 @@ static int check_parameter(char *str)
 
 
 // Add a new variable to the environment
-static char **add_var(char **env, char *str)
+static char	**add_var(char **env, char *str)
 {
 	int		len;
 	int		i;
@@ -116,29 +116,29 @@ static char **add_var(char **env, char *str)
 		len++;
 	new_env = (char **)malloc(sizeof(char *) * (len + 2));
 	if (!new_env)
-		return NULL;
-	while (i < len) 
+		return (NULL);
+	while (i < len)
 	{
 		new_env[i] = ft_strdup(env[i]);
-		if (new_env[i] == NULL) 
+		if (new_env[i] == NULL)
 		{
 			while (i > 0)
 				free(new_env[--i]);
 			free(new_env);
-			return NULL;
+			return (NULL);
 		}
 		i++;
 	}
 	new_env[len] = ft_strdup(str);
-	if (new_env[len] == NULL) 
+	if (new_env[len] == NULL)
 	{
 		while (--i >= 0)
 			free(new_env[i]);
 		free(new_env);
-		return NULL;
+		return (NULL);
 	}
 	new_env[len + 1] = NULL;
-	return new_env;
+	return (new_env);
 }
 
 /**
@@ -155,16 +155,16 @@ static char **add_var(char **env, char *str)
  * @return Returns EXIT_SUCCESS if the variable was successfully updated or
  * added, or EXIT_FAILURE if an error occurred.
  */
-static int update_or_add_var(t_data *data, char *str)
+static int	update_or_add_var(t_data *data, char *str)
 {
 	int pos;
 	int i;
 	char **new_env;
 
 	pos = equal_sign(str);
-	if (pos == -1) 
-		return EXIT_FAILURE;
-	if (str[pos + 1] == '\"' || str[pos + 1] == '\'') 
+	if (pos == -1)
+		return (EXIT_FAILURE);
+	if (str[pos + 1] == '\"' || str[pos + 1] == '\'')
 		delete_quotes(str + pos + 1, str[pos + 1]);
 	i = 0;
 	while (data->env[i]) {
@@ -172,16 +172,16 @@ static int update_or_add_var(t_data *data, char *str)
 		{
 			free(data->env[i]);
 			data->env[i] = ft_strdup(str);
-			return EXIT_SUCCESS;
+			return (EXIT_SUCCESS);
 		}
 		i++;
 	}
 	new_env = add_var(data->env, str);
 	if (!new_env)
-		return EXIT_FAILURE;
+		return (EXIT_FAILURE);
 	free_arr(data->env);
 	data->env = new_env;
-	return EXIT_SUCCESS;
+	return (EXIT_SUCCESS);
 }
 
 /**
@@ -200,30 +200,30 @@ static int update_or_add_var(t_data *data, char *str)
  * @return Returns EXIT_SUCCESS if the export command is executed successfully,
  * EXIT_FAILURE otherwise.
  */
-int call_export(t_cmd *cmd, t_data *data)
+int	call_export(t_cmd *cmd, t_data *data)
 {
 	int i;
 
-	if (!cmd->s[1]) 
-	{  
+	if (!cmd->s[1])
+	{
 		i = 0;
-		while (data->env && data->env[i]) 
+		while (data->env && data->env[i])
 		{
 			ft_putstr_fd(data->env[i], STDOUT_FILENO);
 			ft_putstr_fd("\n", STDOUT_FILENO);
 			i++;
 		}
-		return EXIT_SUCCESS;
+		return (EXIT_SUCCESS);
 	}
 	i = 1;
-	while (cmd->s[i]) 
+	while (cmd->s[i])
 	{
 		if (check_parameter(cmd->s[i]) != EXIT_SUCCESS)
-			return EXIT_FAILURE;
+			return (EXIT_FAILURE);
 		if (update_or_add_var(data, cmd->s[i]) != EXIT_SUCCESS)
-			return EXIT_FAILURE;
+			return (EXIT_FAILURE);
 		i++;
 	}
-	return EXIT_SUCCESS;
+	return (EXIT_SUCCESS);
 }
 

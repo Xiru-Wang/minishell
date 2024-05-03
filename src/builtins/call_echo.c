@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:17 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/01 17:50:48 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/03 15:30:24 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static int is_valid_n_option(char *arg)
  *
  * @return void
  */
-void call_echo(t_cmd *cmd)
+int	call_echo(t_cmd *cmd)
 {
 	int i;
 	int flag;
@@ -101,4 +101,5 @@ void call_echo(t_cmd *cmd)
 	print_arguments(cmd, i);
 	if (flag == 0)
 		ft_putchar_fd('\n', STDOUT_FILENO);
+	return (EXIT_SUCCESS);
 }
