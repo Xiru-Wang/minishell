@@ -34,6 +34,7 @@ static char	**reset_env(t_data *data, char **env, int k)
 {
 	int		i;
 	char	**new_env;
+	(void) data;
 
 	i = 0;
 	while (env[i])

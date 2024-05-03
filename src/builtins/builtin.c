@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:01 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/03 18:20:57 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/03 19:11:44 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,5 @@ int	call_builtin(t_cmd *cmd)
 		return (call_env(cmd));
 	else if (i == EXIT)
 		return (call_exit(cmd, cmd->data));
+	return (EXIT_FAILURE);
 }

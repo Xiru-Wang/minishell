@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/02 20:16:58 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/03 20:29:27 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,27 @@ void minishell(t_data *data)
 		print_cmd_list(data->cmd_list);
 		data->pid = ft_calloc(data->cmd_num, sizeof(pid_t));
 		if (data->cmd_list)
-			executor(data->cmd_list, data);
+        {
+            printf("Debug: Before executing commands\n");
+            printf("Debug: data->env address: %p\n", (void *)data->env);
+            int i = 0;
+            while (data->env[i])
+            {
+                printf("Debug: env[%d]: %s\n", i, data->env[i]);
+                i++;
+            }
+
+            executor(data->cmd_list, data);
+
+            printf("Debug: After executing commands\n");
+            printf("Debug: data->env address: %p\n", (void *)data->env);
+            i = 0;
+            while (data->env[i])
+            {
+                printf("Debug: env[%d]: %s\n", i, data->env[i]);
+                i++;
+            }
+        }
 		/* if (g_exit_code == EXIT_SUCCESS || g_exit_code == EXIT_FAILURE) */
 		/*     break; */
 	}

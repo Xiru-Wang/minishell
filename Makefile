@@ -8,6 +8,7 @@ TEST_NAME = utest_minishell
 
 # Compiler settings
 CC = gcc
+# CFLAGS = -Wall -Wextra -Werror -fsanitize=address -fsanitize=undefined
 CFLAGS = -Wall -Wextra -Werror
 
 # Directories

@@ -6,22 +6,56 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:47:18 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/27 18:14:05 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/03 20:05:27 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+static int	init_env(t_data *data, char **env);
 
 void	init_data(t_data *data, char **env)
 {
 	data->line = NULL;
 	data->token_list = NULL;
 	data->var_name = NULL;
-	data->env = env;
 	data->cmd_list = NULL;
 	data->cmd_num = 0;
-
+	if (init_env(data, env) != EXIT_SUCCESS)
+	{
+		fprintf(stderr, "Failed to initialize environment variables.\n");
+		exit(EXIT_FAILURE);
+	}
 	//init_signals()
+}
+
+static int	init_env(t_data *data, char **env)
+{
+	int i;
+
+	i = 0;
+	while (env[i])
+		i++;
+	data->env = (char **)malloc(sizeof(char *) * (i + 1));
+	if (data->env == NULL)
+		return (EXIT_FAILURE);
+
+	i = 0;
+	while (env[i])
+	{
+		data->env[i] = ft_strdup(env[i]);
+		if (data->env[i] == NULL)
+		{
+			while (i > 0)
+				free(data->env[--i]);
+			free(data->env);
+			data->env = NULL;
+			return (EXIT_FAILURE);
+		}
+		i++;
+	}
+	data->env[i] = NULL;
+	return (EXIT_SUCCESS);
 }
 
 enum	s_type ft_type(char c)
