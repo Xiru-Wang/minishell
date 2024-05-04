@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:23:50 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/04 11:40:03 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/04 11:43:36 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ static int multiple_cmds(t_cmd *cmd, t_data *data)
 		cmd = cmd->next;
 		i++;
 	}
+	return (EXIT_SUCCESS);
 }
 
 static int	execute_cmd(t_cmd *cmd, t_data *data)

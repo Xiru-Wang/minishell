@@ -39,7 +39,7 @@ void get_redir_fd_array(t_cmd *cmd)
 		}
 		else if (temp->type == REDIR_OUT || temp->type == APPEND)
 		{
-			cmd->outfd[k] = get_outfd(temp->filename); // Assign output file descriptor
+			cmd->outfd[k] = get_outfd(temp); // Assign output file descriptor
 			cmd->last_fdout = k; // Update last output file descriptor index
 			k++;
 		}

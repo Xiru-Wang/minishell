@@ -20,9 +20,18 @@ CRITERION_INCLUDE_DIR = criterion/include
 CRITERION_LIB_DIR = criterion/lib
 OBJ_DIR = obj
 
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S), Darwin) # macOS
+    READLINE_PATH = $(shell brew --prefix readline)/include
+    READLINE_LIB_PATH = $(shell brew --prefix readline)/lib
+    READLINE_LIB = -L$(READLINE_LIB_PATH) -lreadline
+else # Assuming Linux or other Unix-like OS
+    READLINE_PATH = /usr/include/readline
+    READLINE_LIB = -lreadline
+endif
 # Readline settings
-READLINE_PATH = /usr/include/readline
-READLINE_LIB = -lreadline
+# READLINE_PATH = /usr/include/readline
+# READLINE_LIB = -lreadline
 
 # Source files
 SRCS = $(shell find $(SRC_DIR) -name '*.c')
