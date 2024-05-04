@@ -39,7 +39,7 @@ void get_redir_fd_array(t_cmd *cmd)
 		}
 		else if (temp->type == REDIR_OUT || temp->type == APPEND)
 		{
-			cmd->outfd[k] = get_outfd(temp); // Assign output file descriptor
+			cmd->outfd[k] = get_outfd(temp->filename); // Assign output file descriptor
 			cmd->last_fdout = k; // Update last output file descriptor index
 			k++;
 		}
@@ -148,6 +148,29 @@ void redirect_fds(t_cmd *cmd, int *end)
 {
 	redirect_input(cmd, end);
 	redirect_output(cmd, end);
+	close_fds(cmd);
+}
+
+void redirect_fds_simple(t_cmd *cmd)
+{
+	if (cmd->last_fdin >= 0 && cmd->infd[cmd->last_fdin] != 0)
+	{
+		if (dup2(cmd->infd[cmd->last_fdin], STDIN_FILENO) == -1)
+		{
+			perror("dup2");
+			exit(EXIT_FAILURE);
+		}
+		close(cmd->infd[cmd->last_fdin]);
+	}
+	if (cmd->last_fdout >= 0 && cmd->outfd[cmd->last_fdout] != 0)
+	{
+		if (dup2(cmd->outfd[cmd->last_fdout], STDOUT_FILENO) == -1)
+		{
+			perror("dup2");
+			exit(EXIT_FAILURE);
+		}
+		close(cmd->outfd[cmd->last_fdout]);
+	}
 	close_fds(cmd);
 }
 

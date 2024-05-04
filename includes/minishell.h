@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/03 18:20:47 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/04 11:20:39 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,7 @@ void	free_io_list(t_io **list);
 //io_redir
 void	get_redir_fd_array(t_cmd *cmd);
 void	redirect_fds(t_cmd *cmd, int *end);
+void	redirect_fds_simple(t_cmd *cmd);
 
 //heredoc
 int		check_hd(t_cmd *cmd);
