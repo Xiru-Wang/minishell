@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:47:18 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/03 20:05:27 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/04 20:14:13 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	init_data(t_data *data, char **env)
 		fprintf(stderr, "Failed to initialize environment variables.\n");
 		exit(EXIT_FAILURE);
 	}
-	//init_signals()
 }
 
 static int	init_env(t_data *data, char **env)

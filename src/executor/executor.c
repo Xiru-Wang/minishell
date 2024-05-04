@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:23:50 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/04 11:43:36 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/04 20:40:50 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,19 +57,19 @@ static int multiple_cmds(t_cmd *cmd, t_data *data)
 				free_exit("pipe failed", data, STDERR_FILENO);
 		check_hd(cmd);
 		get_redir_fd_array(cmd);
+
 		//NOTE: find a way to make this better...
 		if (cmd->is_builtin == EXIT)
 		{
 			call_exit(cmd, data);
 			return (1);
 		}
+
 		data->pid[i] = fork();
 		if (data->pid[i] == -1)
 			free_exit("fork failed", data, STDERR_FILENO);
 		if (data->pid[i] == 0)
 		{
-			signal(SIGINT, SIG_DFL);
-			signal(SIGQUIT, SIG_DFL);
 			redirect_fds(cmd, end);
 			execute_cmd(cmd, data);
 		}
@@ -93,22 +93,11 @@ static int	execute_cmd(t_cmd *cmd, t_data *data)
 	else
 	{
 		call_cmd(data, cmd);
-		exit(EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	}
-	exit(EXIT_SUCCESS);
+	return (EXIT_SUCCESS);
 }
-/**
- * Waits for multiple child processes to finish and updates the global exit code
- *
- * This function waits for the specified number of child processes to finish and
- * updates the global exit code based on the exit status of each child process.
- *
- * @param pid An array of process IDs representing the child processes to wait
- * for
- * @param pipe_num The number of child processes to wait for
- * @return Returns EXIT_SUCCESS if all child processes were successfully waited
- * for, otherwise returns EXIT_FAILURE
- */
+
 static int pipe_wait(int *pid, int pipe_num)
 {
 	int i;

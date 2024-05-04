@@ -1,5 +1,4 @@
 #include "../../includes/minishell.h"
-#include <signal.h>
 
 void sig_handler(int signum)
 {
@@ -29,7 +28,7 @@ void sig_handler(int signum)
 	}
 }
 
-void	sig_init(void)
+void	init_signal(void)
 {
 	struct sigaction	sa;
 

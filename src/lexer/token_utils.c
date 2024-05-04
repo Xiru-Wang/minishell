@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:58 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/04/02 19:52:29 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/04 21:36:19 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,21 +86,4 @@ void print_token_list(t_token *token_list)
 			printf("value: (null), index: %d\n", token_list->i);
 		token_list = token_list->next;
 	}
-}
-
-void	free_token_list(t_token **list)
-{
-	t_token	*temp;
-
-	if ((*list) == NULL || list == NULL)
-		return ;
-	while (*list)
-	{
-		temp = (*list)->next;
-		if ((*list)->value)
-			free ((*list)->value);
-		free(*list);
-		*list = temp;
-	}
-	*list = NULL;
 }

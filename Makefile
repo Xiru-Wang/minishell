@@ -29,9 +29,6 @@ else # Assuming Linux or other Unix-like OS
     READLINE_PATH = /usr/include/readline
     READLINE_LIB = -lreadline
 endif
-# Readline settings
-# READLINE_PATH = /usr/include/readline
-# READLINE_LIB = -lreadline
 
 # Source files
 SRCS = $(shell find $(SRC_DIR) -name '*.c')

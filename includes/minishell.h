@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/04 11:20:39 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/04 21:02:59 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <readline/history.h>
 # include <limits.h>
 # include <string.h>
+# include <signal.h>
 # include <sys/wait.h>
 
 # define MAX_FILES 10 //OPEN_MAX
@@ -196,7 +197,7 @@ int				call_pwd(t_cmd *cmd);
 int				call_unset(t_cmd *cmd, t_data *data);
 // signals
 void	sig_handler(int signum);
-void	sig_init(void);
+void	init_signal(void);
 
 // global var
 extern int g_exit_code;

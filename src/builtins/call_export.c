@@ -114,16 +114,12 @@ static char	**add_var(char **env, char *str)
 		len++;
 	new_env = (char **)malloc(sizeof(char *) * (len + 2));
 	if (!new_env)
-	{
-		printf("Debug: Memory allocation failed in add_var\n");
 		return (NULL);
-	}
 	while (i < len)
 	{
 		new_env[i] = ft_strdup(env[i]);
 		if (new_env[i] == NULL)
 		{
-			printf("Debug: ft_strdup failed in add_var for env[%d]\n", i);
 			while (i > 0)
 				free(new_env[--i]);
 			free(new_env);
@@ -134,14 +130,12 @@ static char	**add_var(char **env, char *str)
 	new_env[len] = ft_strdup(str);
 	if (new_env[len] == NULL)
 	{
-		printf("Debug: ft_strdup failed in add_var for new variable\n");
 		while (--i >= 0)
 			free(new_env[i]);
 		free(new_env);
 		return (NULL);
 	}
 	new_env[len + 1] = NULL;
-	printf("Debug: New variable added successfully\n");
 	return (new_env);
 }
 
@@ -167,45 +161,24 @@ static int	update_or_add_var(t_data *data, char *str)
 
 	pos = equal_sign(str);
 	if (pos == -1)
-	{
-		printf("Debug: Invalid variable format: %s\n", str);
 		return (EXIT_FAILURE);
-	}
 	if (str[pos + 1] == '\"' || str[pos + 1] == '\'')
 		delete_quotes(str + pos + 1, str[pos + 1]);
 	i = 0;
 	while (data->env[i]) {
 		if (ft_strncmp(data->env[i], str, pos) == 0)
 		{
-			printf("Debug: Updating existing variable: %s\n", str);
 			free(data->env[i]);
 			data->env[i] = ft_strdup(str);
 			if (data->env[i] == NULL)
-			{
-				printf("Debug: ft_strdup failed in update_or_add_var\n");
 				return (EXIT_FAILURE);
-			}
 			return (EXIT_SUCCESS);
 		}
 		i++;
 	}
-	printf("Debug: Adding new variable: %s\n", str);
 	new_env = add_var(data->env, str);
 	if (!new_env)
-	{
-		printf("Debug: add_var failed\n");
 		return (EXIT_FAILURE);
-	}
-
-	// Print the contents of new_env
-	printf("Debug: new_env after adding variable:\n");
-	i = 0;
-	while (new_env[i])
-	{
-		printf("Debug: new_env[%d]: %s\n", i, new_env[i]);
-		i++;
-	}
-
 	if (data->env != NULL)
 		free_arr(data->env);
 	data->env = new_env;
@@ -234,7 +207,6 @@ int	call_export(t_cmd *cmd, t_data *data)
 
 	if (!cmd->s[1])
 	{
-		printf("Debug: No arguments provided, displaying current environment variables\n");
 		i = 0;
 		while (data->env && data->env[i])
 		{
@@ -247,17 +219,10 @@ int	call_export(t_cmd *cmd, t_data *data)
 	i = 1;
 	while (cmd->s[i])
 	{
-		printf("Debug: Processing argument: %s\n", cmd->s[i]);
 		if (check_parameter(cmd->s[i]) != EXIT_SUCCESS)
-		{
-			printf("Debug: Invalid parameter: %s\n", cmd->s[i]);
 			return (EXIT_FAILURE);
-		}
 		if (update_or_add_var(data, cmd->s[i]) != EXIT_SUCCESS)
-		{
-			printf("Debug: Failed to update or add variable: %s\n", cmd->s[i]);
 			return (EXIT_FAILURE);
-		}
 		i++;
 	}
 	return (EXIT_SUCCESS);

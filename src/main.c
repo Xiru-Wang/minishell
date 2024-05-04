@@ -6,13 +6,11 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/03 20:29:27 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/04 21:37:42 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int g_exit_code = 0;
 
 void minishell(t_data *data)
 {
@@ -21,10 +19,15 @@ void minishell(t_data *data)
 	while (1)
 	{
 		s = readline("minishell>>");
-		if (s == NULL)
+		if (!s)
 		{
-			write(STDERR_FILENO, "exit\n", 5);
-			break ;
+			write(STDOUT_FILENO, "exit\n", 5);
+			break;
+		}
+		if (s[0] == '\0')
+		{
+			free(s);
+			continue;
 		}
 		add_history(s);
 		data->line = ft_strtrim(s, " \t\n\v\f\r");
@@ -34,32 +37,10 @@ void minishell(t_data *data)
 		data->cmd_list = generate_cmds(&data->token_list, data);
 		print_cmd_list(data->cmd_list);
 		data->pid = ft_calloc(data->cmd_num, sizeof(pid_t));
-		if (data->cmd_list)
-        {
-            printf("Debug: Before executing commands\n");
-            printf("Debug: data->env address: %p\n", (void *)data->env);
-            int i = 0;
-            while (data->env[i])
-            {
-                printf("Debug: env[%d]: %s\n", i, data->env[i]);
-                i++;
-            }
-
-            executor(data->cmd_list, data);
-
-            printf("Debug: After executing commands\n");
-            printf("Debug: data->env address: %p\n", (void *)data->env);
-            i = 0;
-            while (data->env[i])
-            {
-                printf("Debug: env[%d]: %s\n", i, data->env[i]);
-                i++;
-            }
-        }
-		/* if (g_exit_code == EXIT_SUCCESS || g_exit_code == EXIT_FAILURE) */
-		/*     break; */
+		executor(data->cmd_list, data);
 	}
-	// free_data(data);
+	free_data(data);
+	//TODO: how to exit the shell?
 	//exit_shell();
 	exit(EXIT_SUCCESS);
 }
@@ -75,8 +56,7 @@ int	main(int ac, char **av, char **env)
 	}
 	data = (t_data *)malloc(sizeof(t_data));
 	init_data(data, env);
-	sig_init();
-	/* welcome_msg(); */
+	init_signal();
 	minishell(data);
 	return (0);
 }

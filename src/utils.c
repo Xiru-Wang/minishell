@@ -6,11 +6,14 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 19:37:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/04/20 12:34:39 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/04 21:15:50 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+// Definition of the global variable
+int g_exit_code = 0;
 
 int	is_space(char c)
 {
@@ -18,6 +21,7 @@ int	is_space(char c)
 		return (1);
 	return (0);
 }
+
 
 /**
  * Check if a string is composed entirely of digits.
