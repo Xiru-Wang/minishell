@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:31 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/01 19:13:43 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/05 00:20:27 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,11 @@ t_cmd	*init_cmd(t_data *data)
 	new->next = NULL;
 	new->prev = NULL;
 	new->io_list = NULL;
-	new->last_fdin = -1;
-	new->last_fdout = -1;
 	new->delimiter = NULL;
 	new->hdfile = NULL;
 	new->data = data;
-	ft_memset(new->infd, 0, sizeof(new->infd));
-	ft_memset(new->outfd, 0, sizeof(new->outfd));
+	new->infd = -1;
+	new->outfd = -1;
 	return (new);
 }
 

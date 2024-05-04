@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   generate_cmds.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/01 15:30:40 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/05 00:12:45 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 static void	extract_redir(t_token **head, t_cmd *cmd, t_data *data);
-static void	create_io_list(t_cmd *cmd, t_token *temp);
+static void	add_io_list(t_cmd *cmd, t_token *temp);
 static void	fill_cmd(t_token **head, t_cmd *cmd);
 
 
@@ -59,7 +59,7 @@ static void	extract_redir(t_token **head, t_cmd *cmd, t_data *data)
 		{
 			if (next == NULL || (next->type != WORD && next->type != QUO))
 				free_exit("syntax error near unexpected token", data, STDERR_FILENO);
-			create_io_list(cmd, temp);
+			add_io_list(cmd, temp);
 			del_token(head, temp); // remove redirection sign
 			temp = next->next;
 			del_token(head, next);//remove filename
@@ -72,30 +72,31 @@ static void	extract_redir(t_token **head, t_cmd *cmd, t_data *data)
 //assign type to each cmd's redirections
 //if multiple '>file1 >file2 > file3'：empty file1,file2, output goes ot files3
 
-static void	create_io_list(t_cmd *cmd, t_token *temp)
+static void	add_io_list(t_cmd *cmd, t_token *temp)
 {
 	t_token	*next;
+	t_io	*new;
 
 	next = temp->next;//if next exsit, call handle_redir
-	if (!add_io_list(&cmd->io_list))
-		free_exit("malloc error", cmd->data, STDERR_FILENO);
+	new = init_io(cmd->data);
 	if (temp->type == REDIR_IN)
 	{
-		cmd->io_list->type = REDIR_IN;
-		cmd->io_list->filename = ft_strdup(next->value);
+		new->type = REDIR_IN;
+		new->filename = ft_strdup(next->value);
 	}
 	else if (temp->type == REDIR_OUT || temp->type == APPEND)
 	{
-		cmd->io_list->type = temp->type;
-		cmd->io_list->filename = ft_strdup(next->value);
+		new->type = temp->type;
+		new->filename = ft_strdup(next->value);
 	}
 	else if (temp->type == HEREDOC)
 	{
-		cmd->io_list->type = HEREDOC;
+		new->type = HEREDOC;
 		if (cmd->delimiter)
 				free(cmd->delimiter);
 		cmd->delimiter = ft_strdup(next->value);
 	}
+	append_io(&cmd->io_list, new);
 }
 
 static void	fill_cmd(t_token **head, t_cmd *cmd)

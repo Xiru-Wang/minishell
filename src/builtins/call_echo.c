@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:17 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/03 15:30:24 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/04 23:41:01 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ static int is_valid_n_option(char *arg)
 			return (0);
 	return (1);
 }
-
 
 /**
  * @brief This function calls the echo command with the given arguments.

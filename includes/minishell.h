@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/04 21:02:59 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/05 00:27:22 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,7 @@ typedef struct s_io
 	char			*filename;
 	t_type			type;
 	struct s_io		*next;
-}	t_io;
-
+} t_io;
 
 typedef struct s_data t_data;
 typedef struct s_cmd
@@ -77,14 +76,14 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 	struct s_cmd	*prev;
 	struct s_io		*io_list;
-	int				infd[MAX_FILES];
-	int				outfd[MAX_FILES];
-	int				last_fdin;
-	int				last_fdout;
+	int				infd;
+	int				outfd;
 	int				id;
 	char			*delimiter;
 	char			*hdfile;
 	t_data			*data;
+	int				num_fdin;
+	int				num_fdout;
 } t_cmd;
 
 typedef struct s_data
@@ -155,16 +154,17 @@ void	print_cmd_list(t_cmd *cmd);
 t_cmd	*generate_cmds(t_token **token, t_data *data);
 
 //io_utils
-int		add_io_list(t_io **head);
+t_io	*init_io(t_data *data);
+void	append_io(t_io **head, t_io *new);
 void	free_io_list(t_io **list);
 
 //io_redir
-void	get_redir_fd_array(t_cmd *cmd);
-void	redirect_fds(t_cmd *cmd, int *end);
-void	redirect_fds_simple(t_cmd *cmd);
+void	get_fds(t_cmd *cmd);
+void	redirect_io(t_cmd *cmd, int *end);
+void	redirect_io_simple(t_cmd *cmd);
 
 //heredoc
-int		check_hd(t_cmd *cmd);
+void		check_hd(t_cmd *cmd);
 
 // call_cmd
 int		call_cmd(t_data *data, t_cmd *cmd);
@@ -183,7 +183,7 @@ int		call_cd(t_data *data, t_cmd *cmd);
 
 //executor
 // int		executor(t_cmd *cmd, t_data *data);
-int		executor(t_cmd *cmd, t_data *data);
+int				executor(t_cmd *cmd, t_data *data);
 
 
 // builtin
@@ -196,8 +196,8 @@ int				call_export(t_cmd *cmd, t_data *data);
 int				call_pwd(t_cmd *cmd);
 int				call_unset(t_cmd *cmd, t_data *data);
 // signals
-void	sig_handler(int signum);
-void	init_signal(void);
+void			sig_handler(int signum);
+void			init_signal(void);
 
 // global var
 extern int g_exit_code;

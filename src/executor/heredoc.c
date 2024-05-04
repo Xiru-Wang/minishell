@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:49 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/07 19:20:10 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/05 00:22:30 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,14 @@ static int	remove_hd_quotes(t_cmd *cmd);
 static char	*create_hd_name(void);
 static int	create_hd(t_cmd *cmd, int eof_quote);
 
-int	check_hd(t_cmd *cmd)
+void	check_hd(t_cmd *cmd)
 {
 	t_io	*temp;
 	//int		sl;
 	int		quote;
 
+	if (!cmd->io_list)
+		return ;
 	temp = cmd->io_list;
 	//sl = EXIT_SUCCESS;//??
 	while (temp)
@@ -43,7 +45,6 @@ int	check_hd(t_cmd *cmd)
 		}
 		temp = temp->next;
 	}
-	return (1);
 }
 
 static int	create_hd(t_cmd *cmd, int expand_sign)
