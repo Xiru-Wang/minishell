@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/05 18:38:57 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/05 19:39:26 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void minishell(t_data *data)
 		if (split_line(data->line, &data->token_list, data) == 0)
 			free_exit("split_line", data, EXIT_FAILURE);
 		data->cmd_list = generate_cmds(&data->token_list, data);
-		/* print_cmd_list(data->cmd_list); */
+		print_cmd_list(data->cmd_list);
 		//print_io_list(data->cmd_list);
 		data->pid = ft_calloc(data->cmd_num, sizeof(pid_t));
 		executor(data->cmd_list, data);

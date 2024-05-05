@@ -6,12 +6,11 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:23:50 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/05 19:05:39 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/05 19:48:35 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include <errno.h>
 
 static int	pipe_wait(int *pid, int pipe_num);
 static int	single_cmd(t_cmd *cmd, t_data *data);
@@ -39,17 +38,6 @@ static int single_cmd(t_cmd *cmd, t_data *data)
 	redirect_io_simple(cmd);
 	exit_status = execute_cmd(cmd, data);
 	reset_stdio(cmd);
-	
-	// Close the output file descriptor if it's open and valid
-	if (cmd->outfd != -1)
-	{
-		if (close(cmd->outfd) == -1)
-		{
-			if (errno != EBADF)
-				perror("close failed on output file descriptor");
-		}
-		cmd->outfd = -1;
-	}
 	return (exit_status);
 }
 
