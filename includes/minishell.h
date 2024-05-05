@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/05 00:27:22 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/05 17:13:55 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ typedef struct s_cmd
 	t_data			*data;
 	int				num_fdin;
 	int				num_fdout;
+	int				stdin_backup;
+	int				stdout_backup;
 } t_cmd;
 
 typedef struct s_data
@@ -148,7 +150,8 @@ void	append_cmd(t_cmd **head, t_cmd *new);
 int		count_pipe(t_token *list);
 int		count_args(t_token *list);
 
-void	print_cmd_list(t_cmd *cmd);
+void	print_cmd_list(t_cmd *cmd);//DEBUG
+void	print_io_list(t_cmd *cmd);//DEBUG
 
 //generate_cmd
 t_cmd	*generate_cmds(t_token **token, t_data *data);
@@ -157,6 +160,7 @@ t_cmd	*generate_cmds(t_token **token, t_data *data);
 t_io	*init_io(t_data *data);
 void	append_io(t_io **head, t_io *new);
 void	free_io_list(t_io **list);
+void	reset_stdio(t_cmd *cmd);
 
 //io_redir
 void	get_fds(t_cmd *cmd);

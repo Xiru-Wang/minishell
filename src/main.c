@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/04 21:37:42 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/05 17:26:55 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void minishell(t_data *data)
 			free_exit("split_line", data, EXIT_FAILURE);
 		data->cmd_list = generate_cmds(&data->token_list, data);
 		print_cmd_list(data->cmd_list);
+		//print_io_list(data->cmd_list);
 		data->pid = ft_calloc(data->cmd_num, sizeof(pid_t));
 		executor(data->cmd_list, data);
 	}

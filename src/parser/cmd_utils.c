@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:31 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/05 00:20:27 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/05 17:24:26 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ t_cmd	*init_cmd(t_data *data)
 	new->data = data;
 	new->infd = -1;
 	new->outfd = -1;
+	new->stdin_backup = -1;
+	new->stdout_backup = -1;
 	return (new);
 }
 
@@ -77,19 +79,41 @@ int	count_args(t_token *list)
 	return (size);
 }
 
+
 void	print_cmd_list(t_cmd *cmd)
 {
 	while (cmd)
 	{
 		if (!cmd)
 			return ;
+		int k = 0;
 		while (cmd)
 		{
+			printf("******cmd%d*****\n", k);
 			int i = 0;
 			while (cmd->s[i])
+			{
+				printf("%s ", cmd->s[i]);
 				i++;
+			}
+			printf("\n");
+			print_io_list(cmd);
 			cmd = cmd->next;
+			k++;
 		}
+	}
+}
+
+void	print_io_list(t_cmd *cmd)
+{
+	if (cmd->io_list)
+	{
+		while (cmd->io_list)
+		{
+			printf("io_list: %s\n", cmd->io_list->filename);
+			cmd->io_list = cmd->io_list->next;
+		}
+		cmd = cmd->next;
 	}
 }
 

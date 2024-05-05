@@ -84,6 +84,8 @@ void	redirect_io(t_cmd *cmd, int *end)
 {
 	if (!cmd->io_list)
 		return ;
+	cmd->stdin_backup = dup(STDIN_FILENO);
+	cmd->stdout_backup = dup(STDOUT_FILENO);
 	redirect_input(cmd, end);
 	redirect_output(cmd, end);
 }
@@ -92,8 +94,8 @@ void	redirect_io_simple(t_cmd *cmd)
 {
 	if (!cmd->io_list)
 		return ;
-	//cmd->stdin = dup(STDIN_FILENO);
-	//cmd->stdout = dup(STDOUT_FILENO);
+	cmd->stdin_backup = dup(STDIN_FILENO);
+	cmd->stdout_backup = dup(STDOUT_FILENO);
 	if (cmd->infd != -1)
 	{
 		dup2(cmd->infd, STDIN_FILENO);
@@ -106,6 +108,19 @@ void	redirect_io_simple(t_cmd *cmd)
 	}
 }
 
+void	reset_stdio(t_cmd *cmd)
+{
+	if (cmd->stdin_backup != -1)
+	{
+		dup2(cmd->stdin_backup, STDIN_FILENO);
+		close(cmd->stdin_backup);
+	}
+	if (cmd->stdout_backup != -1)
+	{
+		dup2(cmd->stdout_backup, STDOUT_FILENO);
+		close(cmd->stdout_backup);
+	}
+}
 
 static int	get_infd(char *s)
 {

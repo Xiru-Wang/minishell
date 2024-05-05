@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:23:50 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/05 00:28:44 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/05 17:10:24 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static int	single_cmd(t_cmd *cmd, t_data *data)
 	check_hd(cmd);
 	get_fds(cmd);
 	redirect_io_simple(cmd);
+	reset_stdio(cmd);
 	execute_cmd(cmd, data);
 	return (EXIT_FAILURE);
 }
@@ -71,6 +72,7 @@ static int multiple_cmds(t_cmd *cmd, t_data *data)
 		if (data->pid[i] == 0)
 		{
 			redirect_io(cmd, end);
+			reset_stdio(cmd);
 			execute_cmd(cmd, data);
 		}
 		else
