@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:31 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/05 17:24:26 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/05 20:21:11 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,30 +82,28 @@ int	count_args(t_token *list)
 
 void	print_cmd_list(t_cmd *cmd)
 {
+	if (!cmd)
+			return ;
 	while (cmd)
 	{
-		if (!cmd)
-			return ;
 		int k = 0;
-		while (cmd)
+		printf("******cmd%d*****\n", k);
+		int i = 0;
+		while (cmd->s[i])
 		{
-			printf("******cmd%d*****\n", k);
-			int i = 0;
-			while (cmd->s[i])
-			{
-				printf("%s ", cmd->s[i]);
-				i++;
-			}
-			printf("\n");
-			print_io_list(cmd);
-			cmd = cmd->next;
-			k++;
+			printf("%s ", cmd->s[i]);
+			i++;
 		}
+		printf("\n");
+		cmd = cmd->next;
+		k++;
 	}
 }
 
 void	print_io_list(t_cmd *cmd)
 {
+	if (!cmd->io_list)
+		return ;
 	if (cmd->io_list)
 	{
 		while (cmd->io_list)
@@ -113,7 +111,6 @@ void	print_io_list(t_cmd *cmd)
 			printf("io_list: %s\n", cmd->io_list->filename);
 			cmd->io_list = cmd->io_list->next;
 		}
-		cmd = cmd->next;
 	}
 }
 

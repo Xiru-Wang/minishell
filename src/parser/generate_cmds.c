@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/05 00:12:45 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/05 20:43:45 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,42 +54,43 @@ static void	extract_redir(t_token **head, t_cmd *cmd, t_data *data)
 	temp = *head;
 	while (temp && temp->type != PIPE)
 	{
-		next = temp->next;
 		if (temp->type >= REDIR_IN && temp->type <= HEREDOC)
 		{
-			if (next == NULL || (next->type != WORD && next->type != QUO))
+			next = temp->next;
+			if (temp->next == NULL || (next->type != WORD && next->type != QUO))
 				free_exit("syntax error near unexpected token", data, STDERR_FILENO);
 			add_io_list(cmd, temp);
 			del_token(head, temp); // remove redirection sign
-			temp = next->next;
-			del_token(head, next);//remove filename
+			temp = next;
+			del_token(head, temp);//remove filename
 		}
-		if (temp)//!!check if it's NULL before visitS
-			temp = temp->next;
+		//else//if (temp)//!!check if it's NULL before visitS
+		temp = temp->next;
 	}
 }
 
 //assign type to each cmd's redirections
 //if multiple '>file1 >file2 > file3'：empty file1,file2, output goes ot files3
 
-static void	add_io_list(t_cmd *cmd, t_token *temp)
+static void	add_io_list(t_cmd *cmd, t_token *token)
 {
 	t_token	*next;
 	t_io	*new;
 
-	next = temp->next;//if next exsit, call handle_redir
+	next = token->next;//if next exsit, call handle_redir
 	new = init_io(cmd->data);
-	if (temp->type == REDIR_IN)
+	if (token->type == REDIR_IN)
 	{
 		new->type = REDIR_IN;
 		new->filename = ft_strdup(next->value);
 	}
-	else if (temp->type == REDIR_OUT || temp->type == APPEND)
+	else if (token->type == REDIR_OUT || token->type == APPEND)
 	{
-		new->type = temp->type;
+		new->type = token->type;
 		new->filename = ft_strdup(next->value);
+		printf("new->filename:%s\n", new->filename);
 	}
-	else if (temp->type == HEREDOC)
+	else if (token->type == HEREDOC)
 	{
 		new->type = HEREDOC;
 		if (cmd->delimiter)

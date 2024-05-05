@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:47:18 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/04 20:14:13 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/05 20:03:55 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int	init_env(t_data *data, char **env)
 	return (EXIT_SUCCESS);
 }
 
-enum	s_type ft_type(char c)
+enum s_type	ft_type(char c)
 {
 	if (c == '|')
 		return (PIPE);
@@ -70,7 +70,7 @@ enum	s_type ft_type(char c)
 	return (WORD);
 }
 
-int split_line(char *s, t_token **token_list, t_data *data)
+int	split_line(char *s, t_token **token_list, t_data *data)
 {
 	int i, res_token;
 	enum s_type type;

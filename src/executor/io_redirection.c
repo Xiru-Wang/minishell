@@ -47,46 +47,11 @@ void get_fds(t_cmd *cmd)
 	}
 }
 
-/*
-void	get_fds(t_cmd *cmd)
-{
-	t_io	*temp; // Temporary pointer to traverse the I/O list
-	int		i; // Index for input file descriptor array
-	int		k; // Index for output file descriptor array
-
-	i = 0;
-	k = 0;
-	temp = cmd->io_list;
-	if (!cmd->io_list)
-		return ;
-	count_fds(cmd);
-	while (temp)
-	{
-		if (temp->type == REDIR_IN || temp->type == HEREDOC)
-		{
-			cmd->infd = get_infd(temp->filename);
-			i++;
-			if (i != cmd->num_fdin)//关闭最后一个fd之前的
-				close(cmd->infd);
-
-		}
-		else if (temp->type == REDIR_OUT || temp->type == APPEND)
-		{
-			cmd->outfd = get_outfd(temp);
-			k++;
-			if (k != cmd->num_fdout)
-				close(cmd->outfd);
-		}
-		temp = temp->next;
-	}
-}
-*/
-
 static void redirect_input(t_cmd *cmd, int *end)
 {
-	if (cmd->infd != -1) 
+	if (cmd->infd != -1)
 	{
-		if (dup2(cmd->infd, STDIN_FILENO) == -1) 
+		if (dup2(cmd->infd, STDIN_FILENO) == -1)
 		{
 			perror("dup2 failed on input redirection");
 			close(cmd->infd); // Attempt to close if dup2 fails
@@ -94,10 +59,10 @@ static void redirect_input(t_cmd *cmd, int *end)
 		}
 		if (close(cmd->infd) == -1)
 			perror("close failed on input file descriptor");
-	} 
+	}
 	else if (cmd->prev && end)
 	{
-		if (dup2(end[0], STDIN_FILENO) == -1) 
+		if (dup2(end[0], STDIN_FILENO) == -1)
 		{
 			perror("dup2 failed on pipe input redirection");
 			close(end[0]); // Attempt to close if dup2 fails
@@ -109,20 +74,20 @@ static void redirect_input(t_cmd *cmd, int *end)
 	}
 }
 
-static void redirect_output(t_cmd *cmd, int *end)
+static void	redirect_output(t_cmd *cmd, int *end)
 {
-	if (cmd->outfd != -1) 
+	if (cmd->outfd != -1)
 	{
-		if (dup2(cmd->outfd, STDOUT_FILENO) == -1) 
+		if (dup2(cmd->outfd, STDOUT_FILENO) == -1)
 		{
 			perror("dup2 failed on output redirection");
 			close(cmd->outfd); // Attempt to close if dup2 fails
 			return;
 		}
-	} 
-	else if (cmd->next && end) 
+	}
+	else if (cmd->next && end)
 	{
-		if (dup2(end[1], STDOUT_FILENO) == -1) 
+		if (dup2(end[1], STDOUT_FILENO) == -1)
 		{
 			perror("dup2 failed on pipe output redirection");
 			close(end[1]); // Attempt to close if dup2 fails
@@ -162,7 +127,7 @@ void	redirect_io_simple(t_cmd *cmd)
 void reset_stdio(t_cmd *cmd)
 {
 	// Restore stdin from backup if valid
-	if (cmd->stdin_backup != -1) 
+	if (cmd->stdin_backup != -1)
 	{
 		if (dup2(cmd->stdin_backup, STDIN_FILENO) == -1)
 			perror("dup2 failed to restore stdin");
@@ -170,9 +135,8 @@ void reset_stdio(t_cmd *cmd)
 			perror("close failed on stdin_backup");
 		cmd->stdin_backup = -1; // Invalidate the backup descriptor
 	}
-
 	// Restore stdout from backup if valid
-	if (cmd->stdout_backup != -1) 
+	if (cmd->stdout_backup != -1)
 	{
 		if (dup2(cmd->stdout_backup, STDOUT_FILENO) == -1)
 			perror("dup2 failed to restore stdout");
