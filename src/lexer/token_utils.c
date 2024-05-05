@@ -6,13 +6,13 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:58 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/04 21:36:19 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/05 20:56:35 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static t_token	*create_token(char *s, int type, int n)
+static t_token	*create_token(char *s, int type)
 {
 	t_token	*token;
 
@@ -24,7 +24,6 @@ static t_token	*create_token(char *s, int type, int n)
 	else
 		token->value = NULL;
 	token->type = type;
-	token->i = n;
 	token->prev = NULL;
 	token->next = NULL;
 	return (token);
@@ -48,11 +47,11 @@ static void	token_add_back(t_token **head, t_token *new)
 	}
 }
 
-int	add_token_list(char *s, int type, t_token **head, int n)
+int	add_token_list(char *s, int type, t_token **head)
 {
 	t_token	*new;
 
-	new = create_token(s, type, n);
+	new = create_token(s, type);
 	if (!new)
 		return (0);
 	token_add_back(head, new);
@@ -81,9 +80,9 @@ void print_token_list(t_token *token_list)
 	while (token_list)
 	{
 		if (token_list->value)
-			printf("value: %s, index: %d, type: %d\n", token_list->value, token_list->i, token_list->type);
+			printf("value: %s, type: %d\n", token_list->value, token_list->type);
 		else
-			printf("value: (null), index: %d\n", token_list->i);
+			printf("value: (null)\n");
 		token_list = token_list->next;
 	}
 }

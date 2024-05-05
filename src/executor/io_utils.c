@@ -6,19 +6,19 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 17:10:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/05 00:10:08 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/05 21:03:01 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-t_io	*init_io(t_data *data)
+t_io	*init_io(t_cmd *cmd)
 {
 	t_io	*new;
 
 	new = (t_io *)malloc(sizeof(t_io));
 	if (!new)
-		free_exit("malloc error", data, EXIT_FAILURE);
+		free_exit("malloc error", cmd->data, EXIT_FAILURE);
 	new->filename = NULL;
 	new->next = NULL;
 	new->type = -1;

@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:47:18 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/05 20:03:55 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/05 20:57:15 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,28 +86,28 @@ int	split_line(char *s, t_token **token_list, t_data *data)
 		type = ft_type(s[i]);
 		if (type == WORD)
 		{
-			res_quo = check_unclosed_quotes((s + i), token_list, i);
+			res_quo = check_unclosed_quotes((s + i), token_list);
 			if (res_quo == -1)
 				free_exit("unclosed quote", data, EXIT_FAILURE);
 			i += res_quo;
 		}
 		else if (type == REDIR_IN && s[i + 1] && ft_type(s[i + 1]) == REDIR_IN)
 		{
-			res_token = add_token_list(ft_substr(s, i, 2), HEREDOC, token_list, i);
+			res_token = add_token_list(ft_substr(s, i, 2), HEREDOC, token_list);
 			if (res_token == 0)
 				return (0);
 			i += 2;
 		}
 		else if (type == REDIR_OUT && s[i + 1] && ft_type(s[i + 1]) == REDIR_OUT)
 		{
-			res_token = add_token_list(ft_substr(s, i, 2), APPEND, token_list, i);
+			res_token = add_token_list(ft_substr(s, i, 2), APPEND, token_list);
 			if (res_token == 0)
 				return (0);
 			i += 2;
 		}
 		else
 		{
-			res_token = add_token_list(ft_substr(s, i, 1), type, token_list, i);
+			res_token = add_token_list(ft_substr(s, i, 1), type, token_list);
 			if (res_token == 0)
 				return (0);
 			i++;

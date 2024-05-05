@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/05 20:43:45 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/05 21:16:29 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,11 @@ static void	extract_redir(t_token **head, t_cmd *cmd, t_data *data)
 				free_exit("syntax error near unexpected token", data, STDERR_FILENO);
 			add_io_list(cmd, temp);
 			del_token(head, temp); // remove redirection sign
-			temp = next;
-			del_token(head, temp);//remove filename
+			//temp = next;
+			del_token(head, next);//remove filename
 		}
-		//else//if (temp)//!!check if it's NULL before visitS
-		temp = temp->next;
+		else//if (temp)//!!check if it's NULL before visitS
+			temp = temp->next;
 	}
 }
 
@@ -77,8 +77,8 @@ static void	add_io_list(t_cmd *cmd, t_token *token)
 	t_token	*next;
 	t_io	*new;
 
-	next = token->next;//if next exsit, call handle_redir
-	new = init_io(cmd->data);
+	next = token->next;
+	new = init_io(cmd);
 	if (token->type == REDIR_IN)
 	{
 		new->type = REDIR_IN;

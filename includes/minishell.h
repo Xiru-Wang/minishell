@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/05 17:13:55 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/05 21:04:04 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ typedef struct s_token
 {
 	char			*value;
 	t_type			type;
-	int				i;
 	struct s_token	*prev;
 	struct s_token	*next;
 }	t_token;
@@ -117,7 +116,7 @@ void	free_arr(char **arr);
 void	free_data(t_data *data);
 
 //token_util
-int		add_token_list(char *s, int type, t_token **head, int n);
+int		add_token_list(char *s, int type, t_token **head);
 void	del_token(t_token **head, t_token *node);
 void	print_token_list(t_token *token_list);//debug
 void	free_token_list(t_token **list);
@@ -127,7 +126,7 @@ enum	s_type ft_type(char c);
 void	init_data(t_data *data, char **env);
 int		split_line(char *s, t_token **token_list, t_data *data);
 //check_quote
-int		check_unclosed_quotes(char *s, t_token **head, int n);
+int		check_unclosed_quotes(char *s, t_token **head);
 //remove_quo
 char	*remove_quo(char *s);
 //simple_expander
@@ -157,7 +156,7 @@ void	print_io_list(t_cmd *cmd);//DEBUG
 t_cmd	*generate_cmds(t_token **token, t_data *data);
 
 //io_utils
-t_io	*init_io(t_data *data);
+t_io	*init_io(t_cmd *cmd);
 void	append_io(t_io **head, t_io *new);
 void	free_io_list(t_io **list);
 void	reset_stdio(t_cmd *cmd);

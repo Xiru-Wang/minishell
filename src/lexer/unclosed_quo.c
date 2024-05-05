@@ -6,13 +6,13 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:59 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/21 19:24:54 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/05 20:55:29 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int check_unclosed_quotes(char *s, t_token **head, int n)
+int check_unclosed_quotes(char *s, t_token **head)
 {
 	int i;
 	char c;
@@ -39,18 +39,18 @@ int check_unclosed_quotes(char *s, t_token **head, int n)
 		else if (ft_type(s[i]) != WORD)
 		{
 			if (quote_sign == 1)
-				add_token_list(ft_substr(s, 0, i), QUO, head, n);
+				add_token_list(ft_substr(s, 0, i), QUO, head);
 			else if (i > 0)
-				add_token_list(ft_substr(s, 0, i), WORD, head, n);
+				add_token_list(ft_substr(s, 0, i), WORD, head);
 			return (i);
 		}
 		else
 			i++;
 	}
 	if (quote_sign == 1)
-		add_token_list(ft_substr(s, 0, i), QUO, head, n);
+		add_token_list(ft_substr(s, 0, i), QUO, head);
 	else if (i > 0)
-		add_token_list(ft_substr(s, 0, i), WORD, head, n);
+		add_token_list(ft_substr(s, 0, i), WORD, head);
 	return (i);
 }
 
