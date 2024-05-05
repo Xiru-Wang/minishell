@@ -6,18 +6,12 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:23:50 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/05 17:10:24 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/05 19:05:39 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-//if outfile exsit, data goes to file instead of pipe
-/*
-The strategy for your shell is to have the parent process
-do all the piping and redirection before forking the processes.
-In this way the children will inherit the redirection.
-*/
+#include <errno.h>
 
 static int	pipe_wait(int *pid, int pipe_num);
 static int	single_cmd(t_cmd *cmd, t_data *data);
@@ -36,14 +30,27 @@ int	executor(t_cmd *cmd, t_data *data)
 	return (0);
 }
 
-static int	single_cmd(t_cmd *cmd, t_data *data)
+static int single_cmd(t_cmd *cmd, t_data *data)
 {
+	int exit_status;
+
 	check_hd(cmd);
 	get_fds(cmd);
 	redirect_io_simple(cmd);
+	exit_status = execute_cmd(cmd, data);
 	reset_stdio(cmd);
-	execute_cmd(cmd, data);
-	return (EXIT_FAILURE);
+	
+	// Close the output file descriptor if it's open and valid
+	if (cmd->outfd != -1)
+	{
+		if (close(cmd->outfd) == -1)
+		{
+			if (errno != EBADF)
+				perror("close failed on output file descriptor");
+		}
+		cmd->outfd = -1;
+	}
+	return (exit_status);
 }
 
 static int multiple_cmds(t_cmd *cmd, t_data *data)
