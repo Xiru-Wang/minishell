@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/06 18:09:09 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/06 19:34:36 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,11 +199,14 @@ int				call_export(t_cmd *cmd, t_data *data);
 int				call_pwd(t_cmd *cmd);
 int				call_unset(t_cmd *cmd, t_data *data);
 // signals
-void			sig_handler(int signum);
+void			signal_handler(int signum);
 void			init_signal(void);
+void			handle_interrupt();
+void			handle_quit();
+int				readline_event_hook_signals();
 
 // global var
 extern int g_exit_code;
-extern int g_in_heredoc;
+extern int last_received_signal;
 
 #endif

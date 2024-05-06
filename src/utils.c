@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 19:37:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/06 18:08:52 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/06 19:05:01 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 // Definition of the global variables
 int g_exit_code = 0;
-int g_in_heredoc = 0;
 
 int	is_space(char c)
 {
