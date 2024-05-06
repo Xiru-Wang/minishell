@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/06 15:13:35 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/06 18:09:09 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,5 +204,6 @@ void			init_signal(void);
 
 // global var
 extern int g_exit_code;
+extern int g_in_heredoc;
 
 #endif

@@ -4,9 +4,10 @@ void sig_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
-		if (isatty(STDIN_FILENO))
+		if (g_in_heredoc)
+			ft_putstr_fd("\n", STDERR_FILENO);
+		else if (isatty(STDIN_FILENO))
 		{
-			// In interactive mode
 			write(STDERR_FILENO, "\n", 1);
 			rl_on_new_line();
 			rl_replace_line("", 0);
@@ -14,17 +15,14 @@ void sig_handler(int signum)
 		}
 		else
 		{
-			// In non-interactive mode, terminate the shell process
 			write(STDERR_FILENO, "\n", 1);
 			exit(EXIT_FAILURE);
 		}
 	}
 	else if (signum == SIGQUIT)
 	{
-		// In non-interactive mode, ignore SIGQUIT
 		if (!isatty(STDIN_FILENO))
 			return;
-		// In interactive mode, do nothing
 	}
 }
 
