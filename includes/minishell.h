@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/05 21:04:04 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/06 15:13:35 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ typedef struct s_cmd
 	char			*delimiter;
 	char			*hdfile;
 	t_data			*data;
-	int				num_fdin;
-	int				num_fdout;
+	//int				num_fdin;
+	//int				num_fdout;
 	int				stdin_backup;
 	int				stdout_backup;
 } t_cmd;

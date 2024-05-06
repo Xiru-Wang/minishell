@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:23:50 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/05 19:48:35 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/06 14:53:47 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,6 @@ static int multiple_cmds(t_cmd *cmd, t_data *data)
 				free_exit("pipe failed", data, STDERR_FILENO);
 		check_hd(cmd);
 		get_fds(cmd);
-
-		//NOTE: find a way to make this better...
 		if (cmd->is_builtin == EXIT)
 		{
 			call_exit(cmd, data);

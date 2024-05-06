@@ -2,22 +2,21 @@
 
 static int	get_infd(char *s);
 static int	get_outfd(t_io *redir);
-//static void	close_fds(t_cmd *cmd);
 
-void	count_fds(t_cmd *cmd)
-{
-	t_io	*temp;
+// void	count_fds(t_cmd *cmd)
+// {
+// 	t_io	*temp;
 
-	temp = cmd->io_list;
-	while (temp)
-	{
-		if (temp->type == REDIR_IN || temp->type == HEREDOC)
-			cmd->num_fdin++;
-		else if (temp->type == REDIR_OUT || temp->type == APPEND)
-			cmd->num_fdout++;
-		temp = temp->next;
-	}
-}
+// 	temp = cmd->io_list;
+// 	while (temp)
+// 	{
+// 		if (temp->type == REDIR_IN || temp->type == HEREDOC)
+// 			cmd->num_fdin++;
+// 		else if (temp->type == REDIR_OUT || temp->type == APPEND)
+// 			cmd->num_fdout++;
+// 		temp = temp->next;
+// 	}
+// }
 
 void get_fds(t_cmd *cmd)
 {
@@ -25,17 +24,21 @@ void get_fds(t_cmd *cmd)
 
 	if (!cmd->io_list)
 		return;
-
-	count_fds(cmd);
-
+	//count_fds(cmd);
 	temp = cmd->io_list;
 	while (temp)
 	{
-		if (temp->type == REDIR_IN || temp->type == HEREDOC)
+		if (temp->type == REDIR_IN)
 		{
 			if (cmd->infd != -1)
 				close(cmd->infd);
 			cmd->infd = get_infd(temp->filename);
+		}
+		else if (temp->type == REDIR_IN || temp->type == HEREDOC)
+		{
+			if (cmd->infd != -1)
+				close(cmd->infd);
+			cmd->infd = get_infd(cmd->hdfile);
 		}
 		else if (temp->type == REDIR_OUT || temp->type == APPEND)
 		{
@@ -57,8 +60,9 @@ static void redirect_input(t_cmd *cmd, int *end)
 			close(cmd->infd); // Attempt to close if dup2 fails
 			return;
 		}
-		if (close(cmd->infd) == -1)
-			perror("close failed on input file descriptor");
+		close(cmd->infd);
+		if (cmd->hdfile)//NOT SURE
+			unlink(cmd->hdfile);
 	}
 	else if (cmd->prev && end)
 	{
@@ -68,9 +72,7 @@ static void redirect_input(t_cmd *cmd, int *end)
 			close(end[0]); // Attempt to close if dup2 fails
 			return;
 		}
-		if (close(end[0]) == -1) {
-			perror("close failed on pipe end");
-		}
+		close(end[0]);
 	}
 }
 
@@ -116,6 +118,8 @@ void	redirect_io_simple(t_cmd *cmd)
 	{
 		dup2(cmd->infd, STDIN_FILENO);
 		close(cmd->infd);
+		if (cmd->hdfile)//NOT SURE
+			unlink(cmd->hdfile);
 	}
 	if (cmd->outfd != -1)
 	{
