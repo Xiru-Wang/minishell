@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/05 21:25:21 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/06 18:04:39 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,10 @@ void minishell(t_data *data)
 		if (split_line(data->line, &data->token_list, data) == 0)
 			free_exit("split_line", data, EXIT_FAILURE);
 		data->cmd_list = generate_cmds(&data->token_list, data);
-		//print_cmd_list(data->cmd_list);//
-		//print_io_list(data->cmd_list);//
-		data->pid = ft_calloc(data->cmd_num, sizeof(pid_t));
-		executor(data->cmd_list, data);
+		if (data->cmd_list)
+			executor(data->cmd_list, data);
 	}
 	free_data(data);
-	//TODO: how to exit the shell?
-	//exit_shell();
 	exit(EXIT_SUCCESS);
 }
 

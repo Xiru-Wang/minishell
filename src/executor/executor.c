@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:23:50 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/06 14:53:47 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/06 18:07:36 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static int	execute_cmd(t_cmd *cmd, t_data *data);
 
 int	executor(t_cmd *cmd, t_data *data)
 {
+	data->pid = ft_calloc(data->cmd_num, sizeof(pid_t));
 	if (cmd->next)
 	{
 		multiple_cmds(cmd, cmd->data);
@@ -29,7 +30,7 @@ int	executor(t_cmd *cmd, t_data *data)
 	return (0);
 }
 
-static int single_cmd(t_cmd *cmd, t_data *data)
+static int	single_cmd(t_cmd *cmd, t_data *data)
 {
 	int exit_status;
 
@@ -37,7 +38,7 @@ static int single_cmd(t_cmd *cmd, t_data *data)
 	get_fds(cmd);
 	redirect_io_simple(cmd);
 	exit_status = execute_cmd(cmd, data);
-	reset_stdio(cmd);
+	//reset_stdio(cmd);
 	return (exit_status);
 }
 
@@ -54,18 +55,18 @@ static int multiple_cmds(t_cmd *cmd, t_data *data)
 				free_exit("pipe failed", data, STDERR_FILENO);
 		check_hd(cmd);
 		get_fds(cmd);
-		if (cmd->is_builtin == EXIT)
-		{
-			call_exit(cmd, data);
-			return (1);
-		}
+		// if (cmd->is_builtin == EXIT)
+		// {
+		// 	call_exit(cmd, data);
+		// 	return (1);
+		// }
 		data->pid[i] = fork();
 		if (data->pid[i] == -1)
 			free_exit("fork failed", data, STDERR_FILENO);
 		if (data->pid[i] == 0)
 		{
 			redirect_io(cmd, end);
-			reset_stdio(cmd);
+			//reset_stdio(cmd);
 			execute_cmd(cmd, data);
 		}
 		else
@@ -84,7 +85,10 @@ static int multiple_cmds(t_cmd *cmd, t_data *data)
 static int	execute_cmd(t_cmd *cmd, t_data *data)
 {
 	if (cmd->is_builtin)
+	{
 		call_builtin(cmd);
+		reset_stdio(cmd);
+	}		
 	else
 	{
 		call_cmd(data, cmd);
@@ -93,7 +97,7 @@ static int	execute_cmd(t_cmd *cmd, t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-static int pipe_wait(int *pid, int pipe_num)
+static int	pipe_wait(int *pid, int pipe_num)
 {
 	int i;
 	int status;
