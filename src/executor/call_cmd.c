@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 15:22:28 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/05 19:25:58 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/06 18:09:31 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int	call_cmd(t_data *data, t_cmd *cmd)
 		write(STDERR_FILENO, ":command not found\n", 19);
 		exit(127);
 	}
-
 	pid = fork();
 	if (pid == -1)
 	{
@@ -37,7 +36,6 @@ int	call_cmd(t_data *data, t_cmd *cmd)
 	{
 		// Child process
 		execve(path, cmd->s, data->env);
-
 		// execve only returns if an error occurred
 		perror("execve");
 		free(path);
@@ -72,10 +70,10 @@ char	*find_path(char *s, char **env)
 		temp = ft_strjoin(paths[i], "/");
 		cmd_path = ft_strjoin(temp, s);
 		free(temp);
-		if (access(cmd_path, F_OK | X_OK) == 0)//existence || execute/search
+		if (access(cmd_path, F_OK | X_OK) == 0)
 		{
 			free(paths);
-			return (cmd_path);//success
+			return (cmd_path);
 		}
 		free(cmd_path);
 	}
