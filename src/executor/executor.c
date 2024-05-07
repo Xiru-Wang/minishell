@@ -1,118 +1,116 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   executor.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/10 16:23:50 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/06 18:07:36 by xiwang           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../includes/minishell.h"
 
-static int	pipe_wait(int *pid, int pipe_num);
-static int	single_cmd(t_cmd *cmd, t_data *data);
-static int	multiple_cmds(t_cmd *cmd, t_data *data);
-static int	execute_cmd(t_cmd *cmd, t_data *data);
+static int execute_single_command(t_cmd *cmd);
+static int execute_command_pipeline(t_cmd *cmd);
+static int setup_child_process(t_cmd *cmd, int *end, int fd_in);
+static int wait_for_processes(int *pids, int num_pids);
 
-int	executor(t_cmd *cmd, t_data *data)
+void executor(t_cmd *cmd, t_data *data) 
 {
 	data->pid = ft_calloc(data->cmd_num, sizeof(pid_t));
-	if (cmd->next)
-	{
-		multiple_cmds(cmd, cmd->data);
-		pipe_wait(data->pid, (data->cmd_num - 1));
-	}
+	if (cmd->next == NULL)
+		data->exit_code = execute_single_command(cmd);
 	else
-		single_cmd(cmd, data);
-	return (0);
+		data->exit_code = execute_command_pipeline(cmd);
+	free(data->pid);
 }
 
-static int	single_cmd(t_cmd *cmd, t_data *data)
+static int execute_single_command(t_cmd *cmd) 
 {
 	int exit_status;
 
-	check_hd(cmd);
-	get_fds(cmd);
-	redirect_io_simple(cmd);
-	exit_status = execute_cmd(cmd, data);
-	//reset_stdio(cmd);
+	check_hd(cmd);  // Handle heredoc if necessary
+	redirect_io_simple(cmd);  // Setup redirections
+	if (cmd->is_builtin)
+		exit_status = call_builtin(cmd);
+	else
+		exit_status = call_cmd(cmd->data, cmd);
+	reset_stdio(cmd);  // Restore standard I/O
 	return (exit_status);
 }
 
-static int multiple_cmds(t_cmd *cmd, t_data *data)
-{
-	int	i;
-	int	end[2];
+static int execute_command_pipeline(t_cmd *cmd) {
+	int end[2];
+	int fd_in;
+	int i;
+	t_cmd *current;
 
+	fd_in = STDIN_FILENO;
 	i = 0;
-	while (cmd)
+	current = cmd;
+	while (current) 
 	{
-		if (cmd->next)
-			if (pipe(end) == -1)
-				free_exit("pipe failed", data, STDERR_FILENO);
-		check_hd(cmd);
-		get_fds(cmd);
-		// if (cmd->is_builtin == EXIT)
-		// {
-		// 	call_exit(cmd, data);
-		// 	return (1);
-		// }
-		data->pid[i] = fork();
-		if (data->pid[i] == -1)
-			free_exit("fork failed", data, STDERR_FILENO);
-		if (data->pid[i] == 0)
+		if (current->next && pipe(end) == -1) 
 		{
-			redirect_io(cmd, end);
-			//reset_stdio(cmd);
-			execute_cmd(cmd, data);
+			perror("pipe");
+			return -1;
 		}
-		else
+		cmd->data->pid[i] = fork();
+		if (cmd->data->pid[i] == -1) 
 		{
-			if (cmd->prev)
-				close(end[0]);
-			if (cmd->next)
-				close(end[1]);
+			perror("fork");
+			return -1;
 		}
-		cmd = cmd->next;
+		if (cmd->data->pid[i] == 0) 
+		{  // Child process
+			setup_child_process(current, end, fd_in);
+			exit(EXIT_FAILURE);  // Should never be reached
+		}
+		if (current->next) 
+		{ // Parent Process
+			close(end[1]);  // Close the write end of the pipe in the parent
+			if (fd_in != STDIN_FILENO)
+				close(fd_in);  // Close the previous read end
+			fd_in = end[0];  // Use the read end of the current pipe in the next iteration
+		}
+		current = current->next;
 		i++;
 	}
-	return (EXIT_SUCCESS);
+
+	return wait_for_processes(cmd->data->pid, cmd->data->cmd_num);
 }
 
-static int	execute_cmd(t_cmd *cmd, t_data *data)
+static int setup_child_process(t_cmd *cmd, int *end, int fd_in) 
 {
-	if (cmd->is_builtin)
+	if (fd_in != 0)
 	{
-		call_builtin(cmd);
-		reset_stdio(cmd);
-	}		
-	else
-	{
-		call_cmd(data, cmd);
-		return (EXIT_FAILURE);
+		dup2(fd_in, STDIN_FILENO);  // Redirect stdin for the current command
+		close(fd_in);
 	}
-	return (EXIT_SUCCESS);
+	if (cmd->next)
+	{
+		close(end[0]);  // Close the read end of the pipe in the child
+		dup2(end[1], STDOUT_FILENO);  // Redirect stdout to the pipe
+		close(end[1]);
+	}
+	redirect_io_simple(cmd);  // Handle additional redirections
+	if (cmd->is_builtin) 
+		return (call_builtin(cmd));  // Execute builtin and exit child process
+	else
+		return (call_cmd(cmd->data, cmd));  // Execute external command and exit
 }
 
-static int	pipe_wait(int *pid, int pipe_num)
-{
+
+static int wait_for_processes(int *pids, int num_pids) {
 	int i;
 	int status;
+	int exit_status;
+	int current_status;
 
 	i = 0;
-	while (i <= pipe_num)
+	exit_status = 0;
+	while (i < num_pids) 
 	{
-		if (waitpid(pid[i], &status, 0) == -1)
-		{
+		if (waitpid(pids[i], &status, 0) == -1)
 			perror("waitpid");
-			return (EXIT_FAILURE);
+		else if (WIFEXITED(status)) 
+		{
+			current_status = WEXITSTATUS(status);
+			// Update the global exit status if it's the last process or if an error occurred
+			if (i == num_pids - 1 || current_status != 0)
+				exit_status = current_status;
 		}
-		if (WIFEXITED(status) && i == pipe_num)
-			g_exit_code = WEXITSTATUS(status);
 		i++;
 	}
-	return (EXIT_SUCCESS);
+	return exit_status;
 }

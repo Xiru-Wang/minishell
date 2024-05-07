@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 19:18:49 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/02 20:10:26 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/07 21:33:21 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	count_var_len(char *var);
 
 // in this function: vars expand without careing quotes
-char	*expand_simple(char *s, char **env)
+char	*expand_simple(char *s, char **env, t_data *data)
 {
 	int		i;
 	int		k;
@@ -29,7 +29,8 @@ char	*expand_simple(char *s, char **env)
 		if (s[i] == '$' && s[i + 1] && char_is_valid(s[i + 1]))
 		{
 			k = 0;
-			value = expand_dollar(s + i, &k, env);
+			value = expand_dollar(s + i, &k, env, data)
+;
 			if (value)
 			{
 				ft_strlcat(dst, value, ft_strlen(dst) + ft_strlen(value) + 1);
@@ -63,7 +64,7 @@ int	len_within_quo(char *s, char c)
 	return (len + 2);
 }
 
-char	*expand_dollar(char *s, int *len, char **env)
+char	*expand_dollar(char *s, int *len, char **env, t_data *data)
 {
 	int		var_len;
 	char	*var_name;
@@ -75,7 +76,7 @@ char	*expand_dollar(char *s, int *len, char **env)
 		s++;
 		if (*s == '?')
 		{
-			value = ft_itoa(g_exit_code);
+			value = ft_itoa(data->exit_code);
 			*len = 2;
 		}
 		else if (ft_isdigit(*s))

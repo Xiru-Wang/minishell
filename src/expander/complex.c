@@ -6,15 +6,15 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:20 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/02 20:11:23 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/07 21:38:20 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 static char	*handle_single_quote(char *s, int *i);
-static char	*handle_double_quote(char *s, int *i, char **env);
-static char	*handle_dollar(char *s, int *i, char **env);
+static char	*handle_double_quote(char *s, int *i, char **env, t_data *data);
+static char	*handle_dollar(char *s, int *i, char **env, t_data *data);
 
 char	*expand_complex(char *s, enum s_type type, t_data *data)
 {
@@ -27,7 +27,7 @@ char	*expand_complex(char *s, enum s_type type, t_data *data)
 		return (remove_quo(s));
 	else
 	{
-		temp = replace_vars_complex(s, data->env);
+		temp = replace_vars_complex(s, data->env, data);
 		if (type == QUO)
 		{
 			new = remove_quo(temp);
@@ -42,7 +42,8 @@ char	*expand_complex(char *s, enum s_type type, t_data *data)
 //eg. hihi$USER"'$USER'" --->hihixiwang'xiwang'
 //eg.echo "$?'$?'$USER"  --->0'0'xiwang
 
-char	*replace_vars_complex(char *s, char **env)
+char	*replace_vars_complex(char *s, char **env, t_data *data)
+
 {
 	int		i;
 	char	*dst;
@@ -58,9 +59,9 @@ char	*replace_vars_complex(char *s, char **env)
 		if (s[i] == '\'')
 			value = handle_single_quote(s, &i);
 		else if (s[i] == '\"')
-			value = handle_double_quote(s, &i, env);
+			value = handle_double_quote(s, &i, env, data);
 		else if (s[i] == '$' && s[i + 1] && char_is_valid(s[i + 1]))
-			value = handle_dollar(s, &i, env);
+			value = handle_dollar(s, &i, env, data);
 		else
 		{
 			value = char_to_str(s[i]);
@@ -88,7 +89,7 @@ static char	*handle_single_quote(char *s, int *i)
 	return (value);
 }
 
-static char	*handle_double_quote(char *s, int *i, char **env)
+static char	*handle_double_quote(char *s, int *i, char **env, t_data *data)
 {
 	int		k;
 	char	*value;
@@ -96,19 +97,19 @@ static char	*handle_double_quote(char *s, int *i, char **env)
 
 	k = len_within_quo(s + *i, '\"');
 	temp = ft_substr(s, *i, k);
-	value = expand_simple(temp, env);
+	value = expand_simple(temp, env, data);
 	free(temp);
 	*i += k;
 	return (value);
 }
 
-static char	*handle_dollar(char *s, int *i, char **env)
+static char	*handle_dollar(char *s, int *i, char **env, t_data *data)
 {
 	int		k;
 	char	*value;
 
 	k = 0;
-	value = expand_dollar(s + *i, &k, env);
+	value = expand_dollar(s + *i, &k, env, data);
 	if (value == NULL)
 		value = ft_strdup("");
 	*i += k;

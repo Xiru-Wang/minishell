@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/06 19:34:36 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/07 21:41:38 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,6 @@ typedef struct s_cmd
 	char			*delimiter;
 	char			*hdfile;
 	t_data			*data;
-	//int				num_fdin;
-	//int				num_fdout;
 	int				stdin_backup;
 	int				stdout_backup;
 } t_cmd;
@@ -98,6 +96,7 @@ typedef struct s_data
 	int			cmd_num;
 	char		*pwd;
 	char		*old_pwd;
+	int			exit_code;
 }	t_data;
 
 
@@ -130,12 +129,12 @@ int		check_unclosed_quotes(char *s, t_token **head);
 //remove_quo
 char	*remove_quo(char *s);
 //simple_expander
-char	*expand_simple(char *s, char **env);
-char	*expand_dollar(char *s, int *len, char **env);
+char	*expand_simple(char *s, char **env, t_data *data);
+char	*expand_dollar(char *s, int *len, char **env, t_data *data);
 int		len_within_quo(char *s, char c);
 // complex_expander
 char	*expand_complex(char *s, enum s_type type, t_data *data);
-char	*replace_vars_complex(char *s, char **env);
+char	*replace_vars_complex(char *s, char **env, t_data *data);
 //expander_utils
 char	*char_to_str(char c);
 int		check_valid_dollar(char *s);
@@ -185,8 +184,7 @@ void	update_env_var(t_data *data, const char *var_name, const char *new_value);
 int		call_cd(t_data *data, t_cmd *cmd);
 
 //executor
-// int		executor(t_cmd *cmd, t_data *data);
-int				executor(t_cmd *cmd, t_data *data);
+void			executor(t_cmd *cmd, t_data *data);
 
 
 // builtin

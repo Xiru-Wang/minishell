@@ -1,82 +1,64 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   call_cmd.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/06 15:22:28 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/06 18:09:31 by xiwang           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../includes/minishell.h"
 
-int	call_cmd(t_data *data, t_cmd *cmd)
-{
-	char	*path;
-	pid_t pid;
-	int status;
 
-	path = find_path(cmd->s[0], data->env);
-	if (!path)
-	{
-		write(STDERR_FILENO, cmd->s[0], ft_strlen(cmd->s[0]));
-		write(STDERR_FILENO, ":command not found\n", 19);
-		exit(127);
+int find_executable_and_execute(t_cmd *cmd, t_data *data) {
+	char *path = NULL;
+	char **paths;
+	int i = 0;
+
+	// First, try to execute the command as is, it might be an absolute or relative path
+	if (access(cmd->s[0], X_OK) == 0)
+		return 0; // Executable found, ready to execute it in call_cmd
+	// If the command is not found, search in the PATH directories
+	while (data->env[i] && strncmp(data->env[i], "PATH=", 5) != 0)
+		i++;
+	if (data->env[i] != NULL)
+	{ // PATH found
+		paths = ft_split(data->env[i] + 5, ':');
+		i = 0;
+		while (paths && paths[i]) {
+			path = ft_strjoin(paths[i], "/");
+			path = ft_strjoin(path, cmd->s[0]); // Note: consider optimizing this to avoid memory leak
+			if (access(path, X_OK) == 0) 
+			{
+				cmd->s[0] = path; // Update cmd->s[0] to the full path
+				free_double_ptr(paths);
+				return 0;
+			}
+			free(path);
+			i++;
+		}
+		free_double_ptr(paths);
 	}
-	pid = fork();
-	if (pid == -1)
-	{
-		perror("fork");
-		free(path);
-		return (EXIT_FAILURE);
-	}
-	else if (pid == 0)
-	{
-		// Child process
-		execve(path, cmd->s, data->env);
-		// execve only returns if an error occurred
-		perror("execve");
-		free(path);
-		exit(EXIT_FAILURE);
-	}
-	else
-	{
-		// Parent process
-		waitpid(pid, &status, 0);
-		free(path);
-		if (WIFEXITED(status))
-			return (WEXITSTATUS(status));
-		else
-			return (EXIT_FAILURE);
-	}
+	// If execve has not succeeded, print command not found
+	write(STDERR_FILENO, cmd->s[0], ft_strlen(cmd->s[0]));
+	write(STDERR_FILENO, ": command not found\n", 20);
+	return 127; // Command not found
 }
 
-char	*find_path(char *s, char **env)
-{
-	char	**paths;
-	char	*temp;
-	char	*cmd_path;
-	int		i;
+int call_cmd(t_data *data, t_cmd *cmd) {
+	int status = 0;
+	pid_t pid;
 
-	i = 0;
-	while (ft_strnstr(env[i], "PATH=", 5) == NULL)
-		i++;
-	paths = ft_split(env[i] + 5, ':');
-	i = -1;
-	while(paths[++i])
-	{
-		temp = ft_strjoin(paths[i], "/");
-		cmd_path = ft_strjoin(temp, s);
-		free(temp);
-		if (access(cmd_path, F_OK | X_OK) == 0)
-		{
-			free(paths);
-			return (cmd_path);
-		}
-		free(cmd_path);
+	if (find_executable_and_execute(cmd, data) != 0)
+		return 127; // Command not found, or error occurred
+
+	pid = fork();
+	if (pid == -1) {
+		perror("fork");
+		return -1;
 	}
-	free_double_ptr(paths);
-	return (NULL);
+	if (pid == 0) { // Child process
+		execve(cmd->s[0], cmd->s, data->env);
+		perror("execve"); // If execve returns, there was an error
+		exit(EXIT_FAILURE);
+	} else { // Parent process
+		if (waitpid(pid, &status, 0) == -1) {
+			perror("waitpid");
+			return -1;
+		}
+		if (WIFEXITED(status))
+			return WEXITSTATUS(status);
+	}
+	return 0;
 }
