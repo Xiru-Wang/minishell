@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:49 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/08 20:18:55 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/08 20:48:09 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,7 @@ static int	create_hd(t_cmd *cmd, int expand_sign)
 	i = 1;
 	while (line)
 	{
-		// if (ft_strncmp(line, cmd->delimiter, ft_strlen(cmd->delimiter)) == 0)
-		// 	break;
-		if (ft_strncmp(line, cmd->delimiter, ft_strlen(cmd->delimiter)) == 0 &&
-			(line[ft_strlen(cmd->delimiter)] == '\n' || line[ft_strlen(cmd->delimiter)] == '\0'))
+		if (ft_strncmp(line, cmd->delimiter, ft_strlen(cmd->delimiter)) == 0)
 			break;
 		if (expand_sign == 0 && check_valid_dollar(line))
 		{

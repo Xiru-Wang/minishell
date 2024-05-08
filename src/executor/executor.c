@@ -64,6 +64,7 @@ static int	execute_command_pipeline(t_cmd *cmd)
 	return (wait_for_processes(cmd->data->pid, cmd->data->cmd_num));
 }
 
+//被 dup2 覆盖的文件描述符会被自动关闭,你不需要手动关闭它们。
 static int	setup_child_process(t_cmd *cmd, int *end, int fd_in)
 {
 	if (fd_in != 0)
@@ -79,9 +80,9 @@ static int	setup_child_process(t_cmd *cmd, int *end, int fd_in)
 	}
 	redirect_io(cmd);  // Handle additional redirections
 	if (cmd->is_builtin)
-		return (call_builtin(cmd));  // Execute builtin and exit child process
+		exit (call_builtin(cmd));  // Execute builtin and exit child process
 	else
-		return (call_cmd(cmd->data, cmd));  // Execute external command and exit
+		exit (call_cmd(cmd->data, cmd));  // Execute external command and exit
 }
 
 
