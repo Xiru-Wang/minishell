@@ -5,7 +5,7 @@ static int execute_command_pipeline(t_cmd *cmd);
 static int setup_child_process(t_cmd *cmd, int *end, int fd_in);
 static int wait_for_processes(int *pids, int num_pids);
 
-void executor(t_cmd *cmd, t_data *data) 
+void	executor(t_cmd *cmd, t_data *data)
 {
 	data->pid = ft_calloc(data->cmd_num, sizeof(pid_t));
 	if (cmd->next == NULL)
@@ -15,9 +15,9 @@ void executor(t_cmd *cmd, t_data *data)
 	free(data->pid);
 }
 
-static int execute_single_command(t_cmd *cmd) 
+static int execute_single_command(t_cmd *cmd)
 {
-	int exit_status;
+	int	exit_status;
 
 	setup_stdio_backups(cmd);
 	check_hd(cmd);  // Handle heredoc if necessary
@@ -30,7 +30,8 @@ static int execute_single_command(t_cmd *cmd)
 	return (exit_status);
 }
 
-static int execute_command_pipeline(t_cmd *cmd) {
+static int	execute_command_pipeline(t_cmd *cmd)
+{
 	int end[2];
 	int fd_in;
 	int i;
@@ -39,25 +40,17 @@ static int execute_command_pipeline(t_cmd *cmd) {
 	fd_in = STDIN_FILENO;
 	i = 0;
 	current = cmd;
-	while (current) 
+	while (current)
 	{
-		if (current->next && pipe(end) == -1) 
-		{
-			perror("pipe");
-			return -1;
-		}
+		if (current->next)
+			pipe(end);
 		cmd->data->pid[i] = fork();
-		if (cmd->data->pid[i] == -1) 
+		if (cmd->data->pid[i] == 0)
 		{
-			perror("fork");
-			return -1;
-		}
-		if (cmd->data->pid[i] == 0) 
-		{  // Child process
 			setup_child_process(current, end, fd_in);
 			exit(EXIT_FAILURE);  // Should never be reached
 		}
-		if (current->next) 
+		if (current->next)
 		{ // Parent Process
 			close(end[1]);  // Close the write end of the pipe in the parent
 			if (fd_in != STDIN_FILENO)
@@ -71,7 +64,7 @@ static int execute_command_pipeline(t_cmd *cmd) {
 	return wait_for_processes(cmd->data->pid, cmd->data->cmd_num);
 }
 
-static int setup_child_process(t_cmd *cmd, int *end, int fd_in) 
+static int	setup_child_process(t_cmd *cmd, int *end, int fd_in)
 {
 	if (fd_in != 0)
 	{
@@ -85,7 +78,7 @@ static int setup_child_process(t_cmd *cmd, int *end, int fd_in)
 		close(end[1]);
 	}
 	redirect_io(cmd);  // Handle additional redirections
-	if (cmd->is_builtin) 
+	if (cmd->is_builtin)
 		return (call_builtin(cmd));  // Execute builtin and exit child process
 	else
 		return (call_cmd(cmd->data, cmd));  // Execute external command and exit
@@ -100,11 +93,11 @@ static int wait_for_processes(int *pids, int num_pids) {
 
 	i = 0;
 	exit_status = 0;
-	while (i < num_pids) 
+	while (i < num_pids)
 	{
 		if (waitpid(pids[i], &status, 0) == -1)
 			perror("waitpid");
-		else if (WIFEXITED(status)) 
+		else if (WIFEXITED(status))
 		{
 			current_status = WEXITSTATUS(status);
 			// Update the global exit status if it's the last process or if an error occurred
