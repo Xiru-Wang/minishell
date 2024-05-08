@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:17 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/04 23:41:01 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/08 20:20:05 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void print_arguments(t_cmd *cmd, int start)
 	while (cmd->s[start])
 	{
 		if (ft_strncmp(cmd->s[start], "$?", 3) == 0)
-			ft_putnbr_fd(g_exit_code, STDOUT_FILENO);
+			ft_putnbr_fd(cmd->data->exit_code, STDOUT_FILENO);
 		else
 			ft_putstr_fd(cmd->s[start], STDOUT_FILENO);
 		if (cmd->s[start + 1])

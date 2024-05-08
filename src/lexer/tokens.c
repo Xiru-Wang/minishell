@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:47:18 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/07 21:39:01 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/08 20:33:38 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,10 @@ void	init_data(t_data *data, char **env)
 	data->cmd_list = NULL;
 	data->cmd_num = 0;
 	data->exit_code = 0;
+	data->pwd = getcwd(NULL, 0);
+	data->old_pwd = NULL;
 	if (init_env(data, env) != EXIT_SUCCESS)
-	{
-		fprintf(stderr, "Failed to initialize environment variables.\n");
-		exit(EXIT_FAILURE);
-	}
+		free_exit("Failed to initialize environment variables.", data, EXIT_FAILURE);
 }
 
 static int	init_env(t_data *data, char **env)

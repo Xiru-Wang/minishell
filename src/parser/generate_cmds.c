@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/05 21:26:25 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/08 19:29:35 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_cmd	*generate_cmds(t_token **token, t_data *data)
 		new = init_cmd(data);//malloc space
 		if (!new)
 			free_exit("malloc error", data, EXIT_FAILURE);
-		new->id = i;//to identify cmd[last]
+		//new->id = i;//to identify cmd[last]
 		extract_redir(token, new, data);//extract redir and remove from tokenlist
 		fill_cmd(token, new);	//fill cmd info && update token list
 		append_cmd(&data->cmd_list, new);//append cmd to cmd list

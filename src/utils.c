@@ -6,14 +6,11 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 19:37:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/06 19:05:01 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/08 19:41:34 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-// Definition of the global variables
-int g_exit_code = 0;
 
 int	is_space(char c)
 {
@@ -21,7 +18,6 @@ int	is_space(char c)
 		return (1);
 	return (0);
 }
-
 
 /**
  * Check if a string is composed entirely of digits.
@@ -32,18 +28,18 @@ int	is_space(char c)
  * @param str The string to be checked
  * @return 1 if the string is composed entirely of digits, 0 otherwise
  */
-int is_str_digit(char *str)
+int	is_str_digit(char *str)
 {
-    int i;
+	int i;
 
-    i = 0;
-    while (str[i])
-    {
-        if (!ft_isdigit(str[i]))
-            return (0);
-        i++;
-    }
-    return (1);
+	i = 0;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 /**
@@ -55,7 +51,7 @@ int is_str_digit(char *str)
  * @param arr The array of strings to duplicate
  * @return A new array of strings that is a duplicate of the input array
  */
-char **ft_arrdup(char **arr)
+char	**ft_arrdup(char **arr)
 {
     int i;
     int len;

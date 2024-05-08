@@ -6,11 +6,11 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:07 by xiwang            #+#    #+#             */
-/*   Updated: 2024/04/07 17:57:34 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/08 20:31:21 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h" 
+#include "../../includes/minishell.h"
 #include <errno.h>
 
 int call_cd(t_data *data, t_cmd *cmd)
@@ -78,7 +78,9 @@ int change_directory(t_data *data, char *path)
     if (data->old_pwd != NULL)
         free(data->old_pwd);
     data->old_pwd = ft_strdup(data->pwd);
-    free(data->pwd);
+    //free(data->pwd);
+	if (data->pwd)
+		free(data->pwd);
     data->pwd = getcwd(NULL, 0);
 
     return (0);

@@ -28,10 +28,14 @@ static void	redirect_fdin(t_io *io, t_cmd *cmd)
 	if (io->type == REDIR_IN)
 		fd = open(io->filename, O_RDONLY);
 	else if (io->type == HEREDOC)
+	{
 		fd = open(cmd->hdfile, O_RDONLY);
+		unlink(cmd->hdfile);
+	}
+
 	if (fd != -1)
 	{
-		dup2(fd, STDOUT_FILENO);
+		dup2(fd, STDIN_FILENO);
 		close(fd);
 	}
 }

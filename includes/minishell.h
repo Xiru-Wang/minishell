@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/08 17:59:31 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/08 20:28:37 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,6 @@
 # include <signal.h>
 # include <sys/wait.h>
 
-# define MAX_FILES 10 //OPEN_MAX
-
-//int	g_exit_code;
-
 typedef enum s_type
 {
 	WORD,
@@ -41,7 +37,7 @@ typedef enum s_type
 	QUO,
 }	t_type;
 
-typedef enum s_builtin
+typedef enum	s_builtin
 {
 	CD = 1,
 	ECHO,
@@ -52,7 +48,7 @@ typedef enum s_builtin
 	EXIT,
 }	t_builtin;
 
-typedef struct s_token
+typedef struct	s_token
 {
 	char			*value;
 	t_type			type;
@@ -60,15 +56,15 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-typedef struct s_io
+typedef struct	s_io
 {
 	char			*filename;
 	t_type			type;
 	struct s_io		*next;
 } t_io;
 
-typedef struct s_data t_data;
-typedef struct s_cmd
+typedef struct	s_data t_data;
+typedef struct	s_cmd
 {
 	char			**s;
 	t_builtin		is_builtin;
@@ -77,7 +73,6 @@ typedef struct s_cmd
 	struct s_io		*io_list;
 	int				infd;
 	int				outfd;
-	int				id;
 	char			*delimiter;
 	char			*hdfile;
 	t_data			*data;
@@ -85,7 +80,7 @@ typedef struct s_cmd
 	int				stdout_backup;
 } t_cmd;
 
-typedef struct s_data
+typedef struct	s_data
 {
 	char		*line;
 	t_token		*token_list;
@@ -143,49 +138,48 @@ int		check_valid_dollar_limit(char *s, int max);
 char	*find_env(char *s, char **env);
 
 // cmd_utils
-t_cmd	*init_cmd(t_data *data);
-void	append_cmd(t_cmd **head, t_cmd *new);
-int		count_pipe(t_token *list);
-int		count_args(t_token *list);
+t_cmd			*init_cmd(t_data *data);
+void			append_cmd(t_cmd **head, t_cmd *new);
+int				count_pipe(t_token *list);
+int				count_args(t_token *list);
 
-void	print_cmd_list(t_cmd *cmd);//DEBUG
-void	print_io_list(t_cmd *cmd);//DEBUG
+void			print_cmd_list(t_cmd *cmd);//DEBUG
+void			print_io_list(t_cmd *cmd);//DEBUG
 
 //generate_cmd
-t_cmd	*generate_cmds(t_token **token, t_data *data);
+t_cmd			*generate_cmds(t_token **token, t_data *data);
 
 //io_utils
-t_io	*init_io(t_cmd *cmd);
-void	append_io(t_io **head, t_io *new);
-void	free_io_list(t_io **list);
-void	reset_stdio(t_cmd *cmd);
-void	setup_stdio_backups(t_cmd *cmd);
+t_io			*init_io(t_cmd *cmd);
+void			append_io(t_io **head, t_io *new);
+void			free_io_list(t_io **list);
+void			reset_stdio(t_cmd *cmd);
+void			setup_stdio_backups(t_cmd *cmd);
 
 //io_redir
-void	get_fds(t_cmd *cmd);
-void	redirect_io(t_cmd *cmd);
+void			get_fds(t_cmd *cmd);
+void			redirect_io(t_cmd *cmd);
 
 //heredoc
-void		check_hd(t_cmd *cmd);
+void			check_hd(t_cmd *cmd);
 
 // call_cmd
-int		call_cmd(t_data *data, t_cmd *cmd);
-char	*find_path(char *s, char **env);
+int				call_cmd(t_data *data, t_cmd *cmd);
+char			*find_path(char *s, char **env);
 
 // call_cd
-char	*find_env_var(t_data *data, const char *var_name);
-void	add_new_env_var(t_data *data, const char *var_name, const char *new_value, int i);
-char	*handle_cd_oldpwd(t_data *data);
-int		change_directory(t_data *data, char *path);
-void	add_new_env_var(t_data *data, const char *var_name, const char *new_value, int i);
-void	print_cd_error(char *path);
-void	update_pwd_variables(t_data *data);
-void	update_env_var(t_data *data, const char *var_name, const char *new_value);
-int		call_cd(t_data *data, t_cmd *cmd);
+char			*find_env_var(t_data *data, const char *var_name);
+void			add_new_env_var(t_data *data, const char *var_name, const char *new_value, int i);
+char			*handle_cd_oldpwd(t_data *data);
+int				change_directory(t_data *data, char *path);
+void			add_new_env_var(t_data *data, const char *var_name, const char *new_value, int i);
+void			print_cd_error(char *path);
+void			update_pwd_variables(t_data *data);
+void			update_env_var(t_data *data, const char *var_name, const char *new_value);
+int				call_cd(t_data *data, t_cmd *cmd);
 
 //executor
 void			executor(t_cmd *cmd, t_data *data);
-
 
 // builtin
 enum s_builtin	ft_bubiltin(char *s);
@@ -203,8 +197,6 @@ void			handle_interrupt();
 void			handle_quit();
 int				readline_event_hook_signals();
 
-// global var
-extern int g_exit_code;
-extern int last_received_signal;
+extern int	last_received_signal;
 
 #endif

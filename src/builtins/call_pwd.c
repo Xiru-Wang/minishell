@@ -3,6 +3,6 @@
 
 int	call_pwd(t_cmd *cmd)
 {
-	ft_putstr_fd(cmd->data->pwd, STDOUT_FILENO);
+	ft_putendl_fd(cmd->data->pwd, STDOUT_FILENO);
 	return (EXIT_SUCCESS);
 }

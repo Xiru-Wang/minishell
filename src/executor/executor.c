@@ -32,10 +32,10 @@ static int execute_single_command(t_cmd *cmd)
 
 static int	execute_command_pipeline(t_cmd *cmd)
 {
-	int end[2];
-	int fd_in;
-	int i;
-	t_cmd *current;
+	int		end[2];
+	int		fd_in;
+	int		i;
+	t_cmd	*current;
 
 	fd_in = STDIN_FILENO;
 	i = 0;
@@ -48,7 +48,8 @@ static int	execute_command_pipeline(t_cmd *cmd)
 		if (cmd->data->pid[i] == 0)
 		{
 			setup_child_process(current, end, fd_in);
-			exit(EXIT_FAILURE);  // Should never be reached
+			//data->exit_code += setup_child_process(current, end, fd_in);
+			//exit(EXIT_FAILURE);  // Should never be reached
 		}
 		if (current->next)
 		{ // Parent Process
@@ -60,8 +61,7 @@ static int	execute_command_pipeline(t_cmd *cmd)
 		current = current->next;
 		i++;
 	}
-
-	return wait_for_processes(cmd->data->pid, cmd->data->cmd_num);
+	return (wait_for_processes(cmd->data->pid, cmd->data->cmd_num));
 }
 
 static int	setup_child_process(t_cmd *cmd, int *end, int fd_in)
@@ -73,7 +73,7 @@ static int	setup_child_process(t_cmd *cmd, int *end, int fd_in)
 	}
 	if (cmd->next)
 	{
-		close(end[0]);  // Close the read end of the pipe in the child
+		close(end[0]);// Close the read end of the pipe in the child
 		dup2(end[1], STDOUT_FILENO);  // Redirect stdout to the pipe
 		close(end[1]);
 	}
@@ -85,26 +85,27 @@ static int	setup_child_process(t_cmd *cmd, int *end, int fd_in)
 }
 
 
-static int wait_for_processes(int *pids, int num_pids) {
-	int i;
-	int status;
-	int exit_status;
-	int current_status;
+static int wait_for_processes(int *pids, int num_pids)
+{
+	int	i;
+	int	status;
+	int	exit_status;
+	int	current_status;
 
 	i = 0;
 	exit_status = 0;
 	while (i < num_pids)
 	{
 		if (waitpid(pids[i], &status, 0) == -1)
-			perror("waitpid");
+			free_exit("waitpid", NULL, EXIT_FAILURE);
 		else if (WIFEXITED(status))
 		{
 			current_status = WEXITSTATUS(status);
 			// Update the global exit status if it's the last process or if an error occurred
 			if (i == num_pids - 1 || current_status != 0)
-				exit_status = current_status;
+				exit_status += current_status;
 		}
 		i++;
 	}
-	return exit_status;
+	return (exit_status);
 }
