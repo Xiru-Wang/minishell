@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/07 21:41:38 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/08 17:59:31 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,11 +159,11 @@ t_io	*init_io(t_cmd *cmd);
 void	append_io(t_io **head, t_io *new);
 void	free_io_list(t_io **list);
 void	reset_stdio(t_cmd *cmd);
+void	setup_stdio_backups(t_cmd *cmd);
 
 //io_redir
 void	get_fds(t_cmd *cmd);
-void	redirect_io(t_cmd *cmd, int *end);
-void	redirect_io_simple(t_cmd *cmd);
+void	redirect_io(t_cmd *cmd);
 
 //heredoc
 void		check_hd(t_cmd *cmd);

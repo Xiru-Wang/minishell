@@ -19,8 +19,9 @@ static int execute_single_command(t_cmd *cmd)
 {
 	int exit_status;
 
+	setup_stdio_backups(cmd);
 	check_hd(cmd);  // Handle heredoc if necessary
-	redirect_io_simple(cmd);  // Setup redirections
+	redirect_io(cmd);  // Setup redirections
 	if (cmd->is_builtin)
 		exit_status = call_builtin(cmd);
 	else
@@ -83,7 +84,7 @@ static int setup_child_process(t_cmd *cmd, int *end, int fd_in)
 		dup2(end[1], STDOUT_FILENO);  // Redirect stdout to the pipe
 		close(end[1]);
 	}
-	redirect_io_simple(cmd);  // Handle additional redirections
+	redirect_io(cmd);  // Handle additional redirections
 	if (cmd->is_builtin) 
 		return (call_builtin(cmd));  // Execute builtin and exit child process
 	else
