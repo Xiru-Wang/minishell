@@ -40,30 +40,6 @@ int readline_event_hook_signals()
 	return (0);
 }
 
-/* void signal_handler(int signum) */
-/* { */
-/*     if (signum == SIGINT) */
-/*     { */
-/*         if (isatty(STDIN_FILENO)) */
-/*         { */
-/*             write(STDERR_FILENO, "\n", 1); */
-/*             rl_on_new_line(); */
-/*             rl_replace_line("", 0); */
-/*             rl_redisplay(); */
-/*         } */
-/*         else */
-/*         { */
-/*             write(STDERR_FILENO, "\n", 1); */
-/*             exit(EXIT_FAILURE); */
-/*         } */
-/*     } */
-/*     else if (signum == SIGQUIT) */
-/*     { */
-/*         if (!isatty(STDIN_FILENO)) */
-/*             return; */
-/*     } */
-/* } */
-
 void	init_signal(void)
 {
 	struct sigaction	sa;
