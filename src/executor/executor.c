@@ -67,6 +67,7 @@ static int	execute_command_pipeline(t_cmd *cmd)
 //被 dup2 覆盖的文件描述符会被自动关闭,你不需要手动关闭它们。
 static int	setup_child_process(t_cmd *cmd, int *end, int fd_in)
 {
+	check_hd(cmd);
 	if (fd_in != 0)
 	{
 		dup2(fd_in, STDIN_FILENO);  // Redirect stdin for the current command
