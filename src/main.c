@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/06 19:44:47 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/09 13:50:19 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+static void	print_welcome_msg(void);
 
-void minishell(t_data *data)
+void	minishell(t_data *data)
 {
 	char	*s;
 
@@ -54,6 +55,18 @@ int	main(int ac, char **av, char **env)
 	data = (t_data *)malloc(sizeof(t_data));
 	init_data(data, env);
 	init_signal();
+	print_welcome_msg();
 	minishell(data);
 	return (0);
+}
+
+static void	print_welcome_msg(void)
+{
+	// if (isatty(STDIN_FILENO))
+	// 	printf("%s", "\e[2J\e[1;1H");
+	printf("\
+            ╭────────────── 💃🏻💃🏻💃🏻💃🏻 ─────────────╮\n\
+            │  Oh my shell, lucky its minishell   │\n\
+            │             Jan && Xiru             │\n\
+            ╰────────────── 🍷🍷🍷🍷 ─────────────╯\n");
 }

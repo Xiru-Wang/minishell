@@ -2,33 +2,34 @@
 
 int last_received_signal = 0;
 
-void signal_handler(int signum) {
+void signal_handler(int signum)
+{
 	last_received_signal = signum;
 }
 
-void handle_interrupt() 
+void handle_interrupt()
 {
-	if (isatty(STDIN_FILENO)) 
+	if (isatty(STDIN_FILENO))
 	{
 		write(STDERR_FILENO, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-	else 
+	else
 	{
 		write(STDERR_FILENO, "\n", 1);
 		exit(EXIT_FAILURE);
 	}
 }
 
-void handle_quit() 
+void handle_quit()
 {
 	if (!isatty(STDIN_FILENO))
 		return;
 }
 
-int readline_event_hook_signals() 
+int readline_event_hook_signals()
 {
 	if (last_received_signal != 0) {
 		if (last_received_signal == SIGINT)

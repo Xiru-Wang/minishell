@@ -20,13 +20,13 @@ static int execute_single_command(t_cmd *cmd)
 	int	exit_status;
 
 	setup_stdio_backups(cmd);
-	check_hd(cmd);  // Handle heredoc if necessary
-	redirect_io(cmd);  // Setup redirections
+	check_hd(cmd);
+	redirect_io(cmd);
 	if (cmd->is_builtin)
 		exit_status = call_builtin(cmd);
 	else
 		exit_status = call_cmd(cmd->data, cmd);
-	reset_stdio(cmd);  // Restore standard I/O
+	reset_stdio(cmd);
 	return (exit_status);
 }
 
@@ -87,7 +87,7 @@ static int	setup_child_process(t_cmd *cmd, int *end, int fd_in)
 }
 
 
-static int wait_for_processes(int *pids, int num_pids)
+static int	wait_for_processes(int *pids, int num_pids)
 {
 	int	i;
 	int	status;
