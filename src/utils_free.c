@@ -6,7 +6,7 @@
 /*   By: jschroed <jschroed@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:36:51 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/04 21:35:48 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/10 20:06:20 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,8 @@ void	free_exit(char *s, t_data *data, int code)
 void	free_token_list(t_token **list)
 {
 	t_token	*temp;
-
-	if ((*list) == NULL || list == NULL)
-		return ;
+	if (list == NULL || *list == NULL)
+		return;
 	while (*list)
 	{
 		temp = (*list)->next;

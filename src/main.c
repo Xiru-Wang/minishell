@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/10 16:19:06 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/10 19:44:05 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@ void	minishell(t_data *data)
 	while (1)
 	{
 		s = readline("minishell>>");
+		/* if (last_received_signal != 0) */
+        /* { */
+        /*     printf("Received signal %d, breaking loop.\n", last_received_signal); */
+        /*     last_received_signal = 0; */
+        /*     continue; */
+        /* } */
 		if (!s)
 		{
 			write(STDOUT_FILENO, "exit\n", 5);
@@ -65,8 +71,8 @@ static void	print_welcome_msg(void)
 	// if (isatty(STDIN_FILENO))
 	// 	printf("%s", "\e[2J\e[1;1H");
 	printf("\
-            ╭────────────── 💃💃💃💃 ─────────────╮\n\
-            │  Oh my shell, lucky its minishell   │\n\
-            │             Jan && Xiru             │\n\
-            ╰────────────── 🍷🍷🍷🍷 ─────────────╯\n");
+			╭────────────── 💃💃💃💃 ─────────────╮\n\
+			│  Oh my shell, lucky its minishell   │\n\
+			│             Jan && Xiru             │\n\
+			╰────────────── 🍷🍷🍷🍷 ─────────────╯\n");
 }

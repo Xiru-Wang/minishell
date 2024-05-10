@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/09 12:41:09 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/10 19:44:37 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,6 +190,7 @@ int				call_exit(t_cmd *cmd, t_data *data);
 int				call_export(t_cmd *cmd, t_data *data);
 int				call_pwd(t_cmd *cmd);
 int				call_unset(t_cmd *cmd, t_data *data);
+
 // signals
 void			signal_handler(int signum);
 void			init_signal(void);
@@ -197,6 +198,7 @@ void			handle_interrupt();
 void			handle_quit();
 int				readline_event_hook_signals();
 
-extern int	last_received_signal;
+// extern int	last_received_signal;
+extern volatile sig_atomic_t last_received_signal;
 
 #endif

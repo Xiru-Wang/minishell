@@ -1,10 +1,13 @@
 #include "../../includes/minishell.h"
 
-int last_received_signal = 0;
+/* int last_received_signal = 0; */
+volatile sig_atomic_t last_received_signal = 0;
 
 void signal_handler(int signum)
 {
+	/* printf("last_signal: %d,\n", last_received_signal); */
 	last_received_signal = signum;
+	/* printf("last_signal: %d,\n", last_received_signal); */
 }
 
 void handle_interrupt()

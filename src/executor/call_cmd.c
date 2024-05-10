@@ -2,6 +2,7 @@
 
 int	find_executable_and_execute(t_cmd *cmd, t_data *data) {
 	char *path = NULL;
+	char *path_tmp = NULL;
 	char **paths;
 	int i = 0;
 
@@ -16,8 +17,9 @@ int	find_executable_and_execute(t_cmd *cmd, t_data *data) {
 		paths = ft_split(data->env[i] + 5, ':');
 		i = 0;
 		while (paths && paths[i]) {
-			path = ft_strjoin(paths[i], "/");
-			path = ft_strjoin(path, cmd->s[0]); // Note: consider optimizing this to avoid memory leak
+			path_tmp = ft_strjoin(paths[i], "/");
+			path = ft_strjoin(path_tmp, cmd->s[0]); // Note: consider optimizing this to avoid memory leak
+			free(path_tmp);
 			if (access(path, X_OK) == 0)
 			{
 				cmd->s[0] = path; // Update cmd->s[0] to the full path
