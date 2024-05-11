@@ -5,15 +5,30 @@ static int execute_command_pipeline(t_cmd *cmd);
 static int setup_child_process(t_cmd *cmd, int *end, int fd_in);
 static int wait_for_processes(int *pids, int num_pids);
 
-void	executor(t_cmd *cmd, t_data *data)
+int    executor(t_cmd *cmd, t_data *data)
 {
-	data->pid = ft_calloc(data->cmd_num, sizeof(pid_t));
-	if (cmd->next == NULL)
-		data->exit_code = execute_single_command(cmd);
-	else
-		data->exit_code = execute_command_pipeline(cmd);
-	free(data->pid);
+    data->pid = ft_calloc(data->cmd_num, sizeof(pid_t));
+    if (cmd->next == NULL)
+        data->exit_code = execute_single_command(cmd);
+    else
+        data->exit_code = execute_command_pipeline(cmd);
+    free(data->pid);
+
+    if (data->exit_code == 1)  // 检查exit_code是否为1,表示heredoc被中断
+        return (1);
+    else
+        return (0);
 }
+
+// void	executor(t_cmd *cmd, t_data *data)
+// {
+// 	data->pid = ft_calloc(data->cmd_num, sizeof(pid_t));
+// 	if (cmd->next == NULL)
+// 		data->exit_code = execute_single_command(cmd);
+// 	else
+// 		data->exit_code = execute_command_pipeline(cmd);
+// 	free(data->pid);
+// }
 
 static int execute_single_command(t_cmd *cmd)
 {

@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/10 19:44:05 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/11 09:23:26 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,9 @@ void	minishell(t_data *data)
 
 	while (1)
 	{
+		signal(SIGINT, signal_handler);
+		signal(SIGQUIT, SIG_IGN);// ignore SIGQUIT
 		s = readline("minishell>>");
-		/* if (last_received_signal != 0) */
-        /* { */
-        /*     printf("Received signal %d, breaking loop.\n", last_received_signal); */
-        /*     last_received_signal = 0; */
-        /*     continue; */
-        /* } */
 		if (!s)
 		{
 			write(STDOUT_FILENO, "exit\n", 5);
@@ -42,8 +38,13 @@ void	minishell(t_data *data)
 		if (split_line(data->line, &data->token_list, data) == 0)
 			free_exit("split_line", data, EXIT_FAILURE);
 		data->cmd_list = generate_cmds(&data->token_list, data);
+		// if (data->cmd_list)
+		// 	executor(data->cmd_list, data);
 		if (data->cmd_list)
-			executor(data->cmd_list, data);
+        {
+            if (executor(data->cmd_list, data) == 1)  // 检查executor的返回值
+                continue;  // 如果heredoc被中断,继续下一个循环
+        }
 	}
 	free_data(data);
 	exit(EXIT_SUCCESS);
@@ -60,7 +61,7 @@ int	main(int ac, char **av, char **env)
 	}
 	data = (t_data *)malloc(sizeof(t_data));
 	init_data(data, env);
-	init_signal();
+	//init_signal();
 	print_welcome_msg();
 	minishell(data);
 	return (0);

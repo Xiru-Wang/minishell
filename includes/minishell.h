@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/10 19:44:37 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/11 07:59:01 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <string.h>
 # include <signal.h>
 # include <sys/wait.h>
+# include <sys/ioctl.h>
 
 typedef enum s_type
 {
@@ -92,8 +93,8 @@ typedef struct	s_data
 	char		*pwd;
 	char		*old_pwd;
 	int			exit_code;
-}	t_data;
-
+	int			in_heredoc;
+} t_data;
 
 // utils
 int		is_space(char c);
@@ -179,7 +180,7 @@ void			update_env_var(t_data *data, const char *var_name, const char *new_value)
 int				call_cd(t_data *data, t_cmd *cmd);
 
 //executor
-void			executor(t_cmd *cmd, t_data *data);
+int				executor(t_cmd *cmd, t_data *data);
 
 // builtin
 enum s_builtin	ft_bubiltin(char *s);
@@ -199,6 +200,6 @@ void			handle_quit();
 int				readline_event_hook_signals();
 
 // extern int	last_received_signal;
-extern volatile sig_atomic_t last_received_signal;
+extern int	g_last_signal;
 
 #endif

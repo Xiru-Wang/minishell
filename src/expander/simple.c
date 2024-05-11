@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 19:18:49 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/07 21:33:21 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/11 07:10:12 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,7 @@ char	*expand_simple(char *s, char **env, t_data *data)
 		if (s[i] == '$' && s[i + 1] && char_is_valid(s[i + 1]))
 		{
 			k = 0;
-			value = expand_dollar(s + i, &k, env, data)
-;
+			value = expand_dollar(s + i, &k, env, data);
 			if (value)
 			{
 				ft_strlcat(dst, value, ft_strlen(dst) + ft_strlen(value) + 1);
