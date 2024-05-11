@@ -3,40 +3,22 @@
 /* int last_received_signal = 0; */
 //volatile sig_atomic_t last_received_signal = 0;
 
-int g_last_signal = 1;
+int g_last_signal = 0;
 
-void signal_handler(int signum)
-{
-    if (signum == SIGINT)
-    {
-        if (g_last_signal) //interactive mode: in the minishell
-        {
-            write(STDOUT_FILENO, "\n", 1);  //write new line
-            rl_on_new_line();  // move to new line
-            rl_replace_line("", 0);  //clear current line
-            rl_redisplay();
-        }
-        else  // if in the here_doc
-        {
-			ioctl(STDIN_FILENO, TIOCSTI, "\n");
-            //write(STDOUT_FILENO, "\n", 1);  // write new linw
-			g_last_signal = 1;  // back to interactive mode?
-			rl_done = 1;  // inform readline to end?
-        }
+void signal_handler(int signum) {
+    if (signum == SIGINT) {
+        g_last_signal = 1;
+		rl_replace_line("", 0);  // Clear the current input line
+		rl_redisplay();  // Redisplay the prompt
     }
 }
 
-// void signal_handler(int signum)
-// {
-// 	 if (signum == SIGINT)
-//     {
-//         ioctl(0, TIOCSTI, "\n");
-//         g_last_signal = signum;
-//     }
-// 	/* printf("last_signal: %d,\n", last_received_signal); */
-// 	//g_last_signal = signum;
-// 	/* printf("last_signal: %d,\n", last_received_signal); */
-// }
+int readline_event_hook() {
+    if (g_last_signal == 1) {
+		rl_done = 1;  // Set rl_done to indicate readline should return
+    }
+    return 0;
+}
 
 // void	init_heredoc_sig(int sig)
 // {
@@ -78,19 +60,6 @@ void signal_handler(int signum)
 // 		g_last_signal = 0;
 // 	}
 // 	return (0);
-// }
-
-// void    init_signal(void)
-// {
-//     struct sigaction    sa;
-
-//     ft_memset(&sa, 0, sizeof(struct sigaction));
-//     sa.sa_handler = signal_handler;
-//     sa.sa_flags = SA_RESTART;
-//     sigemptyset(&sa.sa_mask);
-//     sigaction(SIGINT, &sa, NULL);
-//     signal(SIGQUIT, SIG_IGN);  // 忽略SIGQUIT
-//     rl_event_hook = readline_event_hook_signals;
 // }
 
 // void	init_signal(void)
