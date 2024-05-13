@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:49 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/13 19:22:09 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/13 19:56:19 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,6 @@ void	check_hd(t_cmd *cmd)
 }
 
 //if here_doc got interrupted??
-
-
 static int	create_hd(t_cmd *cmd, int expand_sign)
 {
 	int		fd;

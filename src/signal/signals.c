@@ -29,6 +29,17 @@ void	init_signals_hd(void)
 	sigaction(SIGINT, &sa, NULL);
 }
 
+void setup_signals_hd() {
+	rl_event_hook = readline_event_hook_hd;
+	init_signals_hd();
+}
+
+void reset_signals_hd() {
+	g_last_signal = 0;
+	rl_event_hook = NULL;
+	init_signals();
+}
+
 // MINISHELL
 
 void signal_handler(int signum) {
@@ -46,15 +57,4 @@ void init_signals(void) {
 	sa.sa_flags = 0;
 	sigemptyset(&sa.sa_mask);
 	sigaction(SIGINT, &sa, NULL);
-}
-
-void setup_signals_hd() {
-	rl_event_hook = readline_event_hook_hd;
-	init_signals_hd();
-}
-
-void reset_signals_hd() {
-	g_last_signal = 0;
-	rl_event_hook = NULL;
-	init_signals();
 }
