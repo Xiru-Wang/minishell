@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:49 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/13 19:56:19 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/13 20:15:14 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	create_hd(t_cmd *cmd, int expand_sign)
 
 	fd = open(cmd->hdfile, O_CREAT | O_RDWR | O_TRUNC, 0644);
 
-	setup_signals_hd();
+	init_signals(CONTEXT_HEREDOC);
 
 	while (1)
 	{
@@ -60,7 +60,7 @@ static int	create_hd(t_cmd *cmd, int expand_sign)
 			if (g_last_signal == 1)
 				reset_hd_file(&fd, cmd->hdfile);
 			free(line);
-			reset_signals_hd();
+			reset_signals();
 			return (130);
 		}
 
@@ -81,7 +81,7 @@ static int	create_hd(t_cmd *cmd, int expand_sign)
 	if (!line)
 		printf("minishell: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", i, cmd->delimiter);
 	close(fd);
-	reset_signals_hd();
+	reset_signals();
 	return (1);
 }
 
