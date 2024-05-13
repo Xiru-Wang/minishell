@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/11 22:00:02 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/13 19:06:11 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,13 +194,15 @@ int				call_unset(t_cmd *cmd, t_data *data);
 
 // signals
 void			signal_handler(int signum);
-void			init_signal(void);
-void			handle_interrupt();
-void			handle_quit();
-int				readline_event_hook_signals();
+void			init_signals(void);
 
-void initialize_signals();
-int readline_event_hook();
+void			signal_handler_hd(int signum);
+void			init_signals_hd(void);
+int				readline_event_hook_hd();
+
+void			setup_signals_hd();
+void			reset_signals_hd();
+
 
 // extern int	last_received_signal;
 extern int	g_last_signal;

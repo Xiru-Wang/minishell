@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/11 22:28:28 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/13 18:57:55 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ void	minishell(t_data *data)
 
 	while (1)
 	{
-		signal(SIGINT, signal_handler);
-		signal(SIGQUIT, SIG_IGN);// ignore SIGQUIT
 		s = readline("minishell>>");
 		if (!s)
 		{
@@ -61,7 +59,7 @@ int	main(int ac, char **av, char **env)
 	}
 	data = (t_data *)malloc(sizeof(t_data));
 	init_data(data, env);
-	//init_signal();
+	init_signals();
 	print_welcome_msg();
 	minishell(data);
 	return (0);
