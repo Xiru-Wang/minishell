@@ -79,6 +79,6 @@ norm:
 	@norminette -R CheckForbiddenSourceHeader ./includes
 
 val:
-	@valgrind --track-fds=yes ./minishell
+	@valgrind --track-fds=yes --leak-check=full ./minishell
 
 .PHONY: all create_dirs test clean fclean re norm val

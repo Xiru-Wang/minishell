@@ -6,7 +6,7 @@
 /*   By: jschroed <jschroed@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:36:51 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/10 20:06:20 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/14 21:10:41 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,9 @@ void free_data(t_data *data)
 	free_cmd_list(&data->cmd_list);
 	free(data->pwd);
 	free(data->old_pwd);
+	free(data->pid);
+	free(data->var_name);
+	free(data);
 }
 
 void free_cmd_list(t_cmd **cmd)
@@ -50,6 +53,10 @@ void free_cmd_list(t_cmd **cmd)
 			free_double_ptr((*cmd)->s);
 		if ((*cmd)->io_list)
 			free_io_list(&(*cmd)->io_list);
+		if ((*cmd)->delimiter)
+			free((*cmd)->delimiter);
+		if ((*cmd)->hdfile)
+			free((*cmd)->hdfile);
 		free(*cmd);
 		*cmd = temp;
 	}

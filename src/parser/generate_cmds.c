@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/08 19:29:35 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/14 21:18:16 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,8 @@ static void	fill_cmd(t_token **head, t_cmd *cmd)
 		next = temp->next;
 		if (temp->type == WORD)
 		{
+			if (cmd->s[i])
+				free(cmd->s[i]);
 			cmd->s[i] = expand_complex(temp->value, WORD, cmd->data);;
 			if (i == 0)
 				builtin = ft_bubiltin(cmd->s[0]);
@@ -127,7 +129,11 @@ static void	fill_cmd(t_token **head, t_cmd *cmd)
 				cmd->is_builtin = builtin;
 		}
 		else if (temp->type == QUO)
+		{
+			if (cmd->s[i])
+				free(cmd->s[i]);
 			cmd->s[i] = expand_complex(temp->value, QUO, cmd->data);
+		}
 		del_token(head, temp);
 		temp = next;
 		i++;

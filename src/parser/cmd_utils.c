@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:31 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/11 07:47:52 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/14 21:26:10 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ t_cmd	*init_cmd(t_data *data)
 	new->outfd = -1;
 	new->stdin_backup = -1;
 	new->stdout_backup = -1;
-	//new->in_heredoc = 0;
 	return (new);
 }
 

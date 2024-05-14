@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/14 19:38:57 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/14 21:42:51 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,34 +15,29 @@ static void	print_welcome_msg(void);
 
 void	minishell(t_data *data)
 {
-	char	*s;
-
 	while (1)
 	{
-		s = readline("minishell>>");
-		if (!s)
+		data->line = readline("minishell>>");
+		if (!data->line)
 		{
 			write(STDOUT_FILENO, "exit\n", 5);
 			break;
 		}
-		if (s[0] == '\0')
+		if (data->line[0] == '\0')
 		{
-			free(s);
+			free(data->line);
 			continue;
 		}
-		add_history(s);
-		data->line = ft_strtrim(s, " \t\n\v\f\r");
-		free(s);
+		add_history(data->line);
 		if (split_line(data->line, &data->token_list, data) == 0)
 			free_exit("split_line", data, EXIT_FAILURE);
 		data->cmd_list = generate_cmds(&data->token_list, data);
-		// if (data->cmd_list)
-		// 	executor(data->cmd_list, data);
 		if (data->cmd_list)
-        {
-            if (executor(data->cmd_list, data) == 1)  // 检查executor的返回值
-                continue;  // 如果heredoc被中断,继续下一个循环
-        }
+		{
+			if (executor(data->cmd_list, data) == 1)  // 检查executor的返回值
+				continue;  // 如果heredoc被中断,继续下一个循环
+		}
+		free_data(data);
 	}
 	free_data(data);
 	exit(EXIT_SUCCESS);
