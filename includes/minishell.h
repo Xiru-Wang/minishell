@@ -6,13 +6,14 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/13 20:14:47 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/14 20:39:58 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "exit_codes.h"
 # include <unistd.h>
 # include <stdbool.h>
 # include <stdlib.h>
@@ -25,6 +26,7 @@
 # include <signal.h>
 # include <sys/wait.h>
 # include <sys/ioctl.h>
+# include <errno.h>
 
 typedef enum s_type
 {
@@ -38,7 +40,7 @@ typedef enum s_type
 	QUO,
 }	t_type;
 
-typedef enum	s_builtin
+typedef enum s_builtin
 {
 	CD = 1,
 	ECHO,
@@ -49,7 +51,7 @@ typedef enum	s_builtin
 	EXIT,
 }	t_builtin;
 
-typedef struct	s_token
+typedef struct s_token
 {
 	char			*value;
 	t_type			type;
@@ -57,15 +59,15 @@ typedef struct	s_token
 	struct s_token	*next;
 }	t_token;
 
-typedef struct	s_io
+typedef struct s_io
 {
 	char			*filename;
 	t_type			type;
 	struct s_io		*next;
-} t_io;
+}	t_io;
 
-typedef struct	s_data t_data;
-typedef struct	s_cmd
+typedef struct s_data	t_data;
+typedef struct s_cmd
 {
 	char			**s;
 	t_builtin		is_builtin;
@@ -79,9 +81,9 @@ typedef struct	s_cmd
 	t_data			*data;
 	int				stdin_backup;
 	int				stdout_backup;
-} t_cmd;
+}	t_cmd;
 
-typedef struct	s_data
+typedef struct s_data
 {
 	char		*line;
 	t_token		*token_list;
@@ -94,49 +96,48 @@ typedef struct	s_data
 	char		*old_pwd;
 	int			exit_code;
 	int			in_heredoc;
-} t_data;
+}	t_data;
 
 // utils
-int		is_space(char c);
-int		is_str_digit(char *str);
-int		if_all_space(char *s);
-void	free_double_ptr(char **ptr);
-void	free_cmd_list(t_cmd **cmd);
-void	free_exit(char *s, t_data *data, int code);
-
-char	**ft_arrdup(char **arr);
+int				is_space(char c);
+int				is_str_digit(char *str);
+int				if_all_space(char *s);
+void			free_double_ptr(char **ptr);
+void			free_cmd_list(t_cmd **cmd);
+void			free_exit(char *s, t_data *data, int code);
+char			**ft_arrdup(char **arr);
 
 // utils_free
-void	free_arr(char **arr);
-void	free_data(t_data *data);
+void			free_arr(char **arr);
+void			free_data(t_data *data);
 
 //token_util
-int		add_token_list(char *s, int type, t_token **head);
-void	del_token(t_token **head, t_token *node);
-void	print_token_list(t_token *token_list);//debug
-void	free_token_list(t_token **list);
-enum	s_type ft_type(char c);
+int				add_token_list(char *s, int type, t_token **head);
+void			del_token(t_token **head, t_token *node);
+void			print_token_list(t_token *token_list);//debug
+void			free_token_list(t_token **list);
+enum s_type		ft_type(char c);
 
 // tokens
-void	init_data(t_data *data, char **env);
-int		split_line(char *s, t_token **token_list, t_data *data);
+void			init_data(t_data *data, char **env);
+int				split_line(char *s, t_token **token_list, t_data *data);
 //check_quote
-int		check_unclosed_quotes(char *s, t_token **head);
+int				check_unclosed_quotes(char *s, t_token **head);
 //remove_quo
-char	*remove_quo(char *s);
+char			*remove_quo(char *s);
 //simple_expander
-char	*expand_simple(char *s, char **env, t_data *data);
-char	*expand_dollar(char *s, int *len, char **env, t_data *data);
-int		len_within_quo(char *s, char c);
+char			*expand_simple(char *s, char **env, t_data *data);
+char			*expand_dollar(char *s, int *len, char **env, t_data *data);
+int				len_within_quo(char *s, char c);
 // complex_expander
-char	*expand_complex(char *s, enum s_type type, t_data *data);
-char	*replace_vars_complex(char *s, char **env, t_data *data);
+char			*expand_complex(char *s, enum s_type type, t_data *data);
+char			*replace_vars_complex(char *s, char **env, t_data *data);
 //expander_utils
-char	*char_to_str(char c);
-int		check_valid_dollar(char *s);
-int		char_is_valid(char c);
-int		check_valid_dollar_limit(char *s, int max);
-char	*find_env(char *s, char **env);
+char			*char_to_str(char c);
+int				check_valid_dollar(char *s);
+int				char_is_valid(char c);
+int				check_valid_dollar_limit(char *s, int max);
+char			*find_env(char *s, char **env);
 
 // cmd_utils
 t_cmd			*init_cmd(t_data *data);
@@ -170,13 +171,19 @@ char			*find_path(char *s, char **env);
 
 // call_cd
 char			*find_env_var(t_data *data, const char *var_name);
-void			add_new_env_var(t_data *data, const char *var_name, const char *new_value, int i);
+void			add_new_env_var(t_data *data, \
+								const char *var_name, \
+								const char *new_value, int i);
 char			*handle_cd_oldpwd(t_data *data);
 int				change_directory(t_data *data, char *path);
-void			add_new_env_var(t_data *data, const char *var_name, const char *new_value, int i);
+void			add_new_env_var(t_data *data, \
+								const char *var_name, \
+								const char *new_value, int i);
 void			print_cd_error(char *path);
 void			update_pwd_variables(t_data *data);
-void			update_env_var(t_data *data, const char *var_name, const char *new_value);
+void			update_env_var(t_data *data, \
+								const char *var_name, \
+								const char *new_value);
 int				call_cd(t_data *data, t_cmd *cmd);
 
 //executor
@@ -193,17 +200,14 @@ int				call_pwd(t_cmd *cmd);
 int				call_unset(t_cmd *cmd, t_data *data);
 
 // signals
-typedef enum {
-	CONTEXT_MAINSHELL,
-	CONTEXT_HEREDOC
-} ShellContext;
-
-void			init_signals(ShellContext context);
+void			signal_handler_hd(int signum);
+int				readline_event_hook_hd(void);
+void			init_signals_hd(void);
+void			setup_signals_hd(void);
+void			reset_signals_hd(void);
 void			signal_handler(int signum);
-int				readline_event_hook_hd();
-void			reset_signals();
-
-// extern int	last_received_signal;
-extern int	g_last_signal;
+void			init_signals(void);
+// needs to align with t_data def.
+extern int				g_last_signal;
 
 #endif
