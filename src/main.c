@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/15 11:59:54 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/15 18:32:07 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	minishell(t_data *data)
 		}
 		//free_data(data);
 	}
-	free_data(data);
+	//
 	exit(EXIT_SUCCESS);
 }
 
@@ -59,6 +59,8 @@ int	main(int ac, char **av, char **env)
 	init_signals();
 	print_welcome_msg();
 	minishell(data);
+	free_data(data);
+	free(data);//added
 	return (0);
 }
 

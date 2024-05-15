@@ -55,24 +55,26 @@ static void	redirect_fdout(t_io *io)
 	}
 }
 
-void	setup_stdio_backups(t_cmd *cmd)
-{
-	cmd->stdin_backup = dup(STDIN_FILENO);
-	cmd->stdout_backup = dup(STDOUT_FILENO);
-}
+// void	setup_stdio_backups(t_cmd *cmd)
+// {
+// 	cmd->stdin_backup = dup(STDIN_FILENO);
+// 	cmd->stdout_backup = dup(STDOUT_FILENO);
+// }
 
 void	reset_stdio(t_cmd *cmd)
 {
+	cmd->stdin_backup = dup(STDIN_FILENO);//added
+	cmd->stdout_backup = dup(STDOUT_FILENO);//added
 	if (cmd->stdout_backup != -1)
 	{
 		dup2(cmd->stdout_backup, STDOUT_FILENO);
 		close(cmd->stdout_backup);
-		cmd->stdin_backup = -1;//added
+		cmd->stdout_backup = -1;//added
 	}
 	if (cmd->stdin_backup != -1)
 	{
 		dup2(cmd->stdin_backup, STDIN_FILENO);
 		close(cmd->stdin_backup);
-		cmd->stdout_backup = -1;//added
+		cmd->stdin_backup = -1;//added
 	}
 }

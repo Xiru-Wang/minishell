@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   generate_cmds.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/14 21:18:16 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/15 18:44:17 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ t_cmd	*generate_cmds(t_token **token, t_data *data)
 			free_exit("malloc error", data, EXIT_FAILURE);
 		//new->id = i;//to identify cmd[last]
 		extract_redir(token, new, data);//extract redir and remove from tokenlist
+		//print_token_list(*token);//debug
 		fill_cmd(token, new);	//fill cmd info && update token list
 		append_cmd(&data->cmd_list, new);//append cmd to cmd list
 		i++;
@@ -111,7 +112,7 @@ static void	fill_cmd(t_token **head, t_cmd *cmd)
 	if (!temp || temp->type == PIPE)//1st cmd cannot be PIPE
 		free_exit("syntax error near unexpected token", cmd->data, STDERR_FILENO);
 	size = count_args(temp);
-	cmd->s = (char **)malloc((size + 1) * sizeof(char *));
+	cmd->s = (char **)calloc(sizeof(char *), (size + 1));
 	if (!cmd->s)
 		free_exit("malloc error", cmd->data, EXIT_FAILURE);
 	i = 0;
@@ -120,18 +121,22 @@ static void	fill_cmd(t_token **head, t_cmd *cmd)
 		next = temp->next;
 		if (temp->type == WORD)
 		{
-			if (cmd->s[i])
-				free(cmd->s[i]);
+			// if (cmd->s[i])
+			// 	free(cmd->s[i]);//Why need those lines??
+			cmd->s[i] = NULL;
 			cmd->s[i] = expand_complex(temp->value, WORD, cmd->data);;
 			if (i == 0)
+			{
 				builtin = ft_bubiltin(cmd->s[0]);
-			if (builtin)
-				cmd->is_builtin = builtin;
+				if (builtin)
+					cmd->is_builtin = builtin;
+			}
 		}
 		else if (temp->type == QUO)
 		{
-			if (cmd->s[i])
-				free(cmd->s[i]);
+			// if (cmd->s[i])
+			// 	free(cmd->s[i]);
+			cmd->s[i] = NULL;
 			cmd->s[i] = expand_complex(temp->value, QUO, cmd->data);
 		}
 		del_token(head, temp);
