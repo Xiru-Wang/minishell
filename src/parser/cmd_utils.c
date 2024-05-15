@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:31 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/15 11:53:48 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/15 18:47:07 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_cmd	*init_cmd(t_data *data)
 {
 	t_cmd	*new;
 
-	new = (t_cmd *)malloc(sizeof(t_cmd));
+	new = (t_cmd *)calloc(sizeof(t_cmd), sizeof(t_cmd) * 1);//changed
 	if (!new)
 		return (NULL);
 	new->s= NULL;
@@ -70,7 +70,7 @@ int	count_args(t_token *list)
 {
 	int	size;
 
-	size = 1;
+	size = 0;//was : size = 1
 	while (list && list->type != PIPE)
 	{
 		size++;

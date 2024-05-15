@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_free.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jschroed <jschroed@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:36:51 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/14 21:10:41 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/15 18:30:19 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,15 @@ void free_arr(char **arr)
 void free_data(t_data *data)
 {
 	free_arr(data->env);
-	free(data->line);
+	if (data->line)//added
+		free(data->line);
 	free_token_list(&data->token_list);
 	free_cmd_list(&data->cmd_list);
 	free(data->pwd);
 	free(data->old_pwd);
 	free(data->pid);
 	free(data->var_name);
-	free(data);
+	//free(data);
 }
 
 void free_cmd_list(t_cmd **cmd)
