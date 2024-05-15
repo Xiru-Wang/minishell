@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/15 18:44:17 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/15 19:26:12 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ static void	fill_cmd(t_token **head, t_cmd *cmd)
 				if (builtin)
 					cmd->is_builtin = builtin;
 			}
+			free(cmd->s[i]); // Free the allocated memory
 		}
 		else if (temp->type == QUO)
 		{

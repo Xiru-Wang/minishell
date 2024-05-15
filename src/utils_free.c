@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:36:51 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/15 18:30:19 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/15 19:13:17 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void free_data(t_data *data)
 	free(data->old_pwd);
 	free(data->pid);
 	free(data->var_name);
-	//free(data);
+	free(data);
 }
 
 void free_cmd_list(t_cmd **cmd)
