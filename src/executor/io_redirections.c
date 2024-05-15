@@ -32,7 +32,6 @@ static void	redirect_fdin(t_io *io, t_cmd *cmd)
 		fd = open(cmd->hdfile, O_RDONLY);
 		unlink(cmd->hdfile);
 	}
-
 	if (fd != -1)
 	{
 		dup2(fd, STDIN_FILENO);
@@ -48,7 +47,7 @@ static void	redirect_fdout(t_io *io)
 	if (io->type == REDIR_OUT)
 		fd = open(io->filename, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	else if (io->type == APPEND)
-		fd = open(io->filename, O_WRONLY | O_CREAT | APPEND, 0666);
+		fd = open(io->filename, O_WRONLY | O_CREAT | O_APPEND, 0666);
 	if (fd != -1)
 	{
 		dup2(fd, STDOUT_FILENO);
@@ -68,10 +67,12 @@ void	reset_stdio(t_cmd *cmd)
 	{
 		dup2(cmd->stdout_backup, STDOUT_FILENO);
 		close(cmd->stdout_backup);
+		cmd->stdin_backup = -1;//added
 	}
 	if (cmd->stdin_backup != -1)
 	{
 		dup2(cmd->stdin_backup, STDIN_FILENO);
 		close(cmd->stdin_backup);
+		cmd->stdout_backup = -1;//added
 	}
 }

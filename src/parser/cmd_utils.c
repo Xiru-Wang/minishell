@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:31 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/14 21:26:10 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/15 11:53:48 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ void	print_io_list(t_cmd *cmd)
 		while (cmd->io_list)
 		{
 			printf("io_list: %s\n", cmd->io_list->filename);
+			printf("io_list type: %d\n", cmd->io_list->type);
 			cmd->io_list = cmd->io_list->next;
 		}
 	}

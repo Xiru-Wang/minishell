@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 17:10:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/05 21:03:01 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/15 10:30:28 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,14 @@ void	append_io(t_io **head, t_io *new)
 void	free_io_list(t_io **list)
 {
     t_io	*temp;
-    // Check if the list pointer itself is NULL or points to NULL
     if (list == NULL || *list == NULL)
         return;
     while (*list)
     {
-        temp = (*list)->next; // Save the next node
+        temp = (*list)->next;
         if ((*list)->filename)
-            free((*list)->filename); // Free the filename if it exists
-        free(*list); // Free the current node
-        *list = temp; // Move to the next node
+            free((*list)->filename);
+        free(*list);
+        *list = temp;
     }
 }

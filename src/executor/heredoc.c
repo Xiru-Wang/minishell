@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:49 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/14 20:39:09 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/15 10:29:27 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,56 +38,6 @@ void	check_hd(t_cmd *cmd)
 		temp = temp->next;
 	}
 }
-
-/* static int	process_line(char *line, t_cmd *cmd, int fd, int expand_sign) */
-/* { */
-/*     char	*new; */
-/*  */
-/*     if (ft_strncmp(line, cmd->delimiter, ft_strlen(cmd->delimiter)) == 0) */
-/*         return (1); */
-/*     if (expand_sign == 0 && check_valid_dollar(line)) */
-/*     { */
-/*         new = expand_simple(line, cmd->data->env, cmd->data); */
-/*         ft_putendl_fd(new, fd); */
-/*         free(new); */
-/*     } */
-/*     else */
-/*         ft_putendl_fd(line, fd); */
-/*     return (0); */
-/* } */
-/*  */
-/* static int	create_hd(t_cmd *cmd, int expand_sign) */
-/* { */
-/*     int		fd; */
-/*     int		i; */
-/*     char	*line; */
-/*  */
-/*     fd = open(cmd->hdfile, O_CREAT | O_RDWR | O_TRUNC, 0644); */
-/*     setup_signals_hd(); */
-/*     i = 1; */
-/*     while (1) */
-/*     { */
-/*         line = readline("heredoc>"); */
-/*         if (line == NULL || g_last_signal == 2) */
-/*         { */
-/*             if (g_last_signal == 2) */
-/*                 reset_hd_file(&fd, cmd->hdfile); */
-/*             free(line); */
-/*             reset_signals_hd(); */
-/*             return (EXIT_SIGINT); */
-/*         } */
-/*         if (process_line(line, cmd, fd, expand_sign)) */
-/*             break ; */
-/*         free(line); */
-/*         i++; */
-/*     } */
-/*     if (!line) */
-/*         printf("minishell: warning: here-document at line %d \ */
-/*                 delimited by end-of-file (wanted `%s')\n", i, cmd->delimiter); */
-/*     close(fd); */
-/*     reset_signals_hd(); */
-/*     return (EXIT_SUCCESS); */
-/* } */
 
 static int	create_hd(t_cmd *cmd, int expand_sign)
 {
@@ -166,7 +116,7 @@ static int	reset_hd_file(int *fd, const char *filename)
 {
 	close(*fd);
 	*fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
-	if (*fd == -1) 
+	if (*fd == -1)
 	{
 		if (errno == EACCES)
 		{
