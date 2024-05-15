@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 19:44:07 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/15 17:00:46 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/15 18:07:39 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,31 +18,15 @@ void	sigint_handler(int signum)
 	{
 		if (isatty(STDIN_FILENO))
 		{
-			write(STDERR_FILENO, "\n", 2);
+			write(STDERR_FILENO, "\n", 1);
 			rl_on_new_line();
 			rl_replace_line("", 0);
 			rl_redisplay();
 		}
 		else
 		{
-			write(STDERR_FILENO, "\n", 2);
+			write(STDERR_FILENO, "\n", 1);
 			exit(EXIT_SIGINT);
-		}
-	}
-}
-
-void	sigquit_handler(int signum)
-{
-	if (signum == SIGQUIT)
-	{
-		if (isatty(STDIN_FILENO))
-		{
-		//????
-		}
-		else
-		{
-			write(STDERR_FILENO, "Quit: 3\n", 8);
-			exit(EXIT_SIGQUIT);
 		}
 	}
 }
@@ -56,7 +40,7 @@ void	init_signals(void)
 	sa_int.sa_flags = 0;
 	sigemptyset(&sa_int.sa_mask);
 	sigaction(SIGINT, &sa_int, NULL);
-	sa_quit.sa_handler = sigquit_handler;
+	sa_quit.sa_handler = SIG_IGN;
 	sa_quit.sa_flags = 0;
 	sigemptyset(&sa_quit.sa_mask);
 	sigaction(SIGQUIT, &sa_quit, NULL);
