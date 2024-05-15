@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jschroed <jschroed@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 19:44:07 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/14 20:26:06 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/15 17:00:46 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	sigquit_handler(int signum)
 	{
 		if (isatty(STDIN_FILENO))
 		{
+		//????
 		}
 		else
 		{
