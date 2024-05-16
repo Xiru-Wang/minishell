@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/16 19:27:45 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/16 20:02:33 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	minishell(t_data *data)
 {
 	while (1)
 	{
+		init_signals();
 		data->line = readline("minishell>>");
 		if (!data->line)
 		{
@@ -38,6 +39,7 @@ void	minishell(t_data *data)
 		// print_io_list(data->cmd_list);
 		if (data->cmd_list)
 		{
+			init_signals_noint();
 			if (executor(data->cmd_list, data) == 1)  // 检查executor的返回值
 				continue;  // 如果heredoc被中断,继续下一个循环
 		}
@@ -58,7 +60,7 @@ int	main(int ac, char **av, char **env)
 	}
 	data = (t_data *)malloc(sizeof(t_data));
 	init_data(data, env);
-	init_signals();
+	/* init_signals(); */
 	print_welcome_msg();
 	minishell(data);
 	free_data(data);

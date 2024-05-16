@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/16 17:28:39 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/16 19:53:01 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,6 +207,9 @@ void			setup_signals_hd(void);
 void			reset_signals_hd(void);
 void			signal_handler(int signum);
 void			init_signals(void);
+
+void	init_signals_noint(void);
+
 // needs to align with t_data def.
 extern int				g_last_signal;
 

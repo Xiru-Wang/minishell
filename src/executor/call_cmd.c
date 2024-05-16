@@ -58,9 +58,8 @@ int	call_cmd(t_data *data, t_cmd *cmd)
 		while (waitpid(pid, &status, 0) == -1)
 		{
 			if (errno == EINTR)
-				kill(pid, SIGINT);
-				/* continue; */
-			/* free_exit("waitpid", data, EXIT_FAILURE); */
+				continue;
+			free_exit("waitpid", data, EXIT_FAILURE);
 		}
 		if (WIFSIGNALED(status))
 		{
