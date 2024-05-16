@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:36:51 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/16 20:01:36 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/16 21:35:51 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	free_double_ptr(char **ptr)
 {
 	int	i;
 
-	if (!ptr)
+	if (!ptr || !*ptr)
 		return ;
 	i = 0;
 	while (ptr[i])

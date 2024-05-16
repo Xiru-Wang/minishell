@@ -7,12 +7,13 @@ static int	wait_for_processes(int *pids, int num_pids);
 
 int	executor(t_cmd *cmd, t_data *data)
 {
-	data->pid = ft_calloc(sizeof(pid_t), data->cmd_num);
+	data->pid = ft_calloc(data->cmd_num, sizeof(pid_t));
 	if (cmd->next == NULL)
 		data->exit_code = execute_single_command(cmd);
 	else
 	{
 		data->exit_code = execute_command_pipeline(cmd);
+		reset_stdio(cmd); // ADDED
 	}
 	if (data->pid)//added
 		free(data->pid);

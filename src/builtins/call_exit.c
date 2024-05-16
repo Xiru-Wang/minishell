@@ -6,7 +6,7 @@
 /*   By: jschroed <jschroed@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:37:05 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/04 21:50:15 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/16 21:34:57 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,26 +26,26 @@
  * @param data The data structure (not used in this function).
  * @return The determined exit code.
  */
-static int determine_exit_code(char **str)
-{
-	int exit_code;
-
-	if (!str[1])
-		exit_code = 0;
-	else
-	{
-		if (is_str_digit(str[1]))
-			exit_code = ft_atoi(str[1]);
-		else
-		{
-			ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
-			ft_putstr_fd(str[1], STDERR_FILENO);
-			ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
-			exit_code = 255;
-		}
-	}
-	return exit_code;
-}
+/* static int determine_exit_code(char **str) */
+/* { */
+/*     int exit_code; */
+/*  */
+/*     if (!str[1]) */
+/*         exit_code = 0; */
+/*     else */
+/*     { */
+/*         if (is_str_digit(str[1])) */
+/*             exit_code = ft_atoi(str[1]); */
+/*         else */
+/*         { */
+/*             ft_putstr_fd("minishell: exit: ", STDERR_FILENO); */
+/*             ft_putstr_fd(str[1], STDERR_FILENO); */
+/*             ft_putstr_fd(": numeric argument required\n", STDERR_FILENO); */
+/*             exit_code = 255; */
+/*         } */
+/*     } */
+/*     return exit_code; */
+/* } */
 
 /**
  * Exits the minishell program with a specified exit code.
@@ -65,17 +65,14 @@ static int determine_exit_code(char **str)
  */
 int call_exit(t_cmd *cmd, t_data *data)
 {
-	int exit_code;
 	(void) data;
 
-	ft_putendl_fd("exit", STDERR_FILENO);
-	if (cmd->s[1] && cmd->s[2])
+	if (cmd->s[1])
 	{
 		ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
-	exit_code = determine_exit_code(cmd->s);
+	ft_putendl_fd("exit", STDERR_FILENO);
 	free_data(data);
-	exit(exit_code);
-	return (exit_code);
+	exit(EXIT_SUCCESS);
 }
