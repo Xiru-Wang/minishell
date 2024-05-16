@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:31 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/15 18:47:07 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/15 23:17:59 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_cmd	*init_cmd(t_data *data)
 {
 	t_cmd	*new;
 
-	new = (t_cmd *)calloc(sizeof(t_cmd), sizeof(t_cmd) * 1);//changed
+	new = (t_cmd *)calloc(1, sizeof(t_cmd));//changed
 	if (!new)
 		return (NULL);
 	new->s= NULL;

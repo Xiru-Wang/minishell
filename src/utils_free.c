@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_free.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:36:51 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/15 19:13:17 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/15 23:23:12 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,17 @@ void free_arr(char **arr)
 
 void free_data(t_data *data)
 {
-	free_arr(data->env);
-	if (data->line)//added
+	if (data->line)
 		free(data->line);
 	free_token_list(&data->token_list);
 	free_cmd_list(&data->cmd_list);
+	free_double_ptr(data->env);
 	free(data->pwd);
 	free(data->old_pwd);
-	free(data->pid);
-	free(data->var_name);
+	if (data->pid)
+		free(data->pid);
+	if (data->var_name)
+		free(data->var_name);
 	free(data);
 }
 
@@ -67,13 +69,7 @@ void	free_exit(char *s, t_data *data, int code)
 {
 	if (s)
 		printf("%s\n", s);
-	free_token_list(&data->token_list);
-	free(data->line);
-	free_cmd_list(&data->cmd_list);
-	free_double_ptr(data->env);
-	free(data->pwd);
-	free(data->old_pwd);
-	free(data);
+	free_data(data);
 	exit(code);
 }
 

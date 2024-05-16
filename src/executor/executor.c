@@ -5,7 +5,7 @@ static int execute_command_pipeline(t_cmd *cmd);
 static int setup_child_process(t_cmd *cmd, int *end, int fd_in);
 static int wait_for_processes(int *pids, int num_pids);
 
-int    executor(t_cmd *cmd, t_data *data)
+int	executor(t_cmd *cmd, t_data *data)
 {
 	data->pid = ft_calloc(sizeof(pid_t), data->cmd_num);
 	if (cmd->next == NULL)
@@ -93,28 +93,51 @@ static int	setup_child_process(t_cmd *cmd, int *end, int fd_in)
 		exit (call_cmd(cmd->data, cmd));  // Execute external command and exit
 }
 
-
-static int	wait_for_processes(int *pids, int num_pids)
+//echo $? ---->> equal last child exit status🤔
+static int    wait_for_processes(int *pids, int num_pids)
 {
-	int	i;
-	int	status;
-	int	exit_status;
-	int	current_status;
+    int    i;
+    int    status;
+    int    exit_status;
 
-	i = 0;
-	exit_status = 0;
-	while (i < num_pids)
-	{
-		if (waitpid(pids[i], &status, 0) == -1)
-			free_exit("waitpid", NULL, EXIT_FAILURE);
-		else if (WIFEXITED(status))
-		{
-			current_status = WEXITSTATUS(status);
-			// Update the global exit status if it's the last process or if an error occurred
-			if (i == num_pids - 1 || current_status != 0)
-				exit_status += current_status;
-		}
-		i++;
-	}
-	return (exit_status);
+    i = 0;
+    exit_status = 0;
+    while (i < num_pids)
+    {
+        if (waitpid(pids[i], &status, 0) == -1)
+            free_exit("waitpid", NULL, EXIT_FAILURE);
+        else if (WIFEXITED(status))
+        {
+            if (i == num_pids - 1)
+                exit_status = WEXITSTATUS(status);
+        }
+        i++;
+    }
+    return (exit_status);
 }
+
+
+// static int	wait_for_processes(int *pids, int num_pids)
+// {
+// 	int	i;
+// 	int	status;
+// 	int	exit_status;
+// 	int	current_status;
+
+// 	i = 0;
+// 	exit_status = 0;
+// 	while (i < num_pids)
+// 	{
+// 		if (waitpid(pids[i], &status, 0) == -1)
+// 			free_exit("waitpid", NULL, EXIT_FAILURE);
+// 		else if (WIFEXITED(status))
+// 		{
+// 			current_status = WEXITSTATUS(status);
+// 			// Update the global exit status if it's the last process or if an error occurred
+// 			if (i == num_pids - 1 || current_status != 0)
+// 				exit_status += current_status;
+// 		}
+// 		i++;
+// 	}
+// 	return (exit_status);
+// }
