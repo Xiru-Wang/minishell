@@ -55,9 +55,19 @@ int	call_cmd(t_data *data, t_cmd *cmd)
 	}
 	else
 	{
-		if (waitpid(pid, &status, 0) == -1)//?WNOHANG?
-			free_exit("waitpid", data, EXIT_FAILURE);
-		if (WIFEXITED(status))
+		while (waitpid(pid, &status, 0) == -1)
+		{
+			if (errno == EINTR)
+				kill(pid, SIGINT);
+				/* continue; */
+			/* free_exit("waitpid", data, EXIT_FAILURE); */
+		}
+		if (WIFSIGNALED(status))
+		{
+			if (WTERMSIG(status) == SIGINT)
+				return (130);
+		}
+		else if (WIFEXITED(status))
 			return (WEXITSTATUS(status));
 	}
 	return (0);
