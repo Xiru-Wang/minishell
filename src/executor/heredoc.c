@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:49 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/15 10:29:27 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/16 17:30:47 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@ static char	*create_hd_name(void);
 static int	create_hd(t_cmd *cmd, int eof_quote);
 static int	reset_hd_file(int *fd, const char *filename);
 
-void	check_hd(t_cmd *cmd)
+int	check_hd(t_cmd *cmd)
 {
 	t_io	*temp;
 	int		quote;
 
 	if (!cmd->io_list)
-		return ;
+		return (0);
 	temp = cmd->io_list;
 	while (temp)
 	{
@@ -33,10 +33,12 @@ void	check_hd(t_cmd *cmd)
 				free(cmd->hdfile);
 			cmd->hdfile = create_hd_name();
 			quote = remove_hd_quotes(cmd);
-			create_hd(cmd, quote);
+			if (create_hd(cmd, quote) != 0)//interrpted by signal
+				return (130);	
 		}
 		temp = temp->next;
 	}
+	return (0);
 }
 
 static int	create_hd(t_cmd *cmd, int expand_sign)
@@ -50,15 +52,15 @@ static int	create_hd(t_cmd *cmd, int expand_sign)
 	setup_signals_hd();
 	while (1)
 	{
-		i = 1;
 		line = readline("heredoc>");
+		i = 1;
 		if (line == NULL || g_last_signal == 2)
 		{
 			if (g_last_signal == 2)
 				reset_hd_file(&fd, cmd->hdfile);
 			free(line);
 			reset_signals_hd();
-			return (EXIT_SIGINT);
+			return (EXIT_SIGINT);//return 2?? 128 + 2 = 130
 		}
 		if (ft_strncmp(line, cmd->delimiter, ft_strlen(cmd->delimiter)) == 0)
 			break ;
@@ -118,21 +120,26 @@ static int	reset_hd_file(int *fd, const char *filename)
 	*fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (*fd == -1)
 	{
-		if (errno == EACCES)
-		{
-			perror("Permission denied");
-			return (EXIT_PERMISSION_DENIED);
-		}
-		else if (errno == ENOENT)
-		{
-			perror("No such file or directory");
-			return (EXIT_FILE_NOT_FOUND);
-		}
-		else
-		{
-			perror("Failed to open file in reset_file");
-			return (EXIT_FAILURE);
-		}
+		errno = EINTR;//CONTROL + C
+		// {
+		// 	perror("Permission denied");
+		// 	return (EXIT_PERMISSION_DENIED);
+		// }
+		// if (errno == EACCES)
+		// {
+		// 	perror("Permission denied");
+		// 	return (EXIT_PERMISSION_DENIED);
+		// }
+		// else if (errno == ENOENT)
+		// {
+		// 	perror("No such file or directory");
+		// 	return (EXIT_FILE_NOT_FOUND);
+		// }
+		// else
+		// {
+		// 	perror("Failed to open file in reset_file");
+		// 	return (EXIT_FAILURE);
+		// }
 	}
 	close(*fd);
 	return (EXIT_SUCCESS);

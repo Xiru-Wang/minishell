@@ -1,9 +1,9 @@
 #include "../../includes/minishell.h"
 
-static int execute_single_command(t_cmd *cmd);
-static int execute_command_pipeline(t_cmd *cmd);
-static int setup_child_process(t_cmd *cmd, int *end, int fd_in);
-static int wait_for_processes(int *pids, int num_pids);
+static int	execute_single_command(t_cmd *cmd);
+static int	execute_command_pipeline(t_cmd *cmd);
+static int	setup_child_process(t_cmd *cmd, int *end, int fd_in);
+static int	wait_for_processes(int *pids, int num_pids);
 
 int	executor(t_cmd *cmd, t_data *data)
 {
@@ -26,8 +26,8 @@ static int execute_single_command(t_cmd *cmd)
 {
 	int	status;
 
-	//setup_stdio_backups(cmd);
-	check_hd(cmd);
+	if (check_hd(cmd) == 130)//try
+		return (130);//try
 	redirect_io(cmd);
 	if (cmd->is_builtin)
 		status = call_builtin(cmd);
@@ -74,7 +74,9 @@ static int	execute_command_pipeline(t_cmd *cmd)
 //被 dup2 覆盖的文件描述符会被自动关闭,你不需要手动关闭它们。
 static int	setup_child_process(t_cmd *cmd, int *end, int fd_in)
 {
-	check_hd(cmd);
+	//check_hd(cmd);
+	if (check_hd(cmd) == 130)//try
+		return (130);//try
 	if (fd_in != 0)
 	{
 		dup2(fd_in, STDIN_FILENO);  // Redirect stdin for the current command
@@ -104,8 +106,12 @@ static int    wait_for_processes(int *pids, int num_pids)
     exit_status = 0;
     while (i < num_pids)
     {
-        if (waitpid(pids[i], &status, 0) == -1)
-            free_exit("waitpid", NULL, EXIT_FAILURE);
+        if (waitpid(pids[i], &status, WNOHANG) == -1)//change 0 to WNOHANG
+		{
+			if (errno == EINTR)//signal interrrupted??
+				exit_status = 130;//not sure
+			free_exit("waitpid", NULL, EXIT_FAILURE);
+		}
         else if (WIFEXITED(status))
         {
             if (i == num_pids - 1)

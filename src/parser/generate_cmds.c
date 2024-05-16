@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   generate_cmds.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/15 23:11:30 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/16 16:59:41 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,16 @@ t_cmd	*generate_cmds(t_token **token, t_data *data)
 	t_cmd	*new;
 
 	i = 0;
-	data->cmd_num = count_pipe(*token) + 1;//eg. 2 pipe = 3 cmds
+	data->cmd_num = count_pipe(*token) + 1;
 	data->cmd_list = NULL;
-	while (i < data->cmd_num && *token) // loop thru to generate cmd_list
+	while (i < data->cmd_num && *token)
 	{
-		new = init_cmd(data);//malloc space
+		new = init_cmd(data);
 		if (!new)
 			free_exit("malloc error", data, EXIT_FAILURE);
-		//new->id = i;//to identify cmd[last]
-		extract_redir(token, new, data);//extract redir and remove from tokenlist
-		//print_token_list(*token);//debug
-		fill_cmd(token, new);	//fill cmd info && update token list
-		append_cmd(&data->cmd_list, new);//append cmd to cmd list
+		extract_redir(token, new, data);
+		fill_cmd(token, new);
+		append_cmd(&data->cmd_list, new);
 		i++;
 	}
 	return (data->cmd_list);
@@ -63,7 +61,7 @@ static void	extract_redir(t_token **head, t_cmd *cmd, t_data *data)
 			add_io_list(cmd, temp);
 			del_token(head, temp);
 			del_token(head, next);
-			temp = *head;//!!!DID NOT UPDATED CORRECTLY
+			temp = *head;
 		}
 		else
 			temp = temp->next;
@@ -71,8 +69,7 @@ static void	extract_redir(t_token **head, t_cmd *cmd, t_data *data)
 }
 
 //assign type to each cmd's redirections
-//if multiple '>file1 >file2 > file3'：empty file1,file2, output goes ot files3
-
+//if multiple '>file1 >file2 > file3'：empty file1,file2, output goes to files3
 static void	add_io_list(t_cmd *cmd, t_token *token)
 {
 	t_token	*next;
@@ -109,21 +106,21 @@ static void	fill_cmd(t_token **head, t_cmd *cmd)
 	int			size;
 
 	temp = *head;
-	if (!temp || temp->type == PIPE)//1st cmd cannot be PIPE
+	if (!temp || temp->type == PIPE)
 		free_exit("syntax error near unexpected token", cmd->data, STDERR_FILENO);
-	size = count_args(temp);
-	cmd->s = (char **)calloc(sizeof(char *), (size + 1));
+	size = count_args(temp) + 1;
+	cmd->s = (char **)ft_calloc(size, sizeof(char *));
 	if (!cmd->s)
 		free_exit("malloc error", cmd->data, EXIT_FAILURE);
 	i = 0;
 	while (temp && temp->type != PIPE && size > 0)
 	{
 		next = temp->next;
+		if (cmd->s[i])
+			free(cmd->s[i]);
+		cmd->s[i] = NULL;
 		if (temp->type == WORD)
 		{
-			// if (cmd->s[i])
-			// 	free(cmd->s[i]);//Why need those lines??
-			cmd->s[i] = NULL;
 			cmd->s[i] = expand_complex(temp->value, WORD, cmd->data);;
 			if (i == 0)
 			{
@@ -131,12 +128,9 @@ static void	fill_cmd(t_token **head, t_cmd *cmd)
 				if (builtin)
 					cmd->is_builtin = builtin;
 			}
-			//free(cmd->s[i]); // Free the allocated memory
 		}
 		else if (temp->type == QUO)
 		{
-			// if (cmd->s[i])
-			// 	free(cmd->s[i]);
 			cmd->s[i] = NULL;
 			cmd->s[i] = expand_complex(temp->value, QUO, cmd->data);
 		}

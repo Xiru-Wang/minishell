@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:20 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/10 20:17:38 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/16 16:34:00 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ char	*expand_complex(char *s, enum s_type type, t_data *data)
 	char	*temp;
 	char	*new;
 
+	temp = NULL;
 	if (check_valid_dollar(s) == 0 && type == WORD)
 		return (ft_strdup(s));
 	else if (check_valid_dollar(s) == 0 && type == QUO)
@@ -51,7 +52,7 @@ char	*replace_vars_complex(char *s, char **env, t_data *data)
 	char	*temp;
 
 	i = 0;
-	dst = ft_calloc(sizeof(char), 1);
+	dst = (char *)ft_calloc(1, sizeof(char));
 	value = NULL;
 	temp = NULL;
 	while (s[i])

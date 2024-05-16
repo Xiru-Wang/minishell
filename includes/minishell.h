@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/14 20:39:58 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/16 17:28:39 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ void			get_fds(t_cmd *cmd);
 void			redirect_io(t_cmd *cmd);
 
 //heredoc
-void			check_hd(t_cmd *cmd);
+int				check_hd(t_cmd *cmd);
 
 // call_cmd
 int				call_cmd(t_data *data, t_cmd *cmd);

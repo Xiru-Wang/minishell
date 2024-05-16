@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:58 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/05 20:56:35 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/16 16:31:38 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,8 @@ void	del_token(t_token **head, t_token *node)
 	//update the next node's prev
 	if (node->next)
 		node->next->prev = node->prev;
-	free(node->value);
+	if (node->value)
+		free(node->value);
 	free(node);
 }
 
