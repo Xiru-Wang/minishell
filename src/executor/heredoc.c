@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:49 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/17 18:58:30 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/17 20:34:32 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ int	check_hd(t_cmd *cmd)
 				free(cmd->hdfile);
 			cmd->hdfile = create_hd_name();
 			quote = remove_hd_quotes(cmd);
-			if (create_hd(cmd, quote) != 0)//interrpted by signal
+			//if (create_hd(cmd, quote) != 0)//interrpted by signal
+			if (create_hd(cmd, quote) == 130)
 				return (130);
 		}
 		temp = temp->next;
@@ -59,6 +60,7 @@ static int	create_hd(t_cmd *cmd, int expand_sign)
 			if (g_last_signal == 2)
 				reset_hd_file(&fd, cmd->hdfile);
 			free(line);
+			close(fd);//!!ADDED
 			reset_signals_hd();
 			return (EXIT_SIGINT);//return 2?? 128 + 2 = 130
 		}
@@ -114,29 +116,29 @@ static char	*create_hd_name(void)
 	return (name);
 }
 
-// static int	reset_hd_file(int *fd, const char *filename)
-// {
-// 	close(*fd);
-// 	*fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
-// 	if (*fd == -1)
-// 		errno = EINTR;
-// 	close(*fd);
-// 	return (EXIT_SUCCESS);
-// }
-
-static int reset_hd_file(int *fd, const char *filename)
+static int	reset_hd_file(int *fd, const char *filename)
 {
-    close(*fd);
-    *fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
-    if (*fd == -1)
-    {
-        perror("reset_hd_file");
-        return (EXIT_FAILURE);
-    }
-    if (close(*fd) == -1)
-    {
-        perror("reset_hd_file");
-        return (EXIT_FAILURE);
-    }
-    return (EXIT_SUCCESS);
+	close(*fd);
+	*fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if (*fd == -1)
+		errno = EINTR;
+	close(*fd);
+	return (EXIT_SUCCESS);
 }
+
+// static int reset_hd_file(int *fd, const char *filename)
+// {
+//     close(*fd);
+//     *fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
+//     if (*fd == -1)
+//     {
+//         perror("reset_hd_file");
+//         return (EXIT_FAILURE);
+//     }
+//     if (close(*fd) == -1)
+//     {
+//         perror("reset_hd_file");
+//         return (EXIT_FAILURE);
+//     }
+//     return (EXIT_SUCCESS);
+// }

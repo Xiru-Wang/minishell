@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   io_redirections.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 17:35:45 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/16 17:35:49 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/17 20:26:16 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,13 @@ static void	redirect_fdin(t_io *io, t_cmd *cmd)
 	if (io->type == REDIR_IN)
 		fd = open(io->filename, O_RDONLY);
 	else if (io->type == HEREDOC)
-	{
 		fd = open(cmd->hdfile, O_RDONLY);
-		unlink(cmd->hdfile);
-	}
 	if (fd != -1)
 	{
 		dup2(fd, STDIN_FILENO);
 		close(fd);
+		if (cmd->hdfile)
+			unlink(cmd->hdfile);
 	}
 }
 
@@ -67,26 +66,20 @@ static void	redirect_fdout(t_io *io)
 	}
 }
 
-// void	setup_stdio_backups(t_cmd *cmd)
-// {
-// 	cmd->stdin_backup = dup(STDIN_FILENO);
-// 	cmd->stdout_backup = dup(STDOUT_FILENO);
-// }
-
 void	reset_stdio(t_cmd *cmd)
 {
-	cmd->stdin_backup = dup(STDIN_FILENO);//added
-	cmd->stdout_backup = dup(STDOUT_FILENO);//added
+	cmd->stdin_backup = dup(STDIN_FILENO);
+	cmd->stdout_backup = dup(STDOUT_FILENO);
 	if (cmd->stdout_backup != -1)
 	{
 		dup2(cmd->stdout_backup, STDOUT_FILENO);
 		close(cmd->stdout_backup);
-		cmd->stdout_backup = -1;//added
+		cmd->stdout_backup = -1;
 	}
 	if (cmd->stdin_backup != -1)
 	{
 		dup2(cmd->stdin_backup, STDIN_FILENO);
 		close(cmd->stdin_backup);
-		cmd->stdin_backup = -1;//added
+		cmd->stdin_backup = -1;
 	}
 }

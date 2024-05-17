@@ -17,7 +17,8 @@ int	executor(t_cmd *cmd, t_data *data)
 	}
 	if (data->pid)//shoud i free it here?
 		free(data->pid);
-	if (data->exit_code == 1)  // 检查exit_code是否为1,表示heredoc被中断
+	//if (data->exit_code == 1)  // 检查exit_code是否为1,表示heredoc被中断？？
+	if (data->exit_code == 130)
 		return (1);
 	else
 		return (0);
