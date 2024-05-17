@@ -15,7 +15,7 @@ int	executor(t_cmd *cmd, t_data *data)
 		data->exit_code = execute_command_pipeline(cmd);
 		reset_stdio(cmd); // ADDED
 	}
-	if (data->pid)//added
+	if (data->pid)//shoud i free it here?
 		free(data->pid);
 	if (data->exit_code == 1)  // 检查exit_code是否为1,表示heredoc被中断
 		return (1);
@@ -50,10 +50,10 @@ static int	execute_command_pipeline(t_cmd *cmd)
 	current = cmd;
 	while (current)
 	{
-		if (current->next)
-			pipe(end);
 		if (check_hd(current) == 130)//current!!not cmd!!
 			return (130);//try where should i put heredoc??
+		if (current->next)
+			pipe(end);
 		cmd->data->pid[i] = fork();
 		if (cmd->data->pid[i] == 0)
 		{
@@ -67,7 +67,10 @@ static int	execute_command_pipeline(t_cmd *cmd)
 			fd_in = end[0];  // Use the read end of the current pipe in the next iteration
 		}
 		if (current->next == NULL)//added
+		{
 			execute_single_command(current);//added
+			break ;
+		}
 		current = current->next;
 		i++;
 	}
