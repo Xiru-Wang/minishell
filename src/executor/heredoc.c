@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:49 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/16 17:30:47 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/17 18:58:30 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	check_hd(t_cmd *cmd)
 			cmd->hdfile = create_hd_name();
 			quote = remove_hd_quotes(cmd);
 			if (create_hd(cmd, quote) != 0)//interrpted by signal
-				return (130);	
+				return (130);
 		}
 		temp = temp->next;
 	}
@@ -114,33 +114,29 @@ static char	*create_hd_name(void)
 	return (name);
 }
 
-static int	reset_hd_file(int *fd, const char *filename)
+// static int	reset_hd_file(int *fd, const char *filename)
+// {
+// 	close(*fd);
+// 	*fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
+// 	if (*fd == -1)
+// 		errno = EINTR;
+// 	close(*fd);
+// 	return (EXIT_SUCCESS);
+// }
+
+static int reset_hd_file(int *fd, const char *filename)
 {
-	close(*fd);
-	*fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
-	if (*fd == -1)
-	{
-		errno = EINTR;//CONTROL + C
-		// {
-		// 	perror("Permission denied");
-		// 	return (EXIT_PERMISSION_DENIED);
-		// }
-		// if (errno == EACCES)
-		// {
-		// 	perror("Permission denied");
-		// 	return (EXIT_PERMISSION_DENIED);
-		// }
-		// else if (errno == ENOENT)
-		// {
-		// 	perror("No such file or directory");
-		// 	return (EXIT_FILE_NOT_FOUND);
-		// }
-		// else
-		// {
-		// 	perror("Failed to open file in reset_file");
-		// 	return (EXIT_FAILURE);
-		// }
-	}
-	close(*fd);
-	return (EXIT_SUCCESS);
+    close(*fd);
+    *fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
+    if (*fd == -1)
+    {
+        perror("reset_hd_file");
+        return (EXIT_FAILURE);
+    }
+    if (close(*fd) == -1)
+    {
+        perror("reset_hd_file");
+        return (EXIT_FAILURE);
+    }
+    return (EXIT_SUCCESS);
 }

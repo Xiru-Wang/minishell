@@ -52,12 +52,12 @@ static int	execute_command_pipeline(t_cmd *cmd)
 	{
 		if (current->next)
 			pipe(end);
+		if (check_hd(current) == 130)//current!!not cmd!!
+			return (130);//try where should i put heredoc??
 		cmd->data->pid[i] = fork();
 		if (cmd->data->pid[i] == 0)
 		{
 			setup_child_process(current, end, fd_in);
-			//data->exit_code += setup_child_process(current, end, fd_in);
-			//exit(EXIT_FAILURE);  // Should never be reached
 		}
 		if (current->next)
 		{ // Parent Process
@@ -66,6 +66,8 @@ static int	execute_command_pipeline(t_cmd *cmd)
 				close(fd_in);  // Close the previous read end
 			fd_in = end[0];  // Use the read end of the current pipe in the next iteration
 		}
+		if (current->next == NULL)//added
+			execute_single_command(current);//added
 		current = current->next;
 		i++;
 	}
@@ -75,9 +77,6 @@ static int	execute_command_pipeline(t_cmd *cmd)
 //被 dup2 覆盖的文件描述符会被自动关闭,你不需要手动关闭它们。
 static int	setup_child_process(t_cmd *cmd, int *end, int fd_in)
 {
-	//check_hd(cmd);
-	if (check_hd(cmd) == 130)//try
-		return (130);//try
 	if (fd_in != 0)
 	{
 		dup2(fd_in, STDIN_FILENO);  // Redirect stdin for the current command

@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/16 21:28:24 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/17 18:24:07 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,8 @@ void	minishell(t_data *data)
 		add_history(data->line);
 		if (split_line(data->line, &data->token_list, data) == 0)
 			free_exit("split_line", data, EXIT_FAILURE);
-		free(data->line);
 		// print_token_list(data->token_list);
 		data->cmd_list = generate_cmds(&data->token_list, data);
-		free_token_list(&data->token_list);
 		// print_io_list(data->cmd_list);
 		if (data->cmd_list)
 		{
@@ -43,6 +41,8 @@ void	minishell(t_data *data)
 			if (executor(data->cmd_list, data) == 1)  // 检查executor的返回值
 				continue;  // 如果heredoc被中断,继续下一个循环
 		}
+		free(data->line);
+		free_token_list(&data->token_list);
 		free_cmd_list(&data->cmd_list);
 	}
 	exit(EXIT_SUCCESS);
@@ -63,6 +63,7 @@ int	main(int ac, char **av, char **env)
 	print_welcome_msg();
 	minishell(data);
 	free_data(data);
+	//free(data);
 	return (0);
 }
 

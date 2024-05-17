@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:36:51 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/16 21:35:51 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/17 18:21:40 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,15 @@ void free_data(t_data *data)
 		free(data->line);
 	free_token_list(&data->token_list);
 	free_cmd_list(&data->cmd_list);
-	free_double_ptr(data->env);
-	free(data->pwd);
-	free(data->old_pwd);
+	if (data->pwd)
+		free(data->pwd);
+	if (data->old_pwd)
+		free(data->old_pwd);
 	if (data->pid)
 		free(data->pid);
 	if (data->var_name)
 		free(data->var_name);
+	free_double_ptr(data->env);
 	free(data);
 }
 
