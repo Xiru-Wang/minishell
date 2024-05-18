@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:49 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/17 20:34:32 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/19 00:17:05 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ static int	create_hd(t_cmd *cmd, int expand_sign)
 		}
 		if (ft_strncmp(line, cmd->delimiter, ft_strlen(cmd->delimiter)) == 0)
 		{
+			close(fd);
 			free(line);
 			break ;
 		}

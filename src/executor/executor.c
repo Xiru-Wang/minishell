@@ -13,7 +13,7 @@ int	executor(t_cmd *cmd, t_data *data)
 	else
 	{
 		data->exit_code = execute_command_pipeline(cmd);
-		reset_stdio(cmd); // ADDED
+		//reset_stdio(cmd); // ADDED
 	}
 	if (data->pid)//shoud i free it here?
 		free(data->pid);
@@ -26,18 +26,39 @@ int	executor(t_cmd *cmd, t_data *data)
 
 static int execute_single_command(t_cmd *cmd)
 {
-	int	status;
+    int status;
 
-	if (check_hd(cmd) == 130)//try
-		return (130);//try
-	redirect_io(cmd);
-	if (cmd->is_builtin)
-		status = call_builtin(cmd);
-	else
-		status = call_cmd(cmd->data, cmd);
-	reset_stdio(cmd);
-	return (status);
+    if (check_hd(cmd) == 130) //try
+        return (130); //try
+
+    backup_stdio(cmd);
+    redirect_io(cmd);
+
+    if (cmd->is_builtin)
+        status = call_builtin(cmd);
+    else
+        status = call_cmd(cmd->data, cmd);
+
+    reset_stdio(cmd);
+
+    return (status);
 }
+
+// static int execute_single_command(t_cmd *cmd)
+// {
+// 	int	status;
+
+// 	backup_stdio(cmd);
+// 	if (check_hd(cmd) == 130)//try
+// 		return (130);//try
+// 	redirect_io(cmd);
+// 	if (cmd->is_builtin)
+// 		status = call_builtin(cmd);
+// 	else
+// 		status = call_cmd(cmd->data, cmd);
+// 	reset_stdio(cmd);
+// 	return (status);
+// }
 
 static int	execute_command_pipeline(t_cmd *cmd)
 {
@@ -49,6 +70,7 @@ static int	execute_command_pipeline(t_cmd *cmd)
 	fd_in = STDIN_FILENO;
 	i = 0;
 	current = cmd;
+	backup_stdio(cmd);
 	while (current)
 	{
 		if (current->next)
