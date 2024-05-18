@@ -2,7 +2,37 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Launch minishell",
+      "name": "Launch minishell (macOS)",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/minishell",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "externalConsole": true,
+      "MIMode": "lldb",
+      "miDebuggerPath": "/usr/bin/lldb",
+      "preLaunchTask": "build",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for lldb",
+          "text": "settings set target.pretty-printing true",
+          "ignoreFailures": true
+        }
+      ],
+      "logging": {
+        "trace": true,
+        "traceResponse": true,
+        "engineLogging": true
+      },
+      "osx": {
+        "MIMode": "lldb",
+        "miDebuggerPath": "/usr/bin/lldb"
+      }
+    },
+    {
+      "name": "Launch minishell (Linux)",
       "type": "cppdbg",
       "request": "launch",
       "program": "${workspaceFolder}/minishell",
@@ -25,10 +55,34 @@
         "trace": true,
         "traceResponse": true,
         "engineLogging": true
+      },
+      "linux": {
+        "MIMode": "gdb",
+        "miDebuggerPath": "/usr/bin/gdb"
       }
     },
     {
-      "name": "Attach to minishell",
+      "name": "Attach to minishell (macOS)",
+      "type": "cppdbg",
+      "request": "attach",
+      "program": "${workspaceFolder}/minishell",
+      "processId": "${command:pickProcess}",
+      "MIMode": "lldb",
+      "miDebuggerPath": "/usr/bin/lldb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for lldb",
+          "text": "settings set target.pretty-printing true",
+          "ignoreFailures": true
+        }
+      ],
+      "osx": {
+        "MIMode": "lldb",
+        "miDebuggerPath": "/usr/bin/lldb"
+      }
+    },
+    {
+      "name": "Attach to minishell (Linux)",
       "type": "cppdbg",
       "request": "attach",
       "program": "${workspaceFolder}/minishell",
@@ -41,20 +95,11 @@
           "text": "-enable-pretty-printing",
           "ignoreFailures": true
         }
-      ]
-    },
-    {
-      "name": "(gdb) Launch",
-      "type": "cppdbg",
-      "request": "launch",
-      "program": "${workspaceFolder}/a.out",
-      "args": [],
-      "stopAtEntry": false,
-      "cwd": "${fileDirname}",
-      "environment": [],
-      "externalConsole": false,
-      "MIMode": "gdb",
-      "miDebuggerPath": "/usr/bin/gdb"
+      ],
+      "linux": {
+        "MIMode": "gdb",
+        "miDebuggerPath": "/usr/bin/gdb"
+      }
     }
   ]
 }
