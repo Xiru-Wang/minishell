@@ -37,6 +37,8 @@ int	check_hd(t_cmd *cmd)
 			if (create_hd(cmd, quote) == 130)
 				return (130);
 		}
+		if (!temp->next)
+			break ;
 		temp = temp->next;
 	}
 	return (0);
@@ -65,7 +67,10 @@ static int	create_hd(t_cmd *cmd, int expand_sign)
 			return (EXIT_SIGINT);//return 2?? 128 + 2 = 130
 		}
 		if (ft_strncmp(line, cmd->delimiter, ft_strlen(cmd->delimiter)) == 0)
+		{
+			free(line);
 			break ;
+		}
 		if (expand_sign == 0 && check_valid_dollar(line))
 		{
 			new = expand_simple(line, cmd->data->env, cmd->data);
