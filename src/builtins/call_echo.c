@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_echo.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:17 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/08 20:20:05 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/19 19:06:05 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,7 @@
 //eg> echo -nn -nnnn2 -n "hi " "dad" "blala    lala"
 //-nnnn2 -n hi  dad blala    lala%
 
-/**
- * Prints the arguments of a command starting from a specified index.
- *
- * This function takes a command structure and an integer representing the
- * starting index of the arguments to be printed. It iterates through the
- * arguments starting from the specified index and prints each argument to the
- * standard output. A space character is printed between each argument, except
- * for the last argument.
- *
- * @param cmd A pointer to a t_cmd structure representing the command whose
- * arguments are to be printed.
- * @param start An integer representing the starting index of the arguments to
- * be printed.
- */
+
 static void print_arguments(t_cmd *cmd, int start)
 {
 	while (cmd->s[start])

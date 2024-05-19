@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 19:37:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/08 19:41:34 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/19 19:07:48 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,6 @@ int	is_space(char c)
 	return (0);
 }
 
-/**
- * Check if a string is composed entirely of digits.
- *
- * This function takes a string as input and checks if all characters in the
- * string are digits.
- *
- * @param str The string to be checked
- * @return 1 if the string is composed entirely of digits, 0 otherwise
- */
 int	is_str_digit(char *str)
 {
 	int i;
@@ -42,15 +33,6 @@ int	is_str_digit(char *str)
 	return (1);
 }
 
-/**
- * Duplicate an array of strings.
- *
- * This function takes an array of strings as input and duplicates it, returning
- * a new array of strings.
- *
- * @param arr The array of strings to duplicate
- * @return A new array of strings that is a duplicate of the input array
- */
 char	**ft_arrdup(char **arr)
 {
     int i;
@@ -71,7 +53,7 @@ char	**ft_arrdup(char **arr)
         new_arr[i] = ft_strdup(arr[i]);
         if (new_arr[i] == NULL)
         {
-            free_arr(new_arr);
+            free_double_ptr(new_arr);
             return (NULL);
         }
         i++;

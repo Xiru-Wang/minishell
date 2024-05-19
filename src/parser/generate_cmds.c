@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/19 18:19:29 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/19 19:16:44 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,6 @@ static void	fill_cmd(t_token **head, t_cmd *cmd)
 	while (temp && temp->type != PIPE && size > 0)
 	{
 		next = temp->next;
-		// if (cmd->s[i])//Had freed in minishell loop
-		// 	free(cmd->s[i]);
 		cmd->s[i] = NULL;
 		if (temp->type == WORD)
 		{

@@ -23,9 +23,9 @@ int	find_executable_and_execute(t_cmd *cmd, t_data *data)
 			free(path_tmp);
 			if (access(path, X_OK) == 0)
 			{
-				if (cmd->s[0])//added
-					free(cmd->s[0]);//added
-				cmd->s[0] = path; // Update cmd->s[0] to the full path
+				if (cmd->s[0])
+					free(cmd->s[0]);
+				cmd->s[0] = path;
 				free_double_ptr(paths);
 				return 0;
 			}

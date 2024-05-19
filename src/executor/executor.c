@@ -20,7 +20,7 @@ int	executor(t_cmd *cmd, t_data *data)
 		return (0);
 }
 
-static int execute_single_command(t_cmd *cmd)
+static int	execute_single_command(t_cmd *cmd)
 {
     int status;
 

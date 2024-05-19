@@ -180,7 +180,7 @@ static int	update_or_add_var(t_data *data, char *str)
 	if (!new_env)
 		return (EXIT_FAILURE);
 	if (data->env != NULL)
-		free_arr(data->env);
+		free_double_ptr(data->env);
 	data->env = new_env;
 	return (EXIT_SUCCESS);
 }

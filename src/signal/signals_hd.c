@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals_hd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jschroed <jschroed@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 19:42:08 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/14 20:26:32 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/19 18:39:29 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	signal_handler_hd(int signum)
 int	readline_event_hook_hd(void)
 {
 	if (g_last_signal == 2)
-		rl_done = 1;
+		ioctl(STDIN_FILENO, TIOCSTI, "\n");
 	return (EXIT_SUCCESS);
 }
 

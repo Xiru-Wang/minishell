@@ -6,27 +6,11 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:36:51 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/19 18:17:07 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/19 19:12:15 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void free_arr(char **arr)
-{
-	int i;
-
-	if (arr == NULL)
-		return;
-
-	i = 0;
-	while (arr[i])
-	{
-		free(arr[i]);
-		i++;
-	}
-	free(arr);
-}
 
 void free_data(t_data *data)
 {
@@ -102,3 +86,19 @@ void	free_double_ptr(char **ptr)
 	}
 	free(ptr);
 }
+
+// void free_arr(char **arr)
+// {
+// 	int i;
+
+// 	if (arr == NULL)
+// 		return;
+
+// 	i = 0;
+// 	while (arr[i])
+// 	{
+// 		free(arr[i]);
+// 		i++;
+// 	}
+// 	free(arr);
+// }

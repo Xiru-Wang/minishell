@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/19 18:06:28 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/19 19:05:38 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ typedef struct s_io
 }	t_io;
 
 typedef struct s_data	t_data;
+
 typedef struct s_cmd
 {
 	char			**s;
@@ -78,8 +79,6 @@ typedef struct s_cmd
 	struct s_io		*io_list;
 	int				infd;
 	int				outfd;
-	//char			*delimiter;
-	//char			*hdfile;
 	t_data			*data;
 	int				stdin_backup;
 	int				stdout_backup;
@@ -110,13 +109,12 @@ void			free_exit(char *s, t_data *data, int code);
 char			**ft_arrdup(char **arr);
 
 // utils_free
-void			free_arr(char **arr);
+//void			free_arr(char **arr);
 void			free_data(t_data *data);
 
 //token_util
 int				add_token_list(char *s, int type, t_token **head);
 void			del_token(t_token **head, t_token *node);
-void			print_token_list(t_token *token_list);//debug
 void			free_token_list(t_token **list);
 enum s_type		ft_type(char c);
 
@@ -146,9 +144,6 @@ t_cmd			*init_cmd(t_data *data);
 void			append_cmd(t_cmd **head, t_cmd *new);
 int				count_pipe(t_token *list);
 int				count_args(t_token *list);
-
-void			print_cmd_list(t_cmd *cmd);//DEBUG
-void			print_io_list(t_cmd *cmd);//DEBUG
 
 //generate_cmd
 t_cmd			*generate_cmds(t_token **token, t_data *data);
@@ -209,11 +204,14 @@ void			setup_signals_hd(void);
 void			reset_signals_hd(void);
 void			signal_handler(int signum);
 void			init_signals(void);
-void backup_stdio(t_cmd *cmd);
-
-void	init_signals_noint(void);
+void			backup_stdio(t_cmd *cmd);
+void			init_signals_noint(void);
 
 // needs to align with t_data def.
 extern int				g_last_signal;
+
+void			print_cmd_list(t_cmd *cmd);//DEBUG
+void			print_io_list(t_cmd *cmd);//DEBUG
+void			print_token_list(t_token *token_list);//DEBUG
 
 #endif
