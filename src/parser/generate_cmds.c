@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   generate_cmds.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/19 19:16:44 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/19 22:04:13 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,12 @@ static void	add_io_list(t_cmd *cmd, t_token *token)
 	if (token->type == REDIR_IN)
 	{
 		new->type = REDIR_IN;
-		new->filename = ft_strdup(next->value);
+		new->filename = remove_quo_simple(next->value);
 	}
 	else if (token->type == REDIR_OUT || token->type == APPEND)
 	{
 		new->type = token->type;
-		new->filename = ft_strdup(next->value);
+		new->filename = remove_quo_simple(next->value);
 	}
 	else if (token->type == HEREDOC)
 	{
@@ -116,19 +116,14 @@ static void	fill_cmd(t_token **head, t_cmd *cmd)
 		next = temp->next;
 		cmd->s[i] = NULL;
 		if (temp->type == WORD)
-		{
-			cmd->s[i] = expand_complex(temp->value, WORD, cmd->data);;
-			if (i == 0)
-			{
-				builtin = ft_bubiltin(cmd->s[0]);
-				if (builtin)
-					cmd->is_builtin = builtin;
-			}
-		}
+			cmd->s[i] = expand_complex(temp->value, WORD, cmd->data);
 		else if (temp->type == QUO)
-		{
-			cmd->s[i] = NULL;
 			cmd->s[i] = expand_complex(temp->value, QUO, cmd->data);
+		if (i == 0)
+		{
+			builtin = ft_bubiltin(cmd->s[0]);
+			if (builtin)
+				cmd->is_builtin = builtin;
 		}
 		del_token(head, temp);
 		temp = next;

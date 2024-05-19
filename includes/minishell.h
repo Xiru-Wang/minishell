@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/19 19:05:38 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/19 21:59:10 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,8 @@ int				split_line(char *s, t_token **token_list, t_data *data);
 int				check_unclosed_quotes(char *s, t_token **head);
 //remove_quo
 char			*remove_quo(char *s);
-//simple_expander
+char			*remove_quo_simple(char *s);
+// simple_expander
 char			*expand_simple(char *s, char **env, t_data *data);
 char			*expand_dollar(char *s, int *len, char **env, t_data *data);
 int				len_within_quo(char *s, char c);

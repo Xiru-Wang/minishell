@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   remove_quo.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 19:18:57 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/19 19:53:47 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/19 22:44:48 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,16 @@ char	*remove_quo(char *s)
 	}
 	new[k] = '\0';
 	return (new);
+}
+
+
+char	*remove_quo_simple(char *s)
+{
+	int		k;
+
+	k = ft_strlen(s) - 1;
+	if ((s[0] == '\'' && s[k] == s[0])|| (s[0] == '\"' && s[k] == s[0]))
+		return (ft_substr(s, 1, ft_strlen(s) - 2));
+	else
+		return (ft_strdup(s));
 }
