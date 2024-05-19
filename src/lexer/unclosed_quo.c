@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:59 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/19 13:52:44 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/19 19:59:35 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	find_next_quo(char *s, int *i, int *quote_sign)
 {
 	char	c;
 
-	c = s[0];
+	c = s[*i];
 	(*i)++;
 	while (s[*i] && s[*i] != c)
 		(*i)++;
@@ -41,7 +41,7 @@ int check_unclosed_quotes(char *s, t_token **head)
 	{
 		if (s[i] == '\'' || s[i] == '\"')
 		{
-			if (find_next_quo(s + i, &i, &quote_sign) == -1)
+			if (find_next_quo(s, &i, &quote_sign) == -1)
 				return (-1);
 		}
 		else if (ft_type(s[i]) != WORD)

@@ -6,11 +6,12 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/19 19:14:40 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/19 20:01:53 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
 static void	print_welcome_msg(void);
 
 void	minishell(t_data *data)
@@ -36,8 +37,9 @@ void	minishell(t_data *data)
 		if (data->cmd_list)
 		{
 			init_signals_noint();
-			if (executor(data->cmd_list, data) == 1)  // if interrupted?
-				continue;  //do we need?
+			executor(data->cmd_list, data);
+			// if (executor(data->cmd_list, data) == 1)  // if interrupted?
+			// 	continue;  //do we need?
 		}
 		free(data->line);
 		free_token_list(&data->token_list);
@@ -61,7 +63,6 @@ int	main(int ac, char **av, char **env)
 	print_welcome_msg();
 	minishell(data);
 	free_data(data);
-	//free(data);
 	return (0);
 }
 
