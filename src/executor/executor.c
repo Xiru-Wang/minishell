@@ -11,13 +11,9 @@ int	executor(t_cmd *cmd, t_data *data)
 	if (cmd->next == NULL)
 		data->exit_code = execute_single_command(cmd);
 	else
-	{
 		data->exit_code = execute_command_pipeline(cmd);
-		//reset_stdio(cmd); // ADDED
-	}
-	if (data->pid)//shoud i free it here?
+	if (data->pid)
 		free(data->pid);
-	//if (data->exit_code == 1)  // 检查exit_code是否为1,表示heredoc被中断？？
 	if (data->exit_code == 130)
 		return (1);
 	else
@@ -28,37 +24,17 @@ static int execute_single_command(t_cmd *cmd)
 {
     int status;
 
-    if (check_hd(cmd) == 130) //try
-        return (130); //try
-
+    if (check_hd(cmd) == 130)
+        return (130);
     backup_stdio(cmd);
     redirect_io(cmd);
-
     if (cmd->is_builtin)
         status = call_builtin(cmd);
     else
         status = call_cmd(cmd->data, cmd);
-
     reset_stdio(cmd);
-
     return (status);
 }
-
-// static int execute_single_command(t_cmd *cmd)
-// {
-// 	int	status;
-
-// 	backup_stdio(cmd);
-// 	if (check_hd(cmd) == 130)//try
-// 		return (130);//try
-// 	redirect_io(cmd);
-// 	if (cmd->is_builtin)
-// 		status = call_builtin(cmd);
-// 	else
-// 		status = call_cmd(cmd->data, cmd);
-// 	reset_stdio(cmd);
-// 	return (status);
-// }
 
 static int	execute_command_pipeline(t_cmd *cmd)
 {
@@ -75,8 +51,8 @@ static int	execute_command_pipeline(t_cmd *cmd)
 	{
 		if (current->next)
 			pipe(end);
-		if (check_hd(current) == 130)//current!!not cmd!!
-			return (130);//try where should i put heredoc??
+		if (check_hd(current) == 130)
+			return (130);
 		cmd->data->pid[i] = fork();
 		if (cmd->data->pid[i] == 0)
 			setup_child_process(current, end, fd_in);
@@ -84,8 +60,8 @@ static int	execute_command_pipeline(t_cmd *cmd)
 		if (current->next)
 		{
 			if (fd_in != STDIN_FILENO)
-				close(fd_in);  // Close the previous read end
-			fd_in = end[0];  // Use the read end of the current pipe in the next iteration
+				close(fd_in);// Close the previous read end
+			fd_in = end[0];// Use the read end of the current pipe in the next iteration
 		}
 		current = current->next;
 		i++;
@@ -94,6 +70,9 @@ static int	execute_command_pipeline(t_cmd *cmd)
 	return (wait_for_processes(cmd->data->pid, cmd->data->cmd_num));
 }
 
+//if there's pipe, get data from pipe(end[0]): dup2(end[0], STDIN)
+//if cmd->next, close
+//if new io_redirection, dup2 again: dup2(file, STDIN)
 static int	setup_child_process(t_cmd *cmd, int *end, int fd_in)
 {
 	if (fd_in != 0)
