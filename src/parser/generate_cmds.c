@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/16 16:59:41 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/19 14:20:54 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,8 @@ static void	add_io_list(t_cmd *cmd, t_token *token)
 	else if (token->type == HEREDOC)
 	{
 		new->type = HEREDOC;
-		if (cmd->delimiter)
-				free(cmd->delimiter);
+		if (cmd->delimiter)//Multiple eof!!
+				free(cmd->delimiter);////Multiple eof!!
 		cmd->delimiter = ft_strdup(next->value);
 	}
 	append_io(&cmd->io_list, new);

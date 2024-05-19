@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   io_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 17:10:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/15 10:30:28 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/19 13:52:03 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,17 @@ void	append_io(t_io **head, t_io *new)
 
 void	free_io_list(t_io **list)
 {
-    t_io	*temp;
-    if (list == NULL || *list == NULL)
-        return;
-    while (*list)
-    {
-        temp = (*list)->next;
-        if ((*list)->filename)
-            free((*list)->filename);
-        free(*list);
-        *list = temp;
-    }
+	t_io	*temp;
+	
+	temp = NULL;
+	if (list == NULL || *list == NULL)
+		return;
+	while (*list)
+	{
+		temp = (*list)->next;
+		if ((*list)->filename)
+			free((*list)->filename);
+		free(*list);
+		*list = temp;
+	}
 }

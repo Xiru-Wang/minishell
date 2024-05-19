@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:49 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/19 11:53:56 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/19 14:06:02 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,11 @@ int	check_hd(t_cmd *cmd)
 		if (temp->type == HEREDOC)
 		{
 			if (cmd->hdfile)
+			{
+				unlink(cmd->hdfile);//unlink prev heredoc file
 				free(cmd->hdfile);
+				cmd->hdfile = NULL;
+			}
 			cmd->hdfile = create_hd_name();
 			quote = remove_hd_quotes(cmd);
 			//if (create_hd(cmd, quote) != 0)//interrpted by signal
@@ -57,10 +61,11 @@ static int	create_hd(t_cmd *cmd, int expand_sign)
 
 	fd = open(cmd->hdfile, O_CREAT | O_RDWR | O_TRUNC, 0600);
 	setup_signals_hd();
+	i = 0;
 	while (1)
 	{
 		line = readline("heredoc>");
-		i = 1;
+		i++;
 		if (!line)
 			break ;
 		if (g_last_signal == 2)
@@ -86,7 +91,6 @@ static int	create_hd(t_cmd *cmd, int expand_sign)
 		else
 			ft_putendl_fd(line, fd);
 		free(line);
-		i++;
 	}
 	if (!line)
 		printf("minishell: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", i, cmd->delimiter);

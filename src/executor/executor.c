@@ -36,6 +36,9 @@ static int execute_single_command(t_cmd *cmd)
     return (status);
 }
 
+// in parent
+// close(fd_in);// Close the previous read end
+// fd_in = end[0];// Use the read end of the current pipe in the next iteration
 static int	execute_command_pipeline(t_cmd *cmd)
 {
 	int		end[2];
@@ -60,8 +63,8 @@ static int	execute_command_pipeline(t_cmd *cmd)
 		if (current->next)
 		{
 			if (fd_in != STDIN_FILENO)
-				close(fd_in);// Close the previous read end
-			fd_in = end[0];// Use the read end of the current pipe in the next iteration
+				close(fd_in);
+			fd_in = end[0];
 		}
 		current = current->next;
 		i++;
@@ -70,27 +73,27 @@ static int	execute_command_pipeline(t_cmd *cmd)
 	return (wait_for_processes(cmd->data->pid, cmd->data->cmd_num));
 }
 
-//if there's pipe, get data from pipe(end[0]): dup2(end[0], STDIN)
-//if cmd->next, close
-//if new io_redirection, dup2 again: dup2(file, STDIN)
+//if there's pipe, child get data from parent's end[read]: dup2(end[0], STDIN)
+//if cmd->next, close child's end[read], and redirect stdout to child's end[write]
+//if io_redirection, handle additional redirections, dup2 again: dup2(infile/outfile)
 static int	setup_child_process(t_cmd *cmd, int *end, int fd_in)
 {
 	if (fd_in != 0)
 	{
-		dup2(fd_in, STDIN_FILENO);  // Redirect stdin for the current command
+		dup2(fd_in, STDIN_FILENO);
 		close(fd_in);
 	}
 	if (cmd->next)
 	{
-		close(end[0]);// Close the read end of the pipe in the child
-		dup2(end[1], STDOUT_FILENO);  // Redirect stdout to the pipe
+		close(end[0]);
+		dup2(end[1], STDOUT_FILENO);
 		close(end[1]);
 	}
-	redirect_io(cmd);  // Handle additional redirections
+	redirect_io(cmd);
 	if (cmd->is_builtin)
-		exit (call_builtin(cmd));  // Execute builtin and exit child process
+		exit (call_builtin(cmd));
 	else
-		exit (call_cmd(cmd->data, cmd));  // Execute external command and exit
+		exit (call_cmd(cmd->data, cmd));
 }
 
 //echo $? ---->> equal last child exit status🤔

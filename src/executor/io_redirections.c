@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   io_redirections.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 17:35:45 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/19 11:43:12 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/19 14:14:40 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,12 @@ static void	redirect_fdin(t_io *io, t_cmd *cmd)
 	{
 		dup2(fd, STDIN_FILENO);
 		close(fd);
-		if (cmd->hdfile)
-			unlink(cmd->hdfile);
+		// if (cmd->hdfile)
+		// {
+		// 	unlink(cmd->hdfile);
+		// 	free(cmd->hdfile);
+		// 	cmd->hdfile = NULL;
+		// }
 	}
 }
 

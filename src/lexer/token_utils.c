@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:58 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/16 16:31:38 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/19 13:30:22 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,10 @@ void	del_token(t_token **head, t_token *node)
 {
 	if (!head || !*head || !node)
 		return ;
-	//update the prev node's next
 	if (node->prev)
 		node->prev->next = node->next;
 	else
 		*head = node->next;
-	//update the next node's prev
 	if (node->next)
 		node->next->prev = node->prev;
 	if (node->value)

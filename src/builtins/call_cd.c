@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   call_cd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:07 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/08 20:31:21 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/19 13:53:08 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include <errno.h>
 
-int call_cd(t_data *data, t_cmd *cmd)
+int	call_cd(t_data *data, t_cmd *cmd)
 {
 	char *path;
 	int ret;
