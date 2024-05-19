@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:31 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/15 23:17:59 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/19 18:17:34 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ t_cmd	*init_cmd(t_data *data)
 	new->next = NULL;
 	new->prev = NULL;
 	new->io_list = NULL;
-	new->delimiter = NULL;
-	new->hdfile = NULL;
 	new->data = data;
 	new->infd = -1;
 	new->outfd = -1;

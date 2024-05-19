@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 17:10:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/19 13:52:03 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/19 18:15:31 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@ t_io	*init_io(t_cmd *cmd)
 	if (!new)
 		free_exit("malloc error", cmd->data, EXIT_FAILURE);
 	new->filename = NULL;
+	new->hdfile = NULL;
 	new->next = NULL;
+	new->eof = NULL;
 	new->type = -1;
 	return (new);
 }
@@ -54,6 +56,13 @@ void	free_io_list(t_io **list)
 		temp = (*list)->next;
 		if ((*list)->filename)
 			free((*list)->filename);
+		if ((*list)->eof)
+			free((*list)->eof);
+		if ((*list)->hdfile)
+		{
+			unlink((*list)->hdfile);
+			free((*list)->hdfile);
+		}
 		free(*list);
 		*list = temp;
 	}

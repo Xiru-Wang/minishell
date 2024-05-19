@@ -6,13 +6,13 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 17:35:45 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/19 14:14:40 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/19 18:13:43 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static void	redirect_fdin(t_io *io, t_cmd *cmd);
+static void	redirect_fdin(t_io *io);
 static void	redirect_fdout(t_io *io);
 
 void	redirect_io(t_cmd *cmd)
@@ -25,14 +25,14 @@ void	redirect_io(t_cmd *cmd)
 	while (io)
 	{
 		if (io->type == REDIR_IN || io->type == HEREDOC)
-			redirect_fdin(io, cmd);
+			redirect_fdin(io);
 		else if (io->type == REDIR_OUT || io->type == APPEND)
 			redirect_fdout(io);
 		io = io->next;
 	}
 }
 
-static void	redirect_fdin(t_io *io, t_cmd *cmd)
+static void	redirect_fdin(t_io *io)
 {
 	int	fd;
 
@@ -40,17 +40,11 @@ static void	redirect_fdin(t_io *io, t_cmd *cmd)
 	if (io->type == REDIR_IN)
 		fd = open(io->filename, O_RDONLY);
 	else if (io->type == HEREDOC)
-		fd = open(cmd->hdfile, O_RDONLY);
+		fd = open(io->hdfile, O_RDONLY);
 	if (fd != -1)
 	{
 		dup2(fd, STDIN_FILENO);
 		close(fd);
-		// if (cmd->hdfile)
-		// {
-		// 	unlink(cmd->hdfile);
-		// 	free(cmd->hdfile);
-		// 	cmd->hdfile = NULL;
-		// }
 	}
 }
 

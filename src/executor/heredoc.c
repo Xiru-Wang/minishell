@@ -6,15 +6,15 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:49 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/19 14:06:02 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/19 18:07:21 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static int	remove_hd_quotes(t_cmd *cmd);
+static int	remove_hd_quotes(t_io *io);
 static char	*create_hd_name(void);
-static int	create_hd(t_cmd *cmd, int eof_quote);
+static int	create_hd(t_cmd *cmd, t_io *io, int eof_quote);
 //static int	reset_hd_file(int *fd, const char *filename);
 
 int	check_hd(t_cmd *cmd)
@@ -29,16 +29,9 @@ int	check_hd(t_cmd *cmd)
 	{
 		if (temp->type == HEREDOC)
 		{
-			if (cmd->hdfile)
-			{
-				unlink(cmd->hdfile);//unlink prev heredoc file
-				free(cmd->hdfile);
-				cmd->hdfile = NULL;
-			}
-			cmd->hdfile = create_hd_name();
-			quote = remove_hd_quotes(cmd);
-			//if (create_hd(cmd, quote) != 0)//interrpted by signal
-			if (create_hd(cmd, quote) == 130)
+			temp->hdfile = create_hd_name();
+			quote = remove_hd_quotes(temp);
+			if (create_hd(cmd, temp, quote) == 130)
 				return (130);
 		}
 		if (!temp->next)
@@ -52,14 +45,14 @@ int	check_hd(t_cmd *cmd)
 //0600: The file owner has read and write permissions (rw-------). No one else can read or write to the file.
 //0644: The file owner has read and write permissions, but others can only read the file (rw-r--r--).
 
-static int	create_hd(t_cmd *cmd, int expand_sign)
+static int	create_hd(t_cmd *cmd, t_io *io, int expand_sign)
 {
 	int		fd;
 	int		i;
 	char	*line;
 	char	*new;
 
-	fd = open(cmd->hdfile, O_CREAT | O_RDWR | O_TRUNC, 0600);
+	fd = open(io->hdfile, O_CREAT | O_RDWR | O_TRUNC, 0600);
 	setup_signals_hd();
 	i = 0;
 	while (1)
@@ -70,14 +63,12 @@ static int	create_hd(t_cmd *cmd, int expand_sign)
 			break ;
 		if (g_last_signal == 2)
 		{
-			// if (g_last_signal == 2)
-			// 	reset_hd_file(&fd, cmd->hdfile);
 			free(line);
 			close(fd);//!!ADDED
 			reset_signals_hd();
 			return (EXIT_SIGINT);//return 2?? 128 + 2 = 130
 		}
-		if (ft_strncmp(line, cmd->delimiter, ft_strlen(cmd->delimiter)) == 0)
+		if (ft_strncmp(line, io->eof, ft_strlen(io->eof)) == 0)
 		{
 			free(line);
 			break ;
@@ -93,21 +84,21 @@ static int	create_hd(t_cmd *cmd, int expand_sign)
 		free(line);
 	}
 	if (!line)
-		printf("minishell: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", i, cmd->delimiter);
+		printf("minishell: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", i, io->eof);
 	close(fd);
 	reset_signals_hd();
 	return (EXIT_SUCCESS);
 }
 
-static int	remove_hd_quotes(t_cmd *cmd)
+static int	remove_hd_quotes(t_io *io)
 {
 	char	*s;
 
-	s = cmd->delimiter;
+	s = io->eof;
 	if ((s[0] == '\"' && s[ft_strlen(s) - 1] == '\"')
 		|| (s[0] == '\'' && s[ft_strlen(s) - 1] == '\''))
 	{
-		cmd->delimiter = ft_substr(s, 1, ft_strlen(s) - 2);
+		io->eof = ft_substr(s, 1, ft_strlen(s) - 2);
 		free(s);
 		return (EXIT_FAILURE);
 	}

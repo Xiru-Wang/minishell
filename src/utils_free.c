@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_free.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:36:51 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/17 18:21:40 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/19 18:17:07 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,6 @@ void free_cmd_list(t_cmd **cmd)
 			free_double_ptr((*cmd)->s);
 		if ((*cmd)->io_list)
 			free_io_list(&(*cmd)->io_list);
-		if ((*cmd)->delimiter)
-			free((*cmd)->delimiter);
-		if ((*cmd)->hdfile)
-			free((*cmd)->hdfile);
 		free(*cmd);
 		*cmd = temp;
 	}

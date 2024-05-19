@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/19 14:20:54 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/19 18:19:29 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,7 @@ static void	add_io_list(t_cmd *cmd, t_token *token)
 	else if (token->type == HEREDOC)
 	{
 		new->type = HEREDOC;
-		if (cmd->delimiter)//Multiple eof!!
-				free(cmd->delimiter);////Multiple eof!!
-		cmd->delimiter = ft_strdup(next->value);
+		new->eof = ft_strdup(next->value);
 	}
 	append_io(&cmd->io_list, new);
 }
@@ -116,8 +114,8 @@ static void	fill_cmd(t_token **head, t_cmd *cmd)
 	while (temp && temp->type != PIPE && size > 0)
 	{
 		next = temp->next;
-		if (cmd->s[i])
-			free(cmd->s[i]);
+		// if (cmd->s[i])//Had freed in minishell loop
+		// 	free(cmd->s[i]);
 		cmd->s[i] = NULL;
 		if (temp->type == WORD)
 		{

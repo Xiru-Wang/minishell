@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/19 00:11:31 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/19 18:06:28 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,9 @@ typedef struct s_token
 typedef struct s_io
 {
 	char			*filename;
+	char			*hdfile;
 	t_type			type;
+	char			*eof;
 	struct s_io		*next;
 }	t_io;
 
@@ -76,8 +78,8 @@ typedef struct s_cmd
 	struct s_io		*io_list;
 	int				infd;
 	int				outfd;
-	char			*delimiter;
-	char			*hdfile;
+	//char			*delimiter;
+	//char			*hdfile;
 	t_data			*data;
 	int				stdin_backup;
 	int				stdout_backup;
