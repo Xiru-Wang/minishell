@@ -6,13 +6,13 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/19 20:01:53 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/19 20:36:38 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static void	print_welcome_msg(void);
+/* static void	print_welcome_msg(void); */
 
 void	minishell(t_data *data)
 {
@@ -60,17 +60,17 @@ int	main(int ac, char **av, char **env)
 	}
 	data = (t_data *)malloc(sizeof(t_data));
 	init_data(data, env);
-	print_welcome_msg();
+	/* print_welcome_msg(); */
 	minishell(data);
 	free_data(data);
 	return (0);
 }
 
-static void	print_welcome_msg(void)
-{
-	printf("\
-			╭────────────── 💃💃💃💃 ─────────────╮\n\
-			│  Oh my shell, lucky its minishell   │\n\
-			│             Jan && Xiru             │\n\
-			╰────────────── 🍷🍷🍷🍷 ─────────────╯\n");
-}
+/* static void	print_welcome_msg(void) */
+/* { */
+/*     printf("\ */
+/*             ╭────────────── 💃💃💃💃 ─────────────╮\n\ */
+/*             │  Oh my shell, lucky its minishell   │\n\ */
+/*             │             Jan && Xiru             │\n\ */
+/*             ╰────────────── 🍷🍷🍷🍷 ─────────────╯\n"); */
+/* } */
