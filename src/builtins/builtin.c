@@ -6,14 +6,24 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:01 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/03 19:11:44 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/20 10:57:05 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-enum s_builtin	ft_bubiltin(char *s)
+enum s_builtin	ft_builtin(char *str)
 {
+	char	*s;
+	int		i;
+
+	s = str;
+	i = 0;
+	while (s[i])
+	{
+		ft_tolower(s[i]);
+		i++;
+	}
 	if (ft_strncmp(s, "cd", 3) == 0)
 		return (CD);
 	else if (ft_strncmp(s, "echo", 5) == 0)
