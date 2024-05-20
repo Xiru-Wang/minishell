@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_free.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:36:51 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/19 19:12:15 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/20 09:52:51 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,14 @@ void free_data(t_data *data)
 	if (data->var_name)
 		free(data->var_name);
 	free_double_ptr(data->env);
-	free(data);
+	if (data)
+		free(data);
 }
 
 void free_cmd_list(t_cmd **cmd)
 {
 	t_cmd *temp;
+
 	if (cmd == NULL || *cmd == NULL)
 		return;
 	while (*cmd)
