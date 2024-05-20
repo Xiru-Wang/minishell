@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/20 14:01:25 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/20 17:08:22 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ int	minishell(t_data *data)
 		if (!data->line)
 		{
 			write(STDOUT_FILENO, "exit\n", 5);
-			break;
+			break ;
 		}
 		if (data->line[0] == '\0')
 		{
 			free(data->line);
-			continue;
+			continue ;
 		}
 		add_history(data->line);
 		split_line(data->line, &data->token_list, data);
@@ -49,7 +49,7 @@ int	minishell(t_data *data)
 int	main(int ac, char **av, char **env)
 {
 	t_data	*data;
-	int last_exit_code;
+	int		last_exit_code;
 
 	last_exit_code = 0;
 	if (ac != 1 || av[1])
