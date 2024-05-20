@@ -6,15 +6,15 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/19 22:52:05 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/20 08:42:50 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include <stdlib.h>
 
 /* static void	print_welcome_msg(void); */
-
-void	minishell(t_data *data)
+int	minishell(t_data *data)
 {
 	while (1)
 	{
@@ -38,21 +38,21 @@ void	minishell(t_data *data)
 		{
 			init_signals_noint();
 			executor(data->cmd_list, data);
-			// if (executor(data->cmd_list, data) == 1)  // if interrupted?
-			// 	continue;  //do we need?
 		}
 		free(data->line);
 		free_token_list(&data->token_list);
 		free_cmd_list(&data->cmd_list);
 	}
-	exit(EXIT_SUCCESS);
+	return (EXIT_SUCCESS);
 }
 
 //heredoc_conrol + c: exit minishell!!
 int	main(int ac, char **av, char **env)
 {
 	t_data	*data;
+	int last_exit_code;
 
+	last_exit_code = 0;
 	if (ac != 1 || av[1])
 	{
 		write(STDERR_FILENO, "No arguments allowed!\n", 22);
@@ -62,8 +62,9 @@ int	main(int ac, char **av, char **env)
 	init_data(data, env);
 	/* print_welcome_msg(); */
 	minishell(data);
+	last_exit_code = data->exit_code;
 	free_data(data);
-	return (0);
+	return (last_exit_code);
 }
 
 /* static void	print_welcome_msg(void) */

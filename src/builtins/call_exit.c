@@ -6,7 +6,7 @@
 /*   By: jschroed <jschroed@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:37:05 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/16 21:34:57 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/20 08:39:24 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,16 @@
  */
 int call_exit(t_cmd *cmd, t_data *data)
 {
-	(void) data;
+	int last_exit_code;
 
+	last_exit_code = 0;
 	if (cmd->s[1])
 	{
 		ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
 	ft_putendl_fd("exit", STDERR_FILENO);
+	last_exit_code = data->exit_code;
 	free_data(data);
-	exit(EXIT_SUCCESS);
+	exit(last_exit_code);
 }
