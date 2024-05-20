@@ -14,8 +14,8 @@ int	executor(t_cmd *cmd, t_data *data)
 		data->exit_code = execute_command_pipeline(cmd);
 	if (data->pid)
 		free(data->pid);
-	if (data->exit_code == 130)
-		return (1);
+	if (data->exit_code == EXIT_SIGINT)
+		return (EXIT_SIGINT);
 	else
 		return (0);
 }
@@ -24,8 +24,8 @@ static int	execute_single_command(t_cmd *cmd)
 {
     int status;
 
-    if (check_hd(cmd) == 130)
-        return (130);
+    if (check_hd(cmd) == EXIT_SIGINT)
+        return (EXIT_SIGINT);
     backup_stdio(cmd);
     redirect_io(cmd);
 	if (cmd->err)  // Check for redirection error
@@ -59,8 +59,8 @@ static int	execute_command_pipeline(t_cmd *cmd)
 	{
 		if (current->next)
 			pipe(end);
-		if (check_hd(current) == 130)
-			return (130);
+		if (check_hd(current) == EXIT_SIGINT)
+			return (EXIT_SIGINT);
 		cmd->data->pid[i] = fork();
 		if (cmd->data->pid[i] == 0)
 			setup_child_process(current, end, fd_in);

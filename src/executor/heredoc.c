@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:49 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/19 18:54:48 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/20 08:36:51 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ int	check_hd(t_cmd *cmd)
 		{
 			temp->hdfile = create_hd_name();
 			quote = remove_hd_quotes(temp);
-			if (create_hd(cmd, temp, quote) == 130)
-				return (130);
+			if (create_hd(cmd, temp, quote) == EXIT_SIGINT)
+				return (EXIT_SIGINT);
 		}
 		if (!temp->next)
 			break ;

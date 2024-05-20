@@ -36,7 +36,7 @@ int	find_executable_and_execute(t_cmd *cmd, t_data *data)
 	}
 	write(STDERR_FILENO, cmd->s[0], ft_strlen(cmd->s[0]));
 	write(STDERR_FILENO, ": command not found\n", 20);
-	return (127);
+	return (EXIT_CMD_NOT_FOUND);
 }
 
 int	call_cmd(t_data *data, t_cmd *cmd)
@@ -46,7 +46,7 @@ int	call_cmd(t_data *data, t_cmd *cmd)
 
 	status = 0;
 	if (find_executable_and_execute(cmd, data) != 0)
-		return (127);
+		return (EXIT_CMD_NOT_FOUND);
 	pid = fork();
 	if (pid == 0)
 	{
