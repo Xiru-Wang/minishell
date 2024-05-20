@@ -1,53 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   call_cmd.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jschroed <jschroed@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/20 19:27:42 by jschroed          #+#    #+#             */
+/*   Updated: 2024/05/20 19:29:37 by jschroed         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
-
-int	find_executable_and_execute(t_cmd *cmd, t_data *data)
-{
-	char	*path;
-	char	*path_tmp;
-	char	**paths;
-	int		i;
-
-	i = 0;
-	if (cmd->s[0][0] == '/' || (cmd->s[0][0] == '.' && (cmd->s[0][1] == '/' || \
-					(cmd->s[0][1] == '.' && cmd->s[0][2] == '/'))))
-	{
-		if (access(cmd->s[0], X_OK) == 0)
-			return (0);
-		else
-		{
-			write(STDERR_FILENO, cmd->s[0], strlen(cmd->s[0]));
-			write(STDERR_FILENO, ": command not found\n", 20);
-			return (EXIT_CMD_NOT_FOUND);
-		}
-	}
-	while (data->env[i] && ft_strncmp(data->env[i], "PATH=", 5) != 0)
-		i++;
-	if (data->env[i] != NULL)
-	{
-		paths = ft_split(data->env[i] + 5, ':');
-		i = 0;
-		while (paths && paths[i])
-		{
-			path_tmp = ft_strjoin(paths[i], "/");
-			path = ft_strjoin(path_tmp, cmd->s[0]);
-			free(path_tmp);
-			if (access(path, X_OK) == 0)
-			{
-				if (cmd->s[0])
-					free(cmd->s[0]);
-				cmd->s[0] = path;
-				free_double_ptr(paths);
-				return (EXIT_SUCCESS);
-			}
-			free(path);
-			i++;
-		}
-		free_double_ptr(paths);
-	}
-	write(STDERR_FILENO, cmd->s[0], ft_strlen(cmd->s[0]));
-	write(STDERR_FILENO, ": command not found\n", 20);
-	return (EXIT_CMD_NOT_FOUND);
-}
 
 int	call_cmd(t_data *data, t_cmd *cmd)
 {
