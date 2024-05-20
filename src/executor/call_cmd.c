@@ -8,8 +8,18 @@ int	find_executable_and_execute(t_cmd *cmd, t_data *data)
 	int		i;
 
 	i = 0;
-	if (access(cmd->s[0], X_OK) == 0)
-		return 0;
+	if (cmd->s[0][0] == '/' || (cmd->s[0][0] == '.' && (cmd->s[0][1] == '/' || \
+					(cmd->s[0][1] == '.' && cmd->s[0][2] == '/'))))
+	{
+		if (access(cmd->s[0], X_OK) == 0)
+			return (0);
+		else
+		{
+			write(STDERR_FILENO, cmd->s[0], strlen(cmd->s[0]));
+			write(STDERR_FILENO, ": command not found\n", 20);
+			return (EXIT_CMD_NOT_FOUND);
+		}
+	}
 	while (data->env[i] && ft_strncmp(data->env[i], "PATH=", 5) != 0)
 		i++;
 	if (data->env[i] != NULL)
@@ -27,7 +37,7 @@ int	find_executable_and_execute(t_cmd *cmd, t_data *data)
 					free(cmd->s[0]);
 				cmd->s[0] = path;
 				free_double_ptr(paths);
-				return 0;
+				return (EXIT_SUCCESS);
 			}
 			free(path);
 			i++;
@@ -66,7 +76,7 @@ int	call_cmd(t_data *data, t_cmd *cmd)
 		if (WIFSIGNALED(status))
 		{
 			if (WTERMSIG(status) == SIGINT)
-				return (130);
+				return (EXIT_SIGINT);
 		}
 		else if (WIFEXITED(status))
 			return (WEXITSTATUS(status));
