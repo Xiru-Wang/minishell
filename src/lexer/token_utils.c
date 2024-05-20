@@ -6,19 +6,19 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:58 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/19 13:30:22 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/20 16:59:07 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static t_token	*create_token(char *s, int type)
+static t_token	*create_token(char *s, int type, t_data *data)
 {
 	t_token	*token;
 
 	token = (t_token *)malloc(sizeof(t_token));
 	if (!token)
-		return (NULL);
+		free_exit("malloc error", data, STDERR_FILENO);
 	if (*s)
 		token->value = s;
 	else
@@ -47,16 +47,16 @@ static void	token_add_back(t_token **head, t_token *new)
 	}
 }
 
-int	add_token_list(char *s, int type, t_token **head)
+int	add_token_list(char *s, int type, t_token **head, t_data *data)
 {
 	t_token	*new;
 
-	new = create_token(s, type);
-	if (!new)
-		return (0);
+	new = create_token(s, type, data);
 	token_add_back(head, new);
-
-	return (1);
+	if (type == APPEND || type == HEREDOC)
+		return (2);
+	else
+		return (1);
 }
 
 void	del_token(t_token **head, t_token *node)
@@ -74,7 +74,7 @@ void	del_token(t_token **head, t_token *node)
 	free(node);
 }
 
-void print_token_list(t_token *token_list)
+void	print_token_list(t_token *token_list)
 {
 	while (token_list)
 	{

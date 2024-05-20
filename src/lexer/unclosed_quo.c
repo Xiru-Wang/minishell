@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:59 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/19 19:59:35 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/20 17:35:57 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ static int	find_next_quo(char *s, int *i, int *quote_sign)
 	return (0);
 }
 
-int check_unclosed_quotes(char *s, t_token **head)
+int	check_unclosed_quotes(char *s, t_token **head, t_data *data)
 {
-	int		i;
 	int		quote_sign;
+	int		i;
 
 	i = 0;
 	quote_sign = 0;
@@ -47,18 +47,18 @@ int check_unclosed_quotes(char *s, t_token **head)
 		else if (ft_type(s[i]) != WORD)
 		{
 			if (quote_sign == 1)
-				add_token_list(ft_substr(s, 0, i), QUO, head);
-			else if (i > 0)
-				add_token_list(ft_substr(s, 0, i), WORD, head);
+				add_token_list(ft_substr(s, 0, i), QUO, head, data);
+			else
+				add_token_list(ft_substr(s, 0, i), WORD, head, data);
 			return (i);
 		}
 		else
 			i++;
 	}
 	if (quote_sign == 1)
-		add_token_list(ft_substr(s, 0, i), QUO, head);
-	else if (i > 0)
-		add_token_list(ft_substr(s, 0, i), WORD, head);
+		add_token_list(ft_substr(s, 0, i), QUO, head, data);
+	else
+		add_token_list(ft_substr(s, 0, i), WORD, head, data);
 	return (i);
 }
 

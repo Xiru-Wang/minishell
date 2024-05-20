@@ -3,18 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   exit_codes.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jschroed <jschroed@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 20:03:09 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/14 20:40:52 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/20 16:01:39 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXIT_CODES_H
 # define EXIT_CODES_H
 
-// Standard exit codes
-// # define EXIT_SUCCESS				0  // Successful execution
+
+# define SYNTAXERR				"minishell: syntax error near \
+								unexpected token `newline\'\n"
 // # define EXIT_FAILURE				1  // General error
 
 // Command-related exit codes

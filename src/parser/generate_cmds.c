@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/20 14:03:36 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/20 16:13:53 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	extract_redir(t_token **head, t_cmd *cmd);
 static void	add_io_list(t_cmd *cmd, t_token *temp);
 static int	fill_cmd(t_token **head, t_cmd *cmd);
-
+static void	expand_args(t_token **head, int size, t_cmd *cmd);
 
 // input:			ls -l | grep 'hi' > test.txt
 // token_list:		"ls", "-l", "|", "grep", "'hi'", ">", "test.txt"
@@ -64,14 +64,8 @@ static int	extract_redir(t_token **head, t_cmd *cmd)
 		if (temp->type >= REDIR_IN && temp->type <= HEREDOC)
 		{
 			next = temp->next;
-			if (temp->next == NULL || (next->type != WORD && next->type != QUO))
-			{
-				if (!next || !next->value)
-					printf("minishell: syntax error near unexpected token `newline\'\n");
-				else
-					printf("minishell: syntax error near unexpected token `%s\'\n", next->value);
+			if (check_syntax(next) == 1)
 				return (EXIT_FAILURE);
-			}
 			add_io_list(cmd, temp);
 			del_token(head, temp);
 			del_token(head, next);
@@ -113,38 +107,46 @@ static void	add_io_list(t_cmd *cmd, t_token *token)
 static int	fill_cmd(t_token **head, t_cmd *cmd)
 {
 	t_token		*temp;
-	t_token		*next;
-	int			i;
-	t_builtin	builtin;
 	int			size;
 
 	temp = *head;
 	if (!temp || temp->type == PIPE)
 	{
 		if (!temp || !temp->value)
-			printf("minishell: syntax error near unexpected token `newline\'\n");
-		else	
-			printf("minishell: syntax error near unexpected token `%s\'\n", temp->value);
+			printf(SYNTAXERR);
+		else
+			printf("minishell: syntax error near \
+					unexpected token `%s\'\n", temp->value);
 		return (EXIT_FAILURE);
 	}
 	size = count_args(temp) + 1;
 	cmd->s = (char **)ft_calloc(size, sizeof(char *));
 	if (!cmd->s)
 		free_exit("malloc error", cmd->data, EXIT_FAILURE);
+	expand_args(head, size, cmd);
+	return (EXIT_SUCCESS);
+}
+
+static void	expand_args(t_token **head, int size, t_cmd *cmd)
+{
+	t_token		*next;
+	t_token		*temp;
+	t_builtin	builtin;
+	int			i;
+
+	temp = *head;
 	i = 0;
 	while (temp && temp->type != PIPE && size > 0)
 	{
 		next = temp->next;
-		cmd->s[i] = NULL;
 		if (temp->type == WORD)
 			cmd->s[i] = expand_complex(temp->value, WORD, cmd->data);
 		else if (temp->type == QUO)
 			cmd->s[i] = expand_complex(temp->value, QUO, cmd->data);
 		if (i == 0)
 		{
-			builtin = ft_builtin(cmd->s[0]);
-			if (builtin)
-				cmd->is_builtin = builtin;
+			builtin = ft_builtin(cmd->s[i]);
+			cmd->is_builtin = builtin;
 		}
 		del_token(head, temp);
 		temp = next;
@@ -153,5 +155,50 @@ static int	fill_cmd(t_token **head, t_cmd *cmd)
 	cmd->s[i] = NULL;
 	if (temp && temp->type == PIPE)
 		del_token(head, temp);
-	return (EXIT_SUCCESS);
 }
+
+// static int	fill_cmd(t_token **head, t_cmd *cmd)
+// {
+// 	t_token		*temp;
+// 	t_token		*next;
+// 	int			i;
+// 	t_builtin	builtin;
+// 	int			size;
+
+// 	temp = *head;
+// 	if (!temp || temp->type == PIPE)
+// 	{
+// 		if (!temp || !temp->value)
+// 			printf("minishell: syntax error near unexpected token `newline\'\n");
+// 		else	
+// 			printf("minishell: syntax error near unexpected token `%s\'\n", temp->value);
+// 		return (EXIT_FAILURE);
+// 	}
+// 	size = count_args(temp) + 1;
+// 	cmd->s = (char **)ft_calloc(size, sizeof(char *));
+// 	if (!cmd->s)
+// 		free_exit("malloc error", cmd->data, EXIT_FAILURE);
+// 	i = 0;
+// 	while (temp && temp->type != PIPE && size > 0)
+// 	{
+// 		next = temp->next;
+// 		cmd->s[i] = NULL;
+// 		if (temp->type == WORD)
+// 			cmd->s[i] = expand_complex(temp->value, WORD, cmd->data);
+// 		else if (temp->type == QUO)
+// 			cmd->s[i] = expand_complex(temp->value, QUO, cmd->data);
+// 		if (i == 0)
+// 		{
+// 			builtin = ft_builtin(cmd->s[0]);
+// 			if (builtin)
+// 				cmd->is_builtin = builtin;
+// 		}
+// 		del_token(head, temp);
+// 		temp = next;
+// 		i++;
+// 	}
+// 	cmd->s[i] = NULL;
+// 	if (temp && temp->type == PIPE)
+// 		del_token(head, temp);
+// 	return (EXIT_SUCCESS);
+// }
