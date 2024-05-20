@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 18:56:02 by xiwang            #+#    #+#             */
-/*   Updated: 2023/05/25 15:57:49 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/20 15:06:37 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,5 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 strlcat() returns the initial length of dst plus the length of src.
 The strlcat() function appends the NUL-terminated string src to the end of dst.
 It will append at most size - strlen(dst) - 1 bytes
-这个函数实现的是将字符串src追加到dst的末尾，并返回整个字符串的长度（不包括末尾的空字符'\0'）。
-函数会保证dst字符串不会超过给定的dstsize大小。
 
-如果dstsize为0，则dst不会被修改，函数会直接返回src的长度。
-因为dst的空间大小为0，无法将src复制到dst中，所以无需对dst进行任何更改。
 */

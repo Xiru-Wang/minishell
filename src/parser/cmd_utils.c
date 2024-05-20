@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:31 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/20 09:37:36 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/20 17:12:29 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_cmd	*init_cmd(t_data *data)
 	new = (t_cmd *)calloc(1, sizeof(t_cmd));
 	if (!new)
 		return (NULL);
-	new->s= NULL;
+	new->s = NULL;
 	new->is_builtin = 0;
 	new->next = NULL;
 	new->prev = NULL;
@@ -76,4 +76,20 @@ int	count_args(t_token *list)
 		list = list->next;
 	}
 	return (size);
+}
+
+int	check_syntax(t_token *next)
+{
+	if (!next || !next->value)
+	{
+		printf(SYNTAXERR);
+		return (EXIT_FAILURE);
+	}
+	if (next->type != WORD && next->type != QUO)
+	{
+		printf("minishell: syntax error near \
+				unexpected token `%s\'\n", next->value);
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
 }

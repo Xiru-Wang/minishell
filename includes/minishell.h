@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/20 10:57:17 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/20 17:41:23 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,20 +110,19 @@ void			free_exit(char *s, t_data *data, int code);
 char			**ft_arrdup(char **arr);
 
 // utils_free
-//void			free_arr(char **arr);
 void			free_data(t_data *data);
 
 //token_util
-int				add_token_list(char *s, int type, t_token **head);
+int				add_token_list(char *s, int type, t_token **head, t_data *data);
 void			del_token(t_token **head, t_token *node);
 void			free_token_list(t_token **list);
 enum s_type		ft_type(char c);
 
 // tokens
 void			init_data(t_data *data, char **env);
-int				split_line(char *s, t_token **token_list, t_data *data);
+void			split_line(char *s, t_token **head, t_data *data);
 //check_quote
-int				check_unclosed_quotes(char *s, t_token **head);
+int				check_unclosed_quotes(char *s, t_token **head, t_data *data);
 //remove_quo
 char			*remove_quo(char *s);
 char			*remove_quo_simple(char *s);
@@ -146,6 +145,7 @@ t_cmd			*init_cmd(t_data *data);
 void			append_cmd(t_cmd **head, t_cmd *new);
 int				count_pipe(t_token *list);
 int				count_args(t_token *list);
+int				check_syntax(t_token *next);
 
 //generate_cmd
 t_cmd			*generate_cmds(t_token **token, t_data *data);
@@ -189,7 +189,7 @@ int				call_cd(t_data *data, t_cmd *cmd);
 int				executor(t_cmd *cmd, t_data *data);
 
 // builtin
-enum s_builtin	ft_builtin(char *str);
+enum s_builtin	ft_builtin(char *s);
 int				call_builtin(t_cmd *cmd);
 int				call_echo(t_cmd *cmd);
 int				call_env(t_cmd *cmd);
