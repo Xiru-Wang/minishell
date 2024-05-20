@@ -17,28 +17,27 @@ int	executor(t_cmd *cmd, t_data *data)
 	if (data->exit_code == EXIT_SIGINT)
 		return (EXIT_SIGINT);
 	else
-		return (0);
-}
+		return (0); }
 
 static int	execute_single_command(t_cmd *cmd)
 {
-    int status;
+	int status;
 
-    if (check_hd(cmd) == EXIT_SIGINT)
-        return (EXIT_SIGINT);
-    backup_stdio(cmd);
-    redirect_io(cmd);
+	if (check_hd(cmd) == EXIT_SIGINT)
+		return (EXIT_SIGINT);
+	backup_stdio(cmd);
+	redirect_io(cmd);
 	if (cmd->err)  // Check for redirection error
-    {
-        reset_stdio(cmd);
-        return (1);  // Return an error status
-    }
-    if (cmd->is_builtin)
-        status = call_builtin(cmd);
-    else
-        status = call_cmd(cmd->data, cmd);
-    reset_stdio(cmd);
-    return (status);
+	{
+		reset_stdio(cmd);
+		return (1);  // Return an error status
+	}
+	if (cmd->is_builtin)
+		status = call_builtin(cmd);
+	else
+		status = call_cmd(cmd->data, cmd);
+	reset_stdio(cmd);
+	return (status);
 }
 
 // in parent
@@ -65,12 +64,12 @@ static int	execute_command_pipeline(t_cmd *cmd)
 		if (cmd->data->pid[i] == 0)
 			setup_child_process(current, end, fd_in);
 		else if (cmd->data->pid[i] < 0)
-        {
-            perror("fork");
-            return 1;
-        }
+		{
+			perror("fork");
+			return 1;
+		}
 		if (fd_in != STDIN_FILENO)
-            close(fd_in);
+			close(fd_in);
 		if (current->next)
 		{
 			close(end[1]);
@@ -89,62 +88,42 @@ static int	execute_command_pipeline(t_cmd *cmd)
 
 static int setup_child_process(t_cmd *cmd, int *end, int fd_in)
 {
-    if (fd_in != STDIN_FILENO)
-    {
-        dup2(fd_in, STDIN_FILENO);
-        close(fd_in);
-    }
-    if (cmd->next)
-    {
-        close(end[0]);
-        dup2(end[1], STDOUT_FILENO);
-        close(end[1]);
-    }
-    // Redirect I/O and handle errors
-    redirect_io(cmd);
-    if (cmd->err)
-        exit(1);  // Exit with error code if redirection fails
-    if (cmd->is_builtin)
-        exit(call_builtin(cmd));
-    else
-        exit(call_cmd(cmd->data, cmd));
+	if (fd_in != STDIN_FILENO)
+	{
+		dup2(fd_in, STDIN_FILENO);
+		close(fd_in);
+	}
+	if (cmd->next)
+	{
+		close(end[0]);
+		dup2(end[1], STDOUT_FILENO);
+		close(end[1]);
+	}
+	// Redirect I/O and handle errors
+	redirect_io(cmd);
+	if (cmd->err)
+		exit(1);  // Exit with error code if redirection fails
+	if (cmd->is_builtin)
+		exit(call_builtin(cmd));
+	else
+		exit(call_cmd(cmd->data, cmd));
 }
-
-// static int	setup_child_process(t_cmd *cmd, int *end, int fd_in)
-// {
-// 	if (fd_in != 0)
-// 	{
-// 		dup2(fd_in, STDIN_FILENO);
-// 		close(fd_in);
-// 	}
-// 	if (cmd->next)
-// 	{
-// 		close(end[0]);
-// 		dup2(end[1], STDOUT_FILENO);
-// 		close(end[1]);
-// 	}
-// 	redirect_io(cmd);
-// 	if (cmd->is_builtin)
-// 		exit (call_builtin(cmd));
-// 	else
-// 		exit (call_cmd(cmd->data, cmd));
-// }
 
 //echo $? ---->> equal last child exit status🤔
 static int    wait_for_processes(int *pids, int num_pids)
 {
-    int    i;
-    int    status;
-    int    exit_status;
+	int    i;
+	int    status;
+	int    exit_status;
 
-    i = 0;
-    exit_status = 0;
-    while (i < num_pids)
-    {
-        waitpid(pids[i], &status, 0);
+	i = 0;
+	exit_status = 0;
+	while (i < num_pids)
+	{
+		waitpid(pids[i], &status, 0);
 		i++;
 	}
-    if (WIFEXITED(status))
-        exit_status = WEXITSTATUS(status);
-    return (exit_status);
+	if (WIFEXITED(status))
+		exit_status = WEXITSTATUS(status);
+	return (exit_status);
 }
