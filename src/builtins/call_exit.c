@@ -6,75 +6,110 @@
 /*   By: jschroed <jschroed@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:37:05 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/20 08:39:24 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/20 16:36:42 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-/**
- * @brief Determine the exit code based on the input string and data.
- *
- * This function takes in a string array and a data structure, and determines
- * the exit code based on the input string. If the second element of the string
- * array is not present, the exit code is set to 0. If the second element is a
- * valid digit, it is converted to an integer and used as the exit code. If the
- * second element is not a valid digit, an error message is printed to stderr
- * and the exit code is set to 255.
- *
- * @param str The input string array.
- * @param data The data structure (not used in this function).
- * @return The determined exit code.
- */
-/* static int determine_exit_code(char **str) */
-/* { */
-/*     int exit_code; */
-/*  */
-/*     if (!str[1]) */
-/*         exit_code = 0; */
-/*     else */
-/*     { */
-/*         if (is_str_digit(str[1])) */
-/*             exit_code = ft_atoi(str[1]); */
-/*         else */
-/*         { */
-/*             ft_putstr_fd("minishell: exit: ", STDERR_FILENO); */
-/*             ft_putstr_fd(str[1], STDERR_FILENO); */
-/*             ft_putstr_fd(": numeric argument required\n", STDERR_FILENO); */
-/*             exit_code = 255; */
-/*         } */
-/*     } */
-/*     return exit_code; */
-/* } */
+static int	is_valid_arg(char *arg);
+static int	calculate_exit_code(char *arg);
+static char	*trim_and_validate_arg(char *arg, int *last_exit_code);
+static int	check_and_convert_number(char *arg, unsigned long long *num);
 
-/**
- * Exits the minishell program with a specified exit code.
- *
- * This function takes in a command structure `cmd` and a data structure `data`,
- * and exits the minishell program with a specified exit code. It first prints
- * "exit" to the standard error output, and then checks if there are too many
- * arguments provided in the command structure `cmd`. If there are too many
- * arguments, it prints an error message to the standard error output and
- * returns `EXIT_FAILURE`.
- *
- * @param cmd A pointer to the command structure containing the arguments for
- * the exit command.
- * @param data A pointer to the data structure containing the data for the
- * minishell program.
- * @return The exit code to be used to exit the minishell program.
- */
-int call_exit(t_cmd *cmd, t_data *data)
+int	call_exit(t_cmd *cmd, t_data *data)
 {
-	int last_exit_code;
+	int		last_exit_code;
+	char	*arg;
 
-	last_exit_code = 0;
+	last_exit_code = data->exit_code;
+	arg = NULL;
 	if (cmd->s[1])
 	{
-		ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
-		return (EXIT_FAILURE);
+		arg = trim_and_validate_arg(cmd->s[1], &last_exit_code);
+		if (arg && cmd->s[2])
+			return (too_many_arguments_exit(arg));
+		else if (arg)
+			last_exit_code = calculate_exit_code(arg);
+		free(arg);
 	}
-	ft_putendl_fd("exit", STDERR_FILENO);
-	last_exit_code = data->exit_code;
 	free_data(data);
 	exit(last_exit_code);
+}
+
+static char	*trim_and_validate_arg(char *arg, int *last_exit_code)
+{
+	char	*trimmed_arg;
+
+	trimmed_arg = ft_strtrim(arg, " \t");
+	if (!is_valid_arg(trimmed_arg))
+	{
+		*last_exit_code = print_error_exit(trimmed_arg);
+		free(trimmed_arg);
+		return (NULL);
+	}
+	return (trimmed_arg);
+}
+
+static int	is_valid_arg(char *arg)
+{
+	int	i;
+
+	i = 0;
+	if (ft_strlen(arg) == 0 || (ft_strlen(arg) == 1 && (arg[0] == '+' || \
+					arg[0] == '-')))
+		return (0);
+	if (arg[i] == '+' || arg[i] == '-')
+		i++;
+	while (arg[i])
+	{
+		if (!ft_isdigit(arg[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+static int	calculate_exit_code(char *arg)
+{
+	int					sign;
+	int					i;
+	unsigned long long	num;
+
+	sign = 1;
+	i = 0;
+	num = 0;
+	if (arg[i] == '+' || arg[i] == '-')
+		if (arg[i++] == '-')
+			sign = -1;
+	if (!check_and_convert_number(arg + i, &num))
+		return (print_error_exit(arg));
+	if (sign == -1 && strcmp(arg, "-9223372036854775808") == 0)
+		num = 9223372036854775808ULL;
+	else if ((sign == 1 && num > LLONG_MAX) || \
+			(sign == -1 && num > 9223372036854775808ULL))
+		return (print_error_exit(arg));
+	if (sign == -1)
+		return ((int)(-((long long)num) % 256));
+	return ((int)((long long)num % 256));
+}
+
+static int	check_and_convert_number(char *arg, unsigned long long *num)
+{
+	int					i;
+	unsigned long long	prev_num;
+
+	i = 0;
+	*num = 0;
+	while (arg[i])
+	{
+		prev_num = *num;
+		*num = *num * 10 + (arg[i] - '0');
+		if (*num / 10 != prev_num)
+		{
+			return (0);
+		}
+		i++;
+	}
+	return (1);
 }
