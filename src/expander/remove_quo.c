@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 19:18:57 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/19 22:44:48 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/20 11:34:49 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ char	*remove_quo(char *s)
 	new[k] = '\0';
 	return (new);
 }
-
 
 char	*remove_quo_simple(char *s)
 {
