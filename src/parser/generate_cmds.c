@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/20 14:00:08 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/20 14:03:36 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static int	extract_redir(t_token **head, t_cmd *cmd)
 			{
 				if (!next || !next->value)
 					printf("minishell: syntax error near unexpected token `newline\'\n");
-				else	
+				else
 					printf("minishell: syntax error near unexpected token `%s\'\n", next->value);
 				return (EXIT_FAILURE);
 			}
