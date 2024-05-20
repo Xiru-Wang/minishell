@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   generate_cmds.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/20 11:38:21 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/20 14:00:08 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,12 @@ t_cmd	*generate_cmds(t_token **token, t_data *data)
 		if (extract_redir(token, new) == 1)
 		{
 			data->exit_code = 2;
-			return (NULL);
+			return (data->cmd_list);
 		}
 		if (fill_cmd(token, new) == 1)
 		{
 			data->exit_code = 2;
-			return (NULL);
+			return (data->cmd_list);
 		}
 		append_cmd(&data->cmd_list, new);
 		i++;
@@ -66,7 +66,10 @@ static int	extract_redir(t_token **head, t_cmd *cmd)
 			next = temp->next;
 			if (temp->next == NULL || (next->type != WORD && next->type != QUO))
 			{
-				printf("minishell: syntax error near unexpected token `%s\'\n", next->value);
+				if (!next || !next->value)
+					printf("minishell: syntax error near unexpected token `newline\'\n");
+				else	
+					printf("minishell: syntax error near unexpected token `%s\'\n", next->value);
 				return (EXIT_FAILURE);
 			}
 			add_io_list(cmd, temp);
@@ -118,7 +121,10 @@ static int	fill_cmd(t_token **head, t_cmd *cmd)
 	temp = *head;
 	if (!temp || temp->type == PIPE)
 	{
-		printf("minishell: syntax error near unexpected token `%s\'\n", temp->value);
+		if (!temp || !temp->value)
+			printf("minishell: syntax error near unexpected token `newline\'\n");
+		else	
+			printf("minishell: syntax error near unexpected token `%s\'\n", temp->value);
 		return (EXIT_FAILURE);
 	}
 	size = count_args(temp) + 1;
