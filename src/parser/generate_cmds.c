@@ -66,7 +66,10 @@ static int	extract_redir(t_token **head, t_cmd *cmd)
 			next = temp->next;
 			if (temp->next == NULL || (next->type != WORD && next->type != QUO))
 			{
-				printf("minishell: syntax error near unexpected token `%s\'\n", next->value);
+				if (!next || !next->value)
+					printf("minishell: syntax error near unexpected token `newline\'\n");
+				else
+					printf("minishell: syntax error near unexpected token `%s\'\n", next->value);
 				return (EXIT_FAILURE);
 			}
 			add_io_list(cmd, temp);
