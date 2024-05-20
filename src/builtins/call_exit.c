@@ -6,7 +6,7 @@
 /*   By: jschroed <jschroed@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:37:05 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/20 16:36:42 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/20 19:42:17 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,17 @@ int	call_exit(t_cmd *cmd, t_data *data)
 {
 	int		last_exit_code;
 	char	*arg;
+	int		i;
 
 	last_exit_code = data->exit_code;
 	arg = NULL;
-	if (cmd->s[1])
+	i = 1;
+	if (cmd->s[i] && strcmp(cmd->s[i], "--") == 0)
+		i++;
+	if (cmd->s[i])
 	{
-		arg = trim_and_validate_arg(cmd->s[1], &last_exit_code);
-		if (arg && cmd->s[2])
+		arg = trim_and_validate_arg(cmd->s[i], &last_exit_code);
+		if (arg && cmd->s[i + 1])
 			return (too_many_arguments_exit(arg));
 		else if (arg)
 			last_exit_code = calculate_exit_code(arg);
