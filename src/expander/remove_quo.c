@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 19:18:57 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/20 14:27:14 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/20 20:38:53 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	*remove_quo(char *s)
 	count = count_valid_quotes(s);
 	new = (char *)malloc(ft_strlen(s) - count + 1);
 	if (!new)
-		return NULL;
+		return (NULL);
 	while (s[i])
 	{
 		if (s[i] == '\'' || s[i] == '\"')
@@ -74,10 +74,10 @@ char	*remove_quo(char *s)
 
 char	*remove_quo_simple(char *s)
 {
-	int		k;
+	int	k;
 
 	k = ft_strlen(s) - 1;
-	if ((s[0] == '\'' && s[k] == s[0])|| (s[0] == '\"' && s[k] == s[0]))
+	if ((s[0] == '\'' && s[k] == s[0]) || (s[0] == '\"' && s[k] == s[0]))
 		return (ft_substr(s, 1, ft_strlen(s) - 2));
 	else
 		return (ft_strdup(s));

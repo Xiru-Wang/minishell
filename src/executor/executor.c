@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executor.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jschroed <jschroed@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/20 20:35:04 by jschroed          #+#    #+#             */
+/*   Updated: 2024/05/20 20:36:43 by jschroed         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 
 static int	execute_single_command(t_cmd *cmd);
@@ -17,20 +29,21 @@ int	executor(t_cmd *cmd, t_data *data)
 	if (data->exit_code == EXIT_SIGINT)
 		return (EXIT_SIGINT);
 	else
-		return (0); }
+		return (0);
+}
 
 static int	execute_single_command(t_cmd *cmd)
 {
-	int status;
+	int	status;
 
 	if (check_hd(cmd) == EXIT_SIGINT)
 		return (EXIT_SIGINT);
 	backup_stdio(cmd);
 	redirect_io(cmd);
-	if (cmd->err)  // Check for redirection error
+	if (cmd->err)
 	{
 		reset_stdio(cmd);
-		return (1);  // Return an error status
+		return (1);
 	}
 	if (cmd->is_builtin)
 		status = call_builtin(cmd);
@@ -66,7 +79,7 @@ static int	execute_command_pipeline(t_cmd *cmd)
 		else if (cmd->data->pid[i] < 0)
 		{
 			perror("fork");
-			return 1;
+			return (1);
 		}
 		if (fd_in != STDIN_FILENO)
 			close(fd_in);
@@ -82,11 +95,7 @@ static int	execute_command_pipeline(t_cmd *cmd)
 	return (wait_for_processes(cmd->data->pid, cmd->data->cmd_num));
 }
 
-//if there's pipe, child get data from parent's end[read]: dup2(end[0], STDIN)
-//if cmd->next, close child's end[read], and redirect stdout to child's end[write]
-//if io_redirection, handle additional redirections, dup2 again: dup2(infile/outfile)
-
-static int setup_child_process(t_cmd *cmd, int *end, int fd_in)
+static int	setup_child_process(t_cmd *cmd, int *end, int fd_in)
 {
 	if (fd_in != STDIN_FILENO)
 	{
@@ -99,10 +108,9 @@ static int setup_child_process(t_cmd *cmd, int *end, int fd_in)
 		dup2(end[1], STDOUT_FILENO);
 		close(end[1]);
 	}
-	// Redirect I/O and handle errors
 	redirect_io(cmd);
 	if (cmd->err)
-		exit(1);  // Exit with error code if redirection fails
+		exit(1);
 	if (cmd->is_builtin)
 		exit(call_builtin(cmd));
 	else
@@ -110,11 +118,11 @@ static int setup_child_process(t_cmd *cmd, int *end, int fd_in)
 }
 
 //echo $? ---->> equal last child exit status🤔
-static int    wait_for_processes(int *pids, int num_pids)
+static int	wait_for_processes(int *pids, int num_pids)
 {
-	int    i;
-	int    status;
-	int    exit_status;
+	int	i;
+	int	status;
+	int	exit_status;
 
 	i = 0;
 	exit_status = 0;

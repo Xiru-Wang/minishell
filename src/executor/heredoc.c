@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:49 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/20 08:36:51 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/20 20:37:00 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int	check_hd(t_cmd *cmd)
 	}
 	return (0);
 }
-
 
 //0600: The file owner has read and write permissions (rw-------). No one else can read or write to the file.
 //0644: The file owner has read and write permissions, but others can only read the file (rw-r--r--).

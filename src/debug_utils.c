@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 19:02:11 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/19 19:04:55 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/20 20:40:39 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,16 @@
 
 void	print_cmd_list(t_cmd *cmd)
 {
+	int	k;
+	int	i;
+
 	if (!cmd)
-			return ;
+		return ;
 	while (cmd)
 	{
-		int k = 0;
+		k = 0;
 		printf("******cmd%d*****\n", k);
-		int i = 0;
+		i = 0;
 		while (cmd->s[i])
 		{
 			printf("%s ", cmd->s[i]);

@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 19:37:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/19 19:07:48 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/20 20:41:37 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 int	is_space(char c)
 {
-	if ( c == 32 || (c >= 9 && c <= 13))
+	if (c == 32 || (c >= 9 && c <= 13))
 		return (1);
 	return (0);
 }
 
 int	is_str_digit(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
@@ -35,31 +35,31 @@ int	is_str_digit(char *str)
 
 char	**ft_arrdup(char **arr)
 {
-    int i;
-    int len;
-    char **new_arr;
+	int		i;
+	int		len;
+	char	**new_arr;
 
-    if (arr == NULL)
-        return (NULL);
-    len = 0;
-    while (arr[len])
-        len++;
-    new_arr = (char **)malloc(sizeof(char *) * (len + 1));
-    if (new_arr == NULL)
-        return (NULL);
-    i = 0;
-    while (arr[i])
-    {
-        new_arr[i] = ft_strdup(arr[i]);
-        if (new_arr[i] == NULL)
-        {
-            free_double_ptr(new_arr);
-            return (NULL);
-        }
-        i++;
-    }
-    new_arr[i] = NULL;
-    return (new_arr);
+	if (arr == NULL)
+		return (NULL);
+	len = 0;
+	while (arr[len])
+		len++;
+	new_arr = (char **)malloc(sizeof(char *) * (len + 1));
+	if (new_arr == NULL)
+		return (NULL);
+	i = 0;
+	while (arr[i])
+	{
+		new_arr[i] = ft_strdup(arr[i]);
+		if (new_arr[i] == NULL)
+		{
+			free_double_ptr(new_arr);
+			return (NULL);
+		}
+		i++;
+	}
+	new_arr[i] = NULL;
+	return (new_arr);
 }
 
 int	if_all_space(char *s)

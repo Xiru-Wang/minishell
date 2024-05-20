@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:36:51 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/20 15:24:02 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/20 20:42:24 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	free_data(t_data *data)
 {
 	if (!data)
-		return;
+		return ;
 	if (data->line)
 	{
 		free(data->line);
@@ -55,7 +55,7 @@ void	free_cmd_list(t_cmd **cmd)
 	t_cmd	*temp;
 
 	if (cmd == NULL || *cmd == NULL)
-		return;
+		return ;
 	while (*cmd)
 	{
 		temp = (*cmd)->next;
@@ -85,9 +85,10 @@ void	free_exit(char *s, t_data *data, int code)
 
 void	free_token_list(t_token **list)
 {
-	t_token *temp;
+	t_token	*temp;
+
 	if (list == NULL || *list == NULL)
-		return;
+		return ;
 	while (*list)
 	{
 		temp = (*list)->next;
@@ -109,7 +110,7 @@ void	free_double_ptr(char **ptr)
 
 	i = 0;
 	if (!ptr)
-		return;
+		return ;
 	while (ptr[i] != NULL) 
 	{
 		free(ptr[i]);

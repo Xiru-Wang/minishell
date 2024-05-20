@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 19:44:07 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/16 19:54:45 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/20 20:39:46 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ static void	sigint_handler_noint(int signum)
 			write(STDERR_FILENO, "\n", 1);
 			rl_on_new_line();
 			rl_replace_line("", 0);
-			/* rl_redisplay(); */
 		}
 		else
 		{

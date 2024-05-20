@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 17:35:45 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/20 09:43:46 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/20 20:37:35 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ void	redirect_io(t_cmd *cmd)
 			redirect_fdin(cmd, io);
 		else if (io->type == REDIR_OUT || io->type == APPEND)
 			redirect_fdout(io);
-		if (cmd->err)  // Stop if any redirection fails
-			return;
+		if (cmd->err)
+			return ;
 		io = io->next;
 	}
 }
@@ -46,9 +46,9 @@ static void	redirect_fdin(t_cmd *cmd, t_io *io)
 		fd = open(io->hdfile, O_RDONLY);
 	if (fd == -1)
 	{
-		perror(io->filename);  // Print the error message
-		cmd->err = 1;  // Set an error flag in the command structure
-		return;
+		perror(io->filename);
+		cmd->err = 1;
+		return ;
 	}
 	if (fd != -1)
 	{

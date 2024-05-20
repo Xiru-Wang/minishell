@@ -6,18 +6,19 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:07 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/20 20:16:55 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/20 20:25:39 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int call_cd(t_data *data, t_cmd *cmd) 
+int	call_cd(t_data *data, t_cmd *cmd)
 {
-	char *path;
-	int ret;
+	char	*path;
+	int		ret;
 
-	if (cmd->s[2]) {
+	if (cmd->s[2])
+	{
 		ft_putstr_fd("minishell: cd: too many arguments\n", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
@@ -29,45 +30,43 @@ int call_cd(t_data *data, t_cmd *cmd)
 			ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);
 			return (1);
 		}
-	} else if (cmd->s[1] && ft_strncmp(cmd->s[1], "", 1) == 0) {
+	}
+	else if (cmd->s[1] && ft_strncmp(cmd->s[1], "", 1) == 0)
 		return (EXIT_SUCCESS);
-	} else if (ft_strncmp(cmd->s[1], "-", 1) == 0) {
+	else if (ft_strncmp(cmd->s[1], "-", 1) == 0)
+	{
 		path = handle_cd_oldpwd(data);
 		if (path == NULL)
 			return (1);
-	} else {
+	}
+	else
 		path = cmd->s[1];
-	}
-
 	ret = change_directory(data, path);
-	if (ret == -1) {
+	if (ret == -1)
 		print_cd_error(path);
-	} else {
+	else
 		update_pwd_variables(data);
-	}
-
 	return (ret == -1);
 }
 
-char *find_env_var(t_data *data, const char *var_name)
+char	*find_env_var(t_data *data, const char *var_name)
 {
-	int i;
-	size_t var_len;
+	int		i;
+	size_t	var_len;
 
 	var_len = ft_strlen(var_name);
 	i = 0;
-
 	while (data->env[i] != NULL)
 	{
-		if (ft_strncmp(data->env[i], var_name, var_len) == 0 && data->env[i][var_len] == '=')
+		if (ft_strncmp(data->env[i], var_name, var_len) == 0 && \
+				data->env[i][var_len] == '=')
 			return (data->env[i] + var_len + 1);
 		i++;
 	}
-
 	return (NULL);
 }
 
-char *handle_cd_oldpwd(t_data *data)
+char	*handle_cd_oldpwd(t_data *data)
 {
 	if (data->old_pwd == NULL)
 	{
@@ -78,73 +77,63 @@ char *handle_cd_oldpwd(t_data *data)
 	return (data->old_pwd);
 }
 
-
-int change_directory(t_data *data, char *path) {
-	int ret;
+int	change_directory(t_data *data, char *path)
+{
+	int		ret;
+	char	*tmp;
 
 	ret = chdir(path);
-	if (ret == -1) {
+	if (ret == -1)
 		return (-1);
-	}
-
-	if (data->old_pwd != NULL) {
+	if (data->old_pwd != NULL)
 		free(data->old_pwd);
-	}
 	data->old_pwd = ft_strdup(data->pwd);
-
-	if (data->pwd) {
+	if (data->pwd)
 		free(data->pwd);
-	}
-
-	// Attempt to get the current working directory
 	data->pwd = getcwd(NULL, 0);
-	if (!data->pwd) {
-		// Handle failure of getcwd by appending '/.' to the last known pwd
-		ft_putendl_fd("cd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory", STDERR_FILENO);
-		char *tmp = ft_strjoin(data->old_pwd, "/.");
+	if (!data->pwd)
+	{
+		ft_putendl_fd("cd: error retrieving current directory: getcwd: \
+				cannot access parent directories: No such file or directory", \
+				STDERR_FILENO);
+		tmp = ft_strjoin(data->old_pwd, "/.");
 		data->pwd = tmp;
 	}
-
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
-void print_cd_error(char *path) {
+void	print_cd_error(char *path)
+{
 	ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
 	ft_putstr_fd(path, STDERR_FILENO);
 	ft_putstr_fd(": ", STDERR_FILENO);
 	ft_putendl_fd(strerror(errno), STDERR_FILENO);
 }
 
-
-void update_pwd_variables(t_data *data) {
-	// Update PWD environment variable if it's not an empty string
-	if (data->pwd && strcmp(data->pwd, "") != 0) {
+void	update_pwd_variables(t_data *data)
+{
+	if (data->pwd && strcmp(data->pwd, "") != 0)
 		update_env_var(data, "PWD", data->pwd);
-	}
-	// Update OLDPWD environment variable if it's not an empty string
-	if (data->old_pwd && strcmp(data->old_pwd, "") != 0) {
+	if (data->old_pwd && strcmp(data->old_pwd, "") != 0)
 		update_env_var(data, "OLDPWD", data->old_pwd);
-	}
 }
 
-
-void update_env_var(t_data *data, const char *var_name, const char *new_value)
+void	update_env_var( \
+		t_data *data, const char *var_name, const char *new_value)
 {
-	int i;
-	size_t var_len;
-	char *new_var;
-	char *new_value_copy;
+	int		i;
+	size_t	var_len;
+	char	*new_var;
+	char	*new_value_copy;
 
-	if (!var_name || !new_value) {
-		return;  // Ensure neither var_name nor new_value are NULL
-	}
-
+	if (!var_name || !new_value)
+		return ;
 	var_len = ft_strlen(var_name);
 	i = 0;
-
 	while (data->env[i] != NULL)
 	{
-		if (ft_strncmp(data->env[i], var_name, var_len) == 0 && data->env[i][var_len] == '=')
+		if (ft_strncmp(data->env[i], var_name, var_len) == 0 && \
+				data->env[i][var_len] == '=')
 		{
 			free(data->env[i]);
 			new_var = ft_strjoin(var_name, "=");
@@ -152,19 +141,19 @@ void update_env_var(t_data *data, const char *var_name, const char *new_value)
 			data->env[i] = ft_strjoin(new_var, new_value_copy);
 			free(new_var);
 			free(new_value_copy);
-			return;
+			return ;
 		}
 		i++;
 	}
-
 	add_new_env_var(data, var_name, new_value, i);
 }
 
-void add_new_env_var(t_data *data, const char *var_name, const char *new_value, int i)
+void	add_new_env_var( \
+		t_data *data, const char *var_name, const char *new_value, int i)
 {
-	char *new_var;
-	char *env_var;
-	char **new_env;
+	char	*new_var;
+	char	*env_var;
+	char	**new_env;
 
 	new_var = ft_strjoin(var_name, "=");
 	env_var = ft_strjoin(new_var, new_value);
@@ -173,7 +162,7 @@ void add_new_env_var(t_data *data, const char *var_name, const char *new_value, 
 	if (new_env == NULL)
 	{
 		free(env_var);
-		return;
+		return ;
 	}
 	i = 0;
 	while (data->env[i] != NULL)

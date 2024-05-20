@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 17:10:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/19 18:15:31 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/20 20:38:13 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,10 @@ void	append_io(t_io **head, t_io *new)
 void	free_io_list(t_io **list)
 {
 	t_io	*temp;
-	
+
 	temp = NULL;
 	if (list == NULL || *list == NULL)
-		return;
+		return ;
 	while (*list)
 	{
 		temp = (*list)->next;
