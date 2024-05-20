@@ -45,6 +45,8 @@ int	call_cmd(t_data *data, t_cmd *cmd)
 	pid_t	pid;
 
 	status = 0;
+	if (ft_strncmp(cmd->s[0], "", 1) == 0)
+		return (EXIT_SUCCESS);
 	if (find_executable_and_execute(cmd, data) != 0)
 		return (EXIT_CMD_NOT_FOUND);
 	pid = fork();

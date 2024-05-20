@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:07 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/20 10:32:08 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/20 18:34:52 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@ int call_cd(t_data *data, t_cmd *cmd) {
 	char *path;
 	int ret;
 
+	if (cmd->s[2])
+	{
+		ft_putstr_fd("minishell: cd: too many arguments\n", STDERR_FILENO);
+		return (EXIT_FAILURE);
+	}
 	if (cmd->s[1] == NULL || ft_strncmp(cmd->s[1], "~", 1) == 0) {
 		path = find_env_var(data, "HOME");
 		if (!path) 
@@ -24,6 +29,8 @@ int call_cd(t_data *data, t_cmd *cmd) {
 			return (1);
 		}
 	} 
+	else if (cmd->s[1] && ft_strncmp(cmd->s[1], "", 1) == 0)
+		return (EXIT_SUCCESS);
 	else if (ft_strncmp(cmd->s[1], "-", 1) == 0) 
 	{
 		path = handle_cd_oldpwd(data);
