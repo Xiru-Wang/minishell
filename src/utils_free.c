@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:36:51 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/20 09:52:35 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/20 10:30:21 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ void free_data(t_data *data)
 		free(data->var_name);
 		data->var_name = NULL;
 	}
-	free_double_ptr(data->env);  // Assuming this function handles NULL and freeing safely
+	if (data->env) {
+        free_double_ptr(data->env);
+        data->env = NULL;
+    }
 	if (data)
 	{
 		free(data);
@@ -106,17 +109,18 @@ void free_token_list(t_token **list)
 }
 
 /* use index to iterate so will not lose original pointer */
-void	free_double_ptr(char **ptr)
-{
-	int	i;
+void free_double_ptr(char **ptr) {
+    int i;
 
-	if (!ptr || !*ptr)
-		return ;
-	i = 0;
-	while (ptr[i])
-	{
-		free(ptr[i]);
-		i++;
-	}
-	free(ptr);
+    i = 0;
+    if (!ptr) {
+        return;
+    }
+
+    while (ptr[i] != NULL) {
+        free(ptr[i]);
+        i++;
+    }
+
+    free(ptr);
 }

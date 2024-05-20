@@ -6,21 +6,25 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:07 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/19 19:06:29 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/20 10:32:08 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include <errno.h>
 
-int	call_cd(t_data *data, t_cmd *cmd)
-{
+int call_cd(t_data *data, t_cmd *cmd) {
 	char *path;
 	int ret;
 
-	if (cmd->s[1] == NULL || ft_strncmp(cmd->s[1], "~", 1) == 0)
+	if (cmd->s[1] == NULL || ft_strncmp(cmd->s[1], "~", 1) == 0) {
 		path = find_env_var(data, "HOME");
-	else if (ft_strncmp(cmd->s[1], "-", 1) == 0)
+		if (!path) 
+		{
+			ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);
+			return (1);
+		}
+	} 
+	else if (ft_strncmp(cmd->s[1], "-", 1) == 0) 
 	{
 		path = handle_cd_oldpwd(data);
 		if (path == NULL)
@@ -67,24 +71,30 @@ char *handle_cd_oldpwd(t_data *data)
 	return (data->old_pwd);
 }
 
-int change_directory(t_data *data, char *path)
-{
+int change_directory(t_data *data, char *path) {
     int ret;
 
     ret = chdir(path);
-    if (ret == -1)
+    if (ret == -1) {
         return (-1);
+    }
 
-    if (data->old_pwd != NULL)
+    if (data->old_pwd != NULL) {
         free(data->old_pwd);
+    }
     data->old_pwd = ft_strdup(data->pwd);
-    //free(data->pwd);
-	if (data->pwd)
-		free(data->pwd);
+
+    if (data->pwd) {
+        free(data->pwd);
+    }
     data->pwd = getcwd(NULL, 0);
+    if (!data->pwd) {
+        data->pwd = ft_strdup("");
+    }
 
     return (0);
 }
+
 
 void print_cd_error(char *path)
 {
@@ -104,30 +114,34 @@ void update_pwd_variables(t_data *data)
 
 void update_env_var(t_data *data, const char *var_name, const char *new_value)
 {
-    int i;
-    size_t var_len;
-    char *new_var;
-    char *new_value_copy;
+	int i;
+	size_t var_len;
+	char *new_var;
+	char *new_value_copy;
 
-    var_len = ft_strlen(var_name);
-    i = 0;
+	if (!var_name || !new_value) {
+		return;  // Ensure neither var_name nor new_value are NULL
+	}
 
-    while (data->env[i] != NULL)
-    {
-        if (ft_strncmp(data->env[i], var_name, var_len) == 0 && data->env[i][var_len] == '=')
-        {
-            free(data->env[i]);
-            new_var = ft_strjoin(var_name, "=");
-            new_value_copy = ft_strdup(new_value);
-            data->env[i] = ft_strjoin(new_var, new_value_copy);
-            free(new_var);
-            free(new_value_copy);
-            return;
-        }
-        i++;
-    }
+	var_len = ft_strlen(var_name);
+	i = 0;
 
-    add_new_env_var(data, var_name, new_value, i);
+	while (data->env[i] != NULL)
+	{
+		if (ft_strncmp(data->env[i], var_name, var_len) == 0 && data->env[i][var_len] == '=')
+		{
+			free(data->env[i]);
+			new_var = ft_strjoin(var_name, "=");
+			new_value_copy = ft_strdup(new_value);
+			data->env[i] = ft_strjoin(new_var, new_value_copy);
+			free(new_var);
+			free(new_value_copy);
+			return;
+		}
+		i++;
+	}
+
+	add_new_env_var(data, var_name, new_value, i);
 }
 
 void add_new_env_var(t_data *data, const char *var_name, const char *new_value, int i)
