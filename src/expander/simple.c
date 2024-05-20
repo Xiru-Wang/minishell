@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 19:18:49 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/11 07:10:12 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:02:20 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,34 +15,60 @@
 static int	count_var_len(char *var);
 
 // in this function: vars expand without careing quotes
-char	*expand_simple(char *s, char **env, t_data *data)
+char    *expand_simple(char *s, char **env, t_data *data)
 {
-	int		i;
-	int		k;
-	char	*dst;
-	char	*value;
+    int     i;
+    int     k;
+    char    *dst;
+    char    *value;
+    size_t  dst_size;
+    size_t  dst_len;
 
-	dst = ft_calloc(sizeof(char), 1);
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == '$' && s[i + 1] && char_is_valid(s[i + 1]))
-		{
-			k = 0;
-			value = expand_dollar(s + i, &k, env, data);
-			if (value)
-			{
-				ft_strlcat(dst, value, ft_strlen(dst) + ft_strlen(value) + 1);
-				free(value);
-			}
-			i = i + k;
-		}
-		value = char_to_str(s[i]);
-		ft_strlcat(dst, value, ft_strlen(dst) + 2);
-		free(value);
-		i++;
-	}
-	return (dst);
+    dst_size = ft_strlen(s) + 1;
+    dst = ft_calloc(dst_size, sizeof(char));
+    dst_len = 0;
+    i = 0;
+    while (s[i])
+    {
+        if (s[i] == '$' && s[i + 1] && char_is_valid(s[i + 1]))
+        {
+            k = 0;
+            value = expand_dollar(s + i, &k, env, data);
+            if (value)
+            {
+                size_t value_len = ft_strlen(value);
+                if (dst_len + value_len + 1 > dst_size)
+                {
+                    dst_size = dst_len + value_len + 1;
+                    char *new_dst = ft_calloc(dst_size, sizeof(char));
+                    ft_strlcpy(new_dst, dst, dst_len + 1);
+                    free(dst);
+                    dst = new_dst;
+                }
+                ft_strlcat(dst, value, dst_size);
+                dst_len += value_len;
+                free(value);
+            }
+            i = i + k;
+        }
+        else
+        {
+            if (dst_len + 2 > dst_size)
+            {
+                dst_size = dst_len + 2;
+                char *new_dst = ft_calloc(dst_size, sizeof(char));
+                ft_strlcpy(new_dst, dst, dst_len + 1);
+                free(dst);
+                dst = new_dst;
+            }
+            value = char_to_str(s[i]);
+            ft_strlcat(dst, value, dst_size);
+            dst_len += 1;
+            free(value);
+            i++;
+        }
+    }
+    return (dst);
 }
 
 //should check len within double quotes(include quotes)
