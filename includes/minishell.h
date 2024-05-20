@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/20 10:57:17 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/20 16:37:22 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,8 @@ int				call_builtin(t_cmd *cmd);
 int				call_echo(t_cmd *cmd);
 int				call_env(t_cmd *cmd);
 int				call_exit(t_cmd *cmd, t_data *data);
+int				print_error_exit(char *arg);
+int				too_many_arguments_exit(char *arg);
 int				call_export(t_cmd *cmd, t_data *data);
 int				call_pwd(t_cmd *cmd);
 int				call_unset(t_cmd *cmd, t_data *data);
