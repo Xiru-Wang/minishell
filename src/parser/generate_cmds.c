@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/19 22:04:13 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/20 09:33:06 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,12 @@ static void	add_io_list(t_cmd *cmd, t_token *token)
 	if (token->type == REDIR_IN)
 	{
 		new->type = REDIR_IN;
-		new->filename = remove_quo_simple(next->value);
+		new->filename = remove_quo(next->value);//rm quo simple
 	}
 	else if (token->type == REDIR_OUT || token->type == APPEND)
 	{
 		new->type = token->type;
-		new->filename = remove_quo_simple(next->value);
+		new->filename = remove_quo(next->value);//rm quo simple
 	}
 	else if (token->type == HEREDOC)
 	{

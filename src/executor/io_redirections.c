@@ -6,13 +6,13 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 17:35:45 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/19 22:53:21 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/20 09:43:46 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static void	redirect_fdin(t_io *io);
+static void	redirect_fdin(t_cmd *cmd, t_io *io);
 static void	redirect_fdout(t_io *io);
 
 void	redirect_io(t_cmd *cmd)
@@ -25,14 +25,17 @@ void	redirect_io(t_cmd *cmd)
 	while (io)
 	{
 		if (io->type == REDIR_IN || io->type == HEREDOC)
-			redirect_fdin(io);
+			redirect_fdin(cmd, io);
 		else if (io->type == REDIR_OUT || io->type == APPEND)
 			redirect_fdout(io);
+		if (cmd->err)  // Stop if any redirection fails
+			return;
 		io = io->next;
 	}
 }
 
-static void	redirect_fdin(t_io *io)
+//cat <infile
+static void	redirect_fdin(t_cmd *cmd, t_io *io)
 {
 	int	fd;
 
@@ -41,6 +44,12 @@ static void	redirect_fdin(t_io *io)
 		fd = open(io->filename, O_RDONLY);
 	else if (io->type == HEREDOC)
 		fd = open(io->hdfile, O_RDONLY);
+	if (fd == -1)
+	{
+		perror(io->filename);  // Print the error message
+		cmd->err = 1;  // Set an error flag in the command structure
+		return;
+	}
 	if (fd != -1)
 	{
 		dup2(fd, STDIN_FILENO);

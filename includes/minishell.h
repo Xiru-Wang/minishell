@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/19 21:59:10 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/20 09:37:15 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ typedef struct s_cmd
 	t_data			*data;
 	int				stdin_backup;
 	int				stdout_backup;
+	int				err;
 }	t_cmd;
 
 typedef struct s_data
