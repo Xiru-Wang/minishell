@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 19:18:49 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/20 20:39:02 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/21 19:32:50 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 static int	count_var_len(char *var);
 
 // in this function: vars expand without careing quotes
-char    *expand_simple(char *s, char **env, t_data *data)
+char	*expand_simple(char *s, char **env, t_data *data)
 {
-	int     i;
-	int     k;
-	char    *dst;
-	char    *value;
-	size_t  dst_size;
-	size_t  dst_len;
+	int		i;
+	int		k;
+	char	*dst;
+	char	*value;
+	size_t	dst_size;
+	size_t	dst_len;
 
 	dst_size = ft_strlen(s) + 1;
 	dst = ft_calloc(dst_size, sizeof(char));

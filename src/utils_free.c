@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   utils_free.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:36:51 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/20 20:42:24 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/21 19:42:21 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+static void	free_rest(t_data *data);
 
 void	free_data(t_data *data)
 {
@@ -33,6 +35,11 @@ void	free_data(t_data *data)
 		free(data->old_pwd);
 		data->old_pwd = NULL;
 	}
+	free_rest(data);
+}
+
+static void	free_rest(t_data *data)
+{
 	if (data->var_name)
 	{
 		free(data->var_name);
@@ -75,14 +82,6 @@ void	free_cmd_list(t_cmd **cmd)
 	*cmd = NULL;
 }
 
-void	free_exit(char *s, t_data *data, int code)
-{
-	if (s)
-		printf("%s\n", s);
-	free_data(data);
-	exit(code);
-}
-
 void	free_token_list(t_token **list)
 {
 	t_token	*temp;
@@ -111,7 +110,7 @@ void	free_double_ptr(char **ptr)
 	i = 0;
 	if (!ptr)
 		return ;
-	while (ptr[i] != NULL) 
+	while (ptr[i] != NULL)
 	{
 		free(ptr[i]);
 		i++;

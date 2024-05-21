@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 19:18:57 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/20 20:38:53 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/21 19:36:56 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,10 @@ char	*remove_quo(char *s)
 	int		k;
 	char	*new;
 	char	c;
-	int		count;
 
 	i = 0;
 	k = 0;
-	count = count_valid_quotes(s);
-	new = (char *)malloc(ft_strlen(s) - count + 1);
+	new = (char *)malloc(ft_strlen(s) - count_valid_quotes(s) + 1);
 	if (!new)
 		return (NULL);
 	while (s[i])

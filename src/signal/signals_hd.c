@@ -3,20 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   signals_hd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 19:42:08 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/19 18:39:29 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/21 21:58:26 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int		g_last_signal = 0;
-
 void	signal_handler_hd(int signum)
 {
-	if (signum == SIGINT) 
+	if (signum == SIGINT)
 	{
 		g_last_signal = 2;
 		rl_replace_line("", 0);

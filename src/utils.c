@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 19:37:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/20 20:41:37 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/21 19:40:40 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,12 @@ int	if_all_space(char *s)
 		s++;
 	}
 	return (1);
+}
+
+void	free_exit(char *s, t_data *data, int code)
+{
+	if (s)
+		printf("%s\n", s);
+	free_data(data);
+	exit(code);
 }

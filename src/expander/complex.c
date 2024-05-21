@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   complex.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:20 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/16 16:34:00 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/21 19:39:19 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,6 @@ char	*replace_vars_complex(char *s, char **env, t_data *data)
 
 	i = 0;
 	dst = (char *)ft_calloc(1, sizeof(char));
-	value = NULL;
-	temp = NULL;
 	while (s[i])
 	{
 		if (s[i] == '\'')

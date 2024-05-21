@@ -3,23 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:49 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/20 20:37:00 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/21 21:58:04 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static int	remove_hd_quotes(t_io *io);
+static void	remove_hd_quotes(t_io *io);
 static char	*create_hd_name(void);
-static int	create_hd(t_cmd *cmd, t_io *io, int eof_quote);
+static int	create_hd(t_cmd *cmd, t_io *io);
 
 int	check_hd(t_cmd *cmd)
 {
 	t_io	*temp;
-	int		quote;
 
 	if (!cmd->io_list)
 		return (0);
@@ -29,8 +28,8 @@ int	check_hd(t_cmd *cmd)
 		if (temp->type == HEREDOC)
 		{
 			temp->hdfile = create_hd_name();
-			quote = remove_hd_quotes(temp);
-			if (create_hd(cmd, temp, quote) == EXIT_SIGINT)
+			remove_hd_quotes(temp);
+			if (create_hd(cmd, temp) == EXIT_SIGINT)
 				return (EXIT_SIGINT);
 		}
 		if (!temp->next)
@@ -40,38 +39,20 @@ int	check_hd(t_cmd *cmd)
 	return (0);
 }
 
-//0600: The file owner has read and write permissions (rw-------). No one else can read or write to the file.
-//0644: The file owner has read and write permissions, but others can only read the file (rw-r--r--).
-
-static int	create_hd(t_cmd *cmd, t_io *io, int expand_sign)
+static char	*read_heredoc(int fd, t_cmd *cmd, t_io *io, int *i)
 {
-	int		fd;
-	int		i;
 	char	*line;
 	char	*new;
 
-	fd = open(io->hdfile, O_CREAT | O_RDWR | O_TRUNC, 0600);
-	setup_signals_hd();
-	i = 0;
+	line = NULL;
 	while (1)
 	{
 		line = readline("heredoc>");
-		i++;
-		if (!line)
+		(*i)++;
+		if (!line || g_last_signal == 2 || \
+			ft_strncmp(line, io->eof, ft_strlen(io->eof) + 1) == 0)
 			break ;
-		if (g_last_signal == 2)
-		{
-			free(line);
-			close(fd);
-			reset_signals_hd();
-			return (EXIT_SIGINT);
-		}
-		if (ft_strncmp(line, io->eof, ft_strlen(io->eof) + 1) == 0)
-		{
-			free(line);
-			break ;
-		}
-		if (expand_sign == 0 && check_valid_dollar(line))
+		if (io->eof_quo == 0 && check_valid_dollar(line))
 		{
 			new = expand_simple(line, cmd->data->env, cmd->data);
 			ft_putendl_fd(new, fd);
@@ -81,14 +62,40 @@ static int	create_hd(t_cmd *cmd, t_io *io, int expand_sign)
 			ft_putendl_fd(line, fd);
 		free(line);
 	}
+	return (line);
+}
+
+//0600: The file owner has read and write permissions (rw-------).
+//0644: Others can only also read the file (rw-r--r--).
+static int	create_hd(t_cmd *cmd, t_io *io)
+{
+	int		fd;
+	int		i;
+	char	*line;
+
+	i = 0;
+	line = NULL;
+	fd = open(io->hdfile, O_CREAT | O_RDWR | O_TRUNC, 0600);
+	setup_signals_hd();
+	line = read_heredoc(fd, cmd, io, &i);
+	if (g_last_signal == 2)
+	{
+		free(line);
+		close(fd);
+		reset_signals_hd();
+		return (EXIT_SIGINT);
+	}
 	if (!line)
-		printf("minishell: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", i, io->eof);
+		printf("minishell: warning: here-document at line %d delimited "\
+				"by end-of-file (wanted `%s')\n", i, io->eof);
+	free(line);
 	close(fd);
 	reset_signals_hd();
 	return (EXIT_SUCCESS);
 }
 
-static int	remove_hd_quotes(t_io *io)
+//"EOF" or 'EOF': Do not expand $var in heredoc
+static void	remove_hd_quotes(t_io *io)
 {
 	char	*s;
 
@@ -98,13 +105,11 @@ static int	remove_hd_quotes(t_io *io)
 	{
 		io->eof = ft_substr(s, 1, ft_strlen(s) - 2);
 		free(s);
-		return (EXIT_FAILURE);
+		io->eof_quo = 1;
 	}
-	else
-		return (EXIT_SUCCESS);
 }
 
-//to ensure temp here_doc's filename does not have conflict
+//to avoid heredoc conflict(eg. cmd <<eof <<EOF)
 static char	*create_hd_name(void)
 {
 	static int	i;

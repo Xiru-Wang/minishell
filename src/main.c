@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/20 17:48:28 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/21 21:48:49 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include <stdlib.h>
+
+int	g_last_signal = 0;
 
 /* static void	print_welcome_msg(void); */
 int	minishell(t_data *data)
@@ -51,6 +53,7 @@ int	main(int ac, char **av, char **env)
 	t_data	*data;
 	int		last_exit_code;
 
+	//g_last_signal = 0;
 	last_exit_code = 0;
 	if (ac != 1 || av[1])
 	{

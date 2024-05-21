@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   generate_cmds.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/20 16:13:53 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/21 21:39:21 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,49 +156,3 @@ static void	expand_args(t_token **head, int size, t_cmd *cmd)
 	if (temp && temp->type == PIPE)
 		del_token(head, temp);
 }
-
-// static int	fill_cmd(t_token **head, t_cmd *cmd)
-// {
-// 	t_token		*temp;
-// 	t_token		*next;
-// 	int			i;
-// 	t_builtin	builtin;
-// 	int			size;
-
-// 	temp = *head;
-// 	if (!temp || temp->type == PIPE)
-// 	{
-// 		if (!temp || !temp->value)
-// 			printf("minishell: syntax error near unexpected token `newline\'\n");
-// 		else	
-// 			printf("minishell: syntax error near unexpected token `%s\'\n", temp->value);
-// 		return (EXIT_FAILURE);
-// 	}
-// 	size = count_args(temp) + 1;
-// 	cmd->s = (char **)ft_calloc(size, sizeof(char *));
-// 	if (!cmd->s)
-// 		free_exit("malloc error", cmd->data, EXIT_FAILURE);
-// 	i = 0;
-// 	while (temp && temp->type != PIPE && size > 0)
-// 	{
-// 		next = temp->next;
-// 		cmd->s[i] = NULL;
-// 		if (temp->type == WORD)
-// 			cmd->s[i] = expand_complex(temp->value, WORD, cmd->data);
-// 		else if (temp->type == QUO)
-// 			cmd->s[i] = expand_complex(temp->value, QUO, cmd->data);
-// 		if (i == 0)
-// 		{
-// 			builtin = ft_builtin(cmd->s[0]);
-// 			if (builtin)
-// 				cmd->is_builtin = builtin;
-// 		}
-// 		del_token(head, temp);
-// 		temp = next;
-// 		i++;
-// 	}
-// 	cmd->s[i] = NULL;
-// 	if (temp && temp->type == PIPE)
-// 		del_token(head, temp);
-// 	return (EXIT_SUCCESS);
-// }

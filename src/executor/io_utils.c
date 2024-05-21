@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   io_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 17:10:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/20 20:38:13 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/21 21:39:02 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_io	*init_io(t_cmd *cmd)
 	new->next = NULL;
 	new->eof = NULL;
 	new->type = -1;
+	new->eof_quo = 0;
 	return (new);
 }
 

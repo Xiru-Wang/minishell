@@ -3,27 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jschroed <jschroed@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 20:35:04 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/20 20:36:43 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/21 22:39:27 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 static int	execute_single_command(t_cmd *cmd);
-static int	execute_command_pipeline(t_cmd *cmd);
+static int	execute_command_pipeline(t_cmd *cmd, int fd_in, int *i);
 static int	setup_child_process(t_cmd *cmd, int *end, int fd_in);
 static int	wait_for_processes(int *pids, int num_pids);
 
 int	executor(t_cmd *cmd, t_data *data)
 {
+	int		fd_in;
+	int		i;
+
+	i = 0;
+	fd_in = STDIN_FILENO;
 	data->pid = ft_calloc(data->cmd_num, sizeof(pid_t));
+	backup_stdio(cmd);
 	if (cmd->next == NULL)
 		data->exit_code = execute_single_command(cmd);
 	else
-		data->exit_code = execute_command_pipeline(cmd);
+		data->exit_code = execute_command_pipeline(cmd, fd_in, &i);
+	reset_stdio(cmd);
 	if (data->pid)
 		free(data->pid);
 	if (data->exit_code == EXIT_SIGINT)
@@ -38,7 +45,6 @@ static int	execute_single_command(t_cmd *cmd)
 
 	if (check_hd(cmd) == EXIT_SIGINT)
 		return (EXIT_SIGINT);
-	backup_stdio(cmd);
 	redirect_io(cmd);
 	if (cmd->err)
 	{
@@ -49,38 +55,34 @@ static int	execute_single_command(t_cmd *cmd)
 		status = call_builtin(cmd);
 	else
 		status = call_cmd(cmd->data, cmd);
-	reset_stdio(cmd);
 	return (status);
 }
 
-// in parent
-// close(fd_in);// Close the previous read end
-// fd_in = end[0];// Use the read end of the current pipe in the next iteration
-static int	execute_command_pipeline(t_cmd *cmd)
+/*
+eg. echo string > file1 | cat --> string goes to file1 not pipe
+
+child one: execute the cmd, write to pipe
+parent: close the end[write], keep end[read]=(fd_in) open for next child
+child two: read from the pipe
+--> parent manage the children and control the pipe
+
+attention: if there's redirections, close pipe, dup2(redirect file, pipe)
+*/
+static int	execute_command_pipeline(t_cmd *cmd, int fd_in, int *i)
 {
 	int		end[2];
-	int		fd_in;
-	int		i;
 	t_cmd	*current;
 
-	fd_in = STDIN_FILENO;
-	i = 0;
 	current = cmd;
-	backup_stdio(cmd);
 	while (current)
 	{
 		if (current->next)
 			pipe(end);
 		if (check_hd(current) == EXIT_SIGINT)
 			return (EXIT_SIGINT);
-		cmd->data->pid[i] = fork();
-		if (cmd->data->pid[i] == 0)
+		cmd->data->pid[*i] = fork();
+		if (cmd->data->pid[*i] == 0)
 			setup_child_process(current, end, fd_in);
-		else if (cmd->data->pid[i] < 0)
-		{
-			perror("fork");
-			return (1);
-		}
 		if (fd_in != STDIN_FILENO)
 			close(fd_in);
 		if (current->next)
@@ -89,7 +91,7 @@ static int	execute_command_pipeline(t_cmd *cmd)
 			fd_in = end[0];
 		}
 		current = current->next;
-		i++;
+		(*i)++;
 	}
 	reset_stdio(cmd);
 	return (wait_for_processes(cmd->data->pid, cmd->data->cmd_num));

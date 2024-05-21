@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/20 19:30:27 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/21 21:45:31 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef struct s_io
 	t_type			type;
 	char			*eof;
 	struct s_io		*next;
+	int				eof_quo;
 }	t_io;
 
 typedef struct s_data	t_data;
@@ -99,6 +100,10 @@ typedef struct s_data
 	int			exit_code;
 	int			in_heredoc;
 }	t_data;
+
+
+// needs to align with t_data def.
+extern int		g_last_signal;
 
 // utils
 int				is_space(char c);
@@ -212,11 +217,9 @@ void			init_signals(void);
 void			backup_stdio(t_cmd *cmd);
 void			init_signals_noint(void);
 
-// needs to align with t_data def.
-extern int				g_last_signal;
-
-void			print_cmd_list(t_cmd *cmd);//DEBUG
-void			print_io_list(t_cmd *cmd);//DEBUG
-void			print_token_list(t_token *token_list);//DEBUG
+//DEBUG
+void			print_cmd_list(t_cmd *cmd);
+void			print_io_list(t_cmd *cmd);
+void			print_token_list(t_token *token_list);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jschroed <jschroed@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 19:27:42 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/20 19:36:05 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/21 21:43:24 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	call_cmd(t_data *data, t_cmd *cmd)
 	pid_t	pid;
 	int		status;
 
+	status = 0;
 	if (is_empty_command(cmd))
 		return (EXIT_SUCCESS);
 	if (find_executable_and_execute(cmd, data) != 0)
