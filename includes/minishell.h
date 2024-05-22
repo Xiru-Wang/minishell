@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/21 21:45:31 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/22 08:15:10 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,9 +101,8 @@ typedef struct s_data
 	int			in_heredoc;
 }	t_data;
 
-
 // needs to align with t_data def.
-extern int		g_last_signal;
+extern int				g_last_signal;
 
 // utils
 int				is_space(char c);
@@ -201,10 +200,25 @@ int				call_env(t_cmd *cmd);
 int				call_exit(t_cmd *cmd, t_data *data);
 int				print_error_exit(char *arg);
 int				too_many_arguments_exit(char *arg);
-int				call_export(t_cmd *cmd, t_data *data);
 int				call_pwd(t_cmd *cmd);
 int				call_unset(t_cmd *cmd, t_data *data);
 int				call_cd(t_data *data, t_cmd *cmd);
+
+// builtin export
+int				call_export(t_cmd *cmd, t_data *data);
+int				get_env_len(char **env);
+char			**allocate_new_env(int len);
+int				copy_env_vars(char **new_env, char **env, int len);
+char			**add_str_to_env(char **new_env, char *str, int len);
+int				is_valid_identifier(char c);
+int				export_error(char *str);
+void			delete_quotes(char *str, char quote);
+char			**add_var(char **env, char *str);
+int				handle_quotes_and_check(char *str, int pos);
+int				add_new_var(t_data *data, char *str);
+int				find_var_position(t_data *data, char *str, int pos);
+int				update_or_add_var(t_data *data, char *str);
+int				equal_sign(char *str);
 
 // signals
 void			signal_handler_hd(int signum);
