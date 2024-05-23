@@ -25,7 +25,8 @@
 		"string": "c",
 		"string_view": "c",
 		"libft.h": "c",
-		"filesystem": "c"
+		"filesystem": "c",
+		"minishell.h": "c"
 	},
 	"editor.insertSpaces": false,
 	"editor.autoIndent": "none",

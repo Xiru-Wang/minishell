@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/22 08:15:10 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/23 19:46:40 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ typedef enum s_type
 	APPEND,
 	HEREDOC,
 	_SPACE,
-	QUO,
+	STR,
 }	t_type;
 
 typedef enum s_builtin
@@ -120,7 +120,7 @@ void			free_data(t_data *data);
 int				add_token_list(char *s, int type, t_token **head, t_data *data);
 void			del_token(t_token **head, t_token *node);
 void			free_token_list(t_token **list);
-enum s_type		ft_type(char c);
+enum s_type		tk_type(char c);
 
 // tokens
 void			init_data(t_data *data, char **env);
@@ -131,18 +131,20 @@ int				check_unclosed_quotes(char *s, t_token **head, t_data *data);
 char			*remove_quo(char *s);
 char			*remove_quo_simple(char *s);
 // simple_expander
-char			*expand_simple(char *s, char **env, t_data *data);
+char			*expand_simple(char *s, t_data *data);
 char			*expand_dollar(char *s, int *len, char **env, t_data *data);
 int				len_within_quo(char *s, char c);
 // complex_expander
-char			*expand_complex(char *s, enum s_type type, t_data *data);
-char			*replace_vars_complex(char *s, char **env, t_data *data);
+char			*expand_complex(char *s, t_data *data);
+char			*replace_vars_complex(char *s, t_data *data);
 //expander_utils
 char			*char_to_str(char c);
 int				check_valid_dollar(char *s);
 int				char_is_valid(char c);
 int				check_valid_dollar_limit(char *s, int max);
 char			*find_env(char *s, char **env);
+
+char			*handle_dollar(char *s, int *i, char **env, t_data *data);
 
 // cmd_utils
 t_cmd			*init_cmd(t_data *data);

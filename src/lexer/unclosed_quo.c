@@ -3,19 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   unclosed_quo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:59 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/20 17:35:57 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/23 19:46:46 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static int	find_next_quo(char *s, int *i, int *quote_sign)
+static int	find_next_quo(char *s, int *i)
 {
 	char	c;
+	int		sign;
 
+	sign = 0;
 	c = s[*i];
 	(*i)++;
 	while (s[*i] && s[*i] != c)
@@ -23,83 +25,68 @@ static int	find_next_quo(char *s, int *i, int *quote_sign)
 	if (s[*i] && s[*i] == c)
 	{
 		(*i)++;
-		*quote_sign = 1;
+		sign = 1;
 	}
 	else
 		return (-1);
-	return (0);
+	return (sign);
 }
 
+//handle complex situation, eg: echo "hi"hi"$?" | grep hi
+//second token value = "hi"hi"$?"
 int	check_unclosed_quotes(char *s, t_token **head, t_data *data)
 {
-	int		quote_sign;
-	int		i;
+	int	sign;
+	int	i;
 
 	i = 0;
-	quote_sign = 0;
 	while (s[i])
 	{
 		if (s[i] == '\'' || s[i] == '\"')
 		{
-			if (find_next_quo(s, &i, &quote_sign) == -1)
+			sign = find_next_quo(s, &i);
+			if (sign == -1)
 				return (-1);
 		}
-		else if (ft_type(s[i]) != WORD)
+		else if (tk_type(s[i]) != WORD)
 		{
-			if (quote_sign == 1)
-				add_token_list(ft_substr(s, 0, i), QUO, head, data);
-			else
-				add_token_list(ft_substr(s, 0, i), WORD, head, data);
+			add_token_list(ft_substr(s, 0, i), STR, head, data);
 			return (i);
 		}
 		else
 			i++;
 	}
-	if (quote_sign == 1)
-		add_token_list(ft_substr(s, 0, i), QUO, head, data);
-	else
-		add_token_list(ft_substr(s, 0, i), WORD, head, data);
+	add_token_list(ft_substr(s, 0, i), STR, head, data);
 	return (i);
 }
 
-// int check_unclosed_quotes(char *s, t_token **head)
+// int	check_unclosed_quotes(char *s, t_token **head, t_data *data)
 // {
-// 	int		i;
-// 	char	c;
-// 	int		quote_sign;
+// 	int	sign;
+// 	int	i;
 
 // 	i = 0;
-// 	quote_sign = 0;
 // 	while (s[i])
 // 	{
 // 		if (s[i] == '\'' || s[i] == '\"')
 // 		{
-// 			c = s[i];
-// 			i++;
-// 			while (s[i] && s[i] != c)
-// 				i++;
-// 			if (s[i] == c)
-// 			{
-// 				i++;
-// 				quote_sign = 1;
-// 			}
-// 			else
+// 			sign = find_next_quo(s, &i);
+// 			if (sign == -1)
 // 				return (-1);
 // 		}
 // 		else if (ft_type(s[i]) != WORD)
 // 		{
-// 			if (quote_sign == 1)
-// 				add_token_list(ft_substr(s, 0, i), QUO, head);
-// 			else if (i > 0)
-// 				add_token_list(ft_substr(s, 0, i), WORD, head);
+// 			if (sign == 1)
+// 				add_token_list(ft_substr(s, 0, i), QUO, head, data);
+// 			else
+// 				add_token_list(ft_substr(s, 0, i), WORD, head, data);
 // 			return (i);
 // 		}
-// 		else
-// 			i++;
+// 		i++;
 // 	}
-// 	if (quote_sign == 1)
-// 		add_token_list(ft_substr(s, 0, i), QUO, head);
-// 	else if (i > 0)
-// 		add_token_list(ft_substr(s, 0, i), WORD, head);
+// 	if (sign == 1)
+// 		add_token_list(ft_substr(s, 0, i), QUO, head, data);
+// 	else
+// 		add_token_list(ft_substr(s, 0, i), WORD, head, data);
 // 	return (i);
 // }

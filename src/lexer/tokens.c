@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:47:18 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/20 17:41:08 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/23 19:46:58 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static int	init_env(t_data *data, char **env)
 	return (EXIT_SUCCESS);
 }
 
-enum s_type	ft_type(char c)
+enum s_type	tk_type(char c)
 {
 	if (c == '|')
 		return (PIPE);
@@ -83,9 +83,7 @@ void	split_line(char *s, t_token **head, t_data *data)
 	{
 		while (s[i] && is_space(s[i]))
 			i++;
-		if (!s[i])
-			return ;
-		tp = ft_type(s[i]);
+		tp = tk_type(s[i]);
 		if (tp == WORD)
 		{
 			res = check_unclosed_quotes((s + i), head, data);
@@ -93,9 +91,9 @@ void	split_line(char *s, t_token **head, t_data *data)
 				free_exit("unclosed quote", data, EXIT_FAILURE);
 			i += res;
 		}
-		else if (tp == REDIR_IN && s[i + 1] && ft_type(s[i + 1]) == REDIR_IN)
+		else if (tp == REDIR_IN && s[i + 1] && tk_type(s[i + 1]) == REDIR_IN)
 			i += add_token_list(ft_substr(s, i, 2), HEREDOC, head, data);
-		else if (tp == REDIR_OUT && s[i + 1] && ft_type(s[i + 1]) == REDIR_OUT)
+		else if (tp == REDIR_OUT && s[i + 1] && tk_type(s[i + 1]) == REDIR_OUT)
 			i += add_token_list(ft_substr(s, i, 2), APPEND, head, data);
 		else
 			i += add_token_list(ft_substr(s, i, 1), tp, head, data);

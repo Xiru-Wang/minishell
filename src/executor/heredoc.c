@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:49 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/21 21:58:04 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/23 15:30:33 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static char	*read_heredoc(int fd, t_cmd *cmd, t_io *io, int *i)
 			break ;
 		if (io->eof_quo == 0 && check_valid_dollar(line))
 		{
-			new = expand_simple(line, cmd->data->env, cmd->data);
+			new = expand_simple(line, cmd->data);
 			ft_putendl_fd(new, fd);
 			free(new);
 		}

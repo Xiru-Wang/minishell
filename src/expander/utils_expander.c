@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_expander.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 19:19:05 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/02 19:28:31 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/23 13:53:26 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	char_is_valid(char c)
 		return (0);
 }
 
-// if "'$USER'" -> 'xiwang'
+// if "'$USER'"$? -> 'xiwang'0
 int	check_valid_dollar_limit(char *s, int max)
 {
 	int	i;

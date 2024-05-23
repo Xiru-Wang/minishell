@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/21 21:39:21 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/23 18:51:41 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	extract_redir(t_token **head, t_cmd *cmd);
 static void	add_io_list(t_cmd *cmd, t_token *temp);
 static int	fill_cmd(t_token **head, t_cmd *cmd);
-static void	expand_args(t_token **head, int size, t_cmd *cmd);
+static void	fill_args(t_token **head, int size, t_cmd *cmd);
 
 // input:			ls -l | grep 'hi' > test.txt
 // token_list:		"ls", "-l", "|", "grep", "'hi'", ">", "test.txt"
@@ -123,11 +123,11 @@ static int	fill_cmd(t_token **head, t_cmd *cmd)
 	cmd->s = (char **)ft_calloc(size, sizeof(char *));
 	if (!cmd->s)
 		free_exit("malloc error", cmd->data, EXIT_FAILURE);
-	expand_args(head, size, cmd);
+	fill_args(head, size, cmd);
 	return (EXIT_SUCCESS);
 }
 
-static void	expand_args(t_token **head, int size, t_cmd *cmd)
+static void	fill_args(t_token **head, int size, t_cmd *cmd)
 {
 	t_token		*next;
 	t_token		*temp;
@@ -139,10 +139,8 @@ static void	expand_args(t_token **head, int size, t_cmd *cmd)
 	while (temp && temp->type != PIPE && size > 0)
 	{
 		next = temp->next;
-		if (temp->type == WORD)
-			cmd->s[i] = expand_complex(temp->value, WORD, cmd->data);
-		else if (temp->type == QUO)
-			cmd->s[i] = expand_complex(temp->value, QUO, cmd->data);
+		if (temp->type == STR)
+			cmd->s[i] = expand_complex(temp->value, cmd->data);
 		if (i == 0)
 		{
 			builtin = ft_builtin(cmd->s[i]);
@@ -156,3 +154,33 @@ static void	expand_args(t_token **head, int size, t_cmd *cmd)
 	if (temp && temp->type == PIPE)
 		del_token(head, temp);
 }
+
+// static void	expand_args(t_token **head, int size, t_cmd *cmd)
+// {
+// 	t_token		*next;
+// 	t_token		*temp;
+// 	t_builtin	builtin;
+// 	int			i;
+
+// 	temp = *head;
+// 	i = 0;
+// 	while (temp && temp->type != PIPE && size > 0)
+// 	{
+// 		next = temp->next;
+// 		if (temp->type == WORD)
+// 			cmd->s[i] = expand_complex(temp->value, WORD, cmd->data);
+// 		else if (temp->type == QUO)
+// 			cmd->s[i] = expand_complex(temp->value, QUO, cmd->data);
+// 		if (i == 0)
+// 		{
+// 			builtin = ft_builtin(cmd->s[i]);
+// 			cmd->is_builtin = builtin;
+// 		}
+// 		del_token(head, temp);
+// 		temp = next;
+// 		i++;
+// 	}
+// 	cmd->s[i] = NULL;
+// 	if (temp && temp->type == PIPE)
+// 		del_token(head, temp);
+// }

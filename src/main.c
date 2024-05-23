@@ -6,17 +6,31 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/21 21:48:49 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/23 19:44:36 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include <stdlib.h>
 
-int	g_last_signal = 0;
+int	g_last_signal;
 
-/* static void	print_welcome_msg(void); */
-int	minishell(t_data *data)
+/* static void	print_welcome_msg(void) */
+/* { */
+/*     printf("\ */
+/*             ╭────────────── 💃💃💃💃 ─────────────╮\n\ */
+/*             │  Oh my shell, lucky its minishell   │\n\ */
+/*             │             Jan && Xiru             │\n\ */
+/*             ╰────────────── 🍷🍷🍷🍷 ─────────────╯\n"); */
+/* } */
+
+static void	free_mini(t_data *data)
+{
+	free(data->line);
+	free_token_list(&data->token_list);
+	free_cmd_list(&data->cmd_list);
+}
+
+static int	minishell(t_data *data)
 {
 	while (1)
 	{
@@ -40,9 +54,7 @@ int	minishell(t_data *data)
 			init_signals_noint();
 			executor(data->cmd_list, data);
 		}
-		free(data->line);
-		free_token_list(&data->token_list);
-		free_cmd_list(&data->cmd_list);
+		free_mini(data);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -51,10 +63,10 @@ int	minishell(t_data *data)
 int	main(int ac, char **av, char **env)
 {
 	t_data	*data;
-	int		last_exit_code;
+	int		exit_code;
 
-	//g_last_signal = 0;
-	last_exit_code = 0;
+	g_last_signal = 0;
+	exit_code = 0;
 	if (ac != 1 || av[1])
 	{
 		write(STDERR_FILENO, "No arguments allowed!\n", 22);
@@ -64,16 +76,7 @@ int	main(int ac, char **av, char **env)
 	init_data(data, env);
 	/* print_welcome_msg(); */
 	minishell(data);
-	last_exit_code = data->exit_code;
+	exit_code = data->exit_code;
 	free_data(data);
-	return (last_exit_code);
+	return (exit_code);
 }
-
-/* static void	print_welcome_msg(void) */
-/* { */
-/*     printf("\ */
-/*             ╭────────────── 💃💃💃💃 ─────────────╮\n\ */
-/*             │  Oh my shell, lucky its minishell   │\n\ */
-/*             │             Jan && Xiru             │\n\ */
-/*             ╰────────────── 🍷🍷🍷🍷 ─────────────╯\n"); */
-/* } */

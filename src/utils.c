@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 19:37:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/21 19:40:40 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/23 19:35:21 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,21 @@ char	**ft_arrdup(char **arr)
 
 int	if_all_space(char *s)
 {
-	while (*s)
+	size_t	i;
+
+	i = 0;
+	if (!s)
+		return (0);
+	while (s[i])
 	{
-		if (is_space(*s) == 0)
-			return (0);
-		s++;
+		if (is_space(s[i]) == 1)
+			i++;
+		else
+			break;
 	}
-	return (1);
+	if (i == ft_strlen(s))
+		return (1);
+	return (0);
 }
 
 void	free_exit(char *s, t_data *data, int code)
