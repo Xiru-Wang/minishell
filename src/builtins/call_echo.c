@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:17 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/24 18:53:39 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/24 21:45:25 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,11 @@ int	call_echo(t_cmd *cmd)
 
 	i = 1;
 	flag = 0;
+	if (!cmd->s[1])
+	{
+		ft_putchar_fd('\n', STDOUT_FILENO);
+		return (EXIT_SUCCESS);
+	}
 	while (cmd->s[i] && is_valid_n_option(cmd->s[i]))
 	{
 		flag = 1;

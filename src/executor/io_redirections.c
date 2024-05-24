@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   io_redirections.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 17:35:45 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/20 20:37:35 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/24 20:54:00 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ void	redirect_io(t_cmd *cmd)
 		else if (io->type == REDIR_OUT || io->type == APPEND)
 			redirect_fdout(io);
 		if (cmd->err)
+		{
+			cmd->data->exit_code = 1;
 			return ;
+		}
 		io = io->next;
 	}
 }
@@ -46,7 +49,12 @@ static void	redirect_fdin(t_cmd *cmd, t_io *io)
 		fd = open(io->hdfile, O_RDONLY);
 	if (fd == -1)
 	{
-		perror(io->filename);
+		if (errno == EACCES)//?
+			print_error("minishell: line 1: ", io->filename,": Permission denied\n");
+		else if (errno == ENOENT)//?
+			print_error("minishell: ", io->filename,": No such file or directory\n");
+		else
+			perror("minishell");
 		cmd->err = 1;
 		return ;
 	}

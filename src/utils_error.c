@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_error.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 19:37:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/24 19:25:28 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/24 20:17:58 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	print_error(const char *prefix, const char *arg, const char *suffix)
 {
-	char *error_msg;
-	size_t len;
+	char	*error_msg;
+	size_t	len;
 
 	len = ft_strlen(prefix) + ft_strlen(arg) + ft_strlen(suffix) + 1;
 	error_msg = malloc(len);
