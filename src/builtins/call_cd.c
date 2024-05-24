@@ -26,6 +26,7 @@ int	call_cd(t_data *data, t_cmd *cmd)
 			ft_putendl_fd("minishell: cd: HOME not set", STDERR_FILENO);
 			return (1);
 		}
+		
 	}
 	if (cmd->s[2])
 	{

@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/24 14:46:54 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/24 17:33:28 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	extract_redir(t_token **head, t_cmd *cmd);
 static void	add_io_list(t_cmd *cmd, t_token *temp);
 static int	fill_cmd(t_token **head, t_cmd *cmd);
-static void	fill_args(t_token **head, int size, t_cmd *cmd);
+static int	fill_args(t_token **head, int size, t_cmd *cmd);
 
 // input:			ls -l | grep 'hi' > test.txt
 // token_list:		"ls", "-l", "|", "grep", "'hi'", ">", "test.txt"
@@ -124,8 +124,7 @@ static int	fill_cmd(t_token **head, t_cmd *cmd)
 	cmd->s = (char **)ft_calloc(size, sizeof(char *));
 	if (!cmd->s)
 		free_exit("malloc error", cmd->data, EXIT_FAILURE);
-	if (fill_args(head, size, cmd) == 1)
-		return (1);//added
+	fill_args(head, size, cmd);
 	return (EXIT_SUCCESS);
 }
 
