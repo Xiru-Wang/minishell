@@ -6,13 +6,13 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:17 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/24 18:40:35 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/24 18:53:39 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static char	*expand_tilde(char *arg)
+char	*expand_tilde(char *arg)
 {
 	char	*home;
 	char	*expanded;

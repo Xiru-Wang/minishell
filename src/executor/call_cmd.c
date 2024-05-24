@@ -6,11 +6,25 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 19:27:42 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/24 14:28:34 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/24 19:26:54 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+static int	is_tilde_command(t_cmd *cmd)
+{
+	char	*expanded_arg;
+
+	if (ft_strncmp(cmd->s[0], "~", 1) == 0)
+	{
+		expanded_arg = expand_tilde(cmd->s[0]);
+		print_error("minishell: ", expanded_arg, ": Is a directory\n");
+		free(expanded_arg);
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}
 
 // bash-5.2$ ""
 // bash: : command not found
@@ -20,9 +34,9 @@ static int	is_empty_command(t_cmd *cmd)
 	if (ft_strncmp(cmd->s[0], "", 1) == 0 || if_all_space(cmd->s[0]))
 	{
 		printf("minishell: %s: command not found\n", cmd->s[0]);
-		return (1);
+		return (EXIT_FAILURE);
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 static int	wait_for_child(pid_t pid, t_data *data)
@@ -60,6 +74,8 @@ int	call_cmd(t_data *data, t_cmd *cmd)
 	status = 0;
 	if (is_empty_command(cmd) != 0)
 		return (EXIT_CMD_NOT_FOUND);
+	if (is_tilde_command(cmd) != 0)
+		return (126);
 	if (find_executable_and_execute(cmd, data) != 0)
 		return (EXIT_CMD_NOT_FOUND);
 	pid = fork();
