@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/24 12:56:00 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/24 17:57:24 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,6 +208,7 @@ int				too_many_arguments_exit(char *arg);
 int				call_pwd(t_cmd *cmd);
 int				call_unset(t_cmd *cmd, t_data *data);
 int				call_cd(t_data *data, t_cmd *cmd);
+char			*resolve_cd_path(t_data *data, t_cmd *cmd);
 
 // builtin export
 int				call_export(t_cmd *cmd, t_data *data);
