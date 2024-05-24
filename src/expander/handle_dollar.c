@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 19:18:57 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/23 15:32:51 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/24 11:44:05 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*handle_dollar(char *s, int *i, char **env, t_data *data)
 	char	*value;
 
 	k = 0;
-	value = expand_dollar(s + *i, &k, env, data);
+	value = expand_dollar(s, &k, env, data);
 	if (value == NULL)
 		value = ft_strdup("");
 	*i += k;

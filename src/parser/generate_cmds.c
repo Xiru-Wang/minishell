@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/23 18:51:41 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/24 12:05:01 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,12 +89,12 @@ static void	add_io_list(t_cmd *cmd, t_token *token)
 	if (token->type == REDIR_IN)
 	{
 		new->type = REDIR_IN;
-		new->filename = remove_quo(next->value);
+		new->filename = expand_complex(next->value, cmd->data);
 	}
 	else if (token->type == REDIR_OUT || token->type == APPEND)
 	{
 		new->type = token->type;
-		new->filename = remove_quo(next->value);
+		new->filename = expand_complex(next->value, cmd->data);
 	}
 	else if (token->type == HEREDOC)
 	{
@@ -115,8 +115,8 @@ static int	fill_cmd(t_token **head, t_cmd *cmd)
 		if (!temp || !temp->value)
 			printf(SYNTAXERR);
 		else
-			printf("minishell: syntax error near \
-					unexpected token `%s\'\n", temp->value);
+			printf("minishell: syntax error near "
+					"unexpected token `%s\'\n", temp->value);
 		return (EXIT_FAILURE);
 	}
 	size = count_args(temp) + 1;

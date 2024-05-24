@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:49 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/23 15:30:33 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/24 11:50:38 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static int	create_hd(t_cmd *cmd, t_io *io)
 		return (EXIT_SIGINT);
 	}
 	if (!line)
-		printf("minishell: warning: here-document at line %d delimited "\
+		printf("minishell: warning: here-document at line %d delimited "
 				"by end-of-file (wanted `%s')\n", i, io->eof);
 	free(line);
 	close(fd);

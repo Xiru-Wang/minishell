@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:31 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/23 13:52:15 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/24 10:45:23 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	check_syntax(t_token *next)
 	}
 	if (next->type != STR)
 	{
-		printf("minishell: syntax error near"
+		printf("minishell: syntax error near "
 			"unexpected token `%s\'\n", next->value);
 		return (EXIT_FAILURE);
 	}

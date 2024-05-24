@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 19:27:42 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/21 21:43:24 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/24 12:53:57 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 static int	is_empty_command(t_cmd *cmd)
 {
 	return (ft_strncmp(cmd->s[0], "", 1) == 0);
+// bash-5.2$ ""
+// bash: : command not found
 }
 
 static int	wait_for_child(pid_t pid, t_data *data)
@@ -50,7 +52,7 @@ int	call_cmd(t_data *data, t_cmd *cmd)
 
 	status = 0;
 	if (is_empty_command(cmd))
-		return (EXIT_SUCCESS);
+		return (EXIT_SUCCESS);//shoud add one space??
 	if (find_executable_and_execute(cmd, data) != 0)
 		return (EXIT_CMD_NOT_FOUND);
 	pid = fork();

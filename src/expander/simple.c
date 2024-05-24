@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 19:18:49 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/23 15:33:09 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/24 11:36:20 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static char	*add_expand_value(char *s, char *dst, t_data *data, int *i)
 {
 	char	*value;
 	char	*new;
+
 
 	value = handle_dollar(s, i, data->env, data);
 	new = ft_strjoin(dst, value);

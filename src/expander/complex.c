@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:20 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/23 19:33:50 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/24 11:54:41 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static char	*handle_single_quote(char *s, int *i);
 static char	*handle_double_quote(char *s, int *i, t_data *data);
 
-static int	check_quo(char *s)
+int	check_quo(char *s)
 {
 	int	i;
 
@@ -81,13 +81,13 @@ char	*replace_vars_complex(char *s, t_data *data)
 			value = char_to_str(s[i]);
 			i++;
 		}
-		// if (value != NULL)
-		// {
+		if (value != NULL)
+		{
 			temp = dst;
 			dst = ft_strjoin(temp, value);
 			free(temp);
 			free(value);
-		//}
+		}
 	}
 	return (dst);
 }
