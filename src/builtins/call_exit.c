@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:37:05 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/24 12:11:00 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/24 12:57:54 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,6 @@ static int	is_valid_arg(char *arg);
 static int	calculate_exit_code(char *arg);
 static char	*trim_and_validate_arg(char *arg, int *last_exit_code);
 static int	check_and_convert_number(char *arg, unsigned long long *num);
-
-
-static int	empty_str(char *s)
-{
-	if (if_all_space(s) == 1)
-	{
-		ft_putstr_fd("exit\n", STDERR_FILENO);
-		//printf("exit\n");
-		printf("minishell: exit:%s: numeric argument required\n", s);
-		return (1);
-	}
-	return (0);
-}
 
 int	call_exit(t_cmd *cmd, t_data *data)
 {
@@ -80,7 +67,6 @@ static int	is_valid_arg(char *arg)
 	int	i;
 
 	i = 0;
-
 	if (ft_strlen(arg) == 0 || (ft_strlen(arg) == 1 && (arg[0] == '+' || \
 					arg[0] == '-')))
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: jschroed <jschroed@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 20:27:08 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/22 08:03:15 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/24 08:43:44 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,3 @@ int	export_error(char *str)
 	ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
 	return (EXIT_FAILURE);
 }
-
