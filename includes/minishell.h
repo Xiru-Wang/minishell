@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/24 12:56:00 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/24 19:26:17 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ void			free_double_ptr(char **ptr);
 void			free_cmd_list(t_cmd **cmd);
 void			free_exit(char *s, t_data *data, int code);
 char			**ft_arrdup(char **arr);
+void			print_error( \
+					const char *prefix, const char *arg, const char *suffix);
 
 // utils_free
 void			free_data(t_data *data);
@@ -208,6 +210,7 @@ int				too_many_arguments_exit(char *arg);
 int				call_pwd(t_cmd *cmd);
 int				call_unset(t_cmd *cmd, t_data *data);
 int				call_cd(t_data *data, t_cmd *cmd);
+char			*resolve_cd_path(t_data *data, t_cmd *cmd);
 
 // builtin export
 int				call_export(t_cmd *cmd, t_data *data);
@@ -224,6 +227,7 @@ int				add_new_var(t_data *data, char *str);
 int				find_var_position(t_data *data, char *str, int pos);
 int				update_or_add_var(t_data *data, char *str);
 int				equal_sign(char *str);
+char			*expand_tilde(char *arg);
 
 // signals
 void			signal_handler_hd(int signum);
