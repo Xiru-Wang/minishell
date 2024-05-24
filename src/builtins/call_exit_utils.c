@@ -6,7 +6,7 @@
 /*   By: jschroed <jschroed@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:37:05 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/20 16:37:33 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/24 08:42:57 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,15 @@ int	too_many_arguments_exit(char *arg)
 	ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
 	free(arg);
 	return (EXIT_FAILURE);
+}
+
+int	empty_str_exit(char *s)
+{
+	if (if_all_space(s) == 1)
+	{
+		printf("exit\n");
+		printf("bash: exit:%s: numeric argument required\n", s);
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
 }

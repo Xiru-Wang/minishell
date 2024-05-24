@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:20 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/23 19:33:50 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/24 08:40:52 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ static int	check_quo(char *s)
 	while (s[i])
 	{
 		if (s[i] == '\'' || s[i] == '\"')
-			return (1);
+			return (EXIT_FAILURE);
 		i++;
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 char	*expand_complex(char *s, t_data *data)
@@ -81,13 +81,10 @@ char	*replace_vars_complex(char *s, t_data *data)
 			value = char_to_str(s[i]);
 			i++;
 		}
-		// if (value != NULL)
-		// {
-			temp = dst;
-			dst = ft_strjoin(temp, value);
-			free(temp);
-			free(value);
-		//}
+		temp = dst;
+		dst = ft_strjoin(temp, value);
+		free(temp);
+		free(value);
 	}
 	return (dst);
 }

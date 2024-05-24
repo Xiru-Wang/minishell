@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:37:05 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/23 19:37:33 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/24 08:37:53 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,6 @@ static int	calculate_exit_code(char *arg);
 static char	*trim_and_validate_arg(char *arg, int *last_exit_code);
 static int	check_and_convert_number(char *arg, unsigned long long *num);
 
-
-static int	empty_str(char *s)
-{
-	if (if_all_space(s) == 1)
-	{
-		printf("exit\n");
-		printf("bash: exit:%s: numeric argument required\n", s);
-		return (1);
-	}
-	return (0);
-}
-
 int	call_exit(t_cmd *cmd, t_data *data)
 {
 	int		last_exit_code;
@@ -38,7 +26,7 @@ int	call_exit(t_cmd *cmd, t_data *data)
 	last_exit_code = data->exit_code;
 	arg = NULL;
 	i = 1;
-	if (cmd->s[i] && empty_str(cmd->s[i]) == 1)
+	if (cmd->s[i] && empty_str_exit(cmd->s[i]) == 1)
 	{
 		free_data(data);
 		exit(2);
@@ -77,7 +65,6 @@ static int	is_valid_arg(char *arg)
 	int	i;
 
 	i = 0;
-
 	if (ft_strlen(arg) == 0 || (ft_strlen(arg) == 1 && (arg[0] == '+' || \
 					arg[0] == '-')))
 		return (0);

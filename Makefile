@@ -75,7 +75,8 @@ fclean: clean
 re: fclean all
 
 norm:
-	@norminette ./src
+	@norminette -R CheckForbiddenSourceHeader ./src
+	@norminette -R CheckForbiddenSourceHeader ./libs/libft
 	@norminette -R CheckForbiddenSourceHeader ./includes
 
 val:
