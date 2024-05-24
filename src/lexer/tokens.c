@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:47:18 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/23 19:46:58 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/24 22:00:27 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ void	split_line(char *s, t_token **head, t_data *data)
 	{
 		while (s[i] && is_space(s[i]))
 			i++;
+		if (!s[i])
+			return ;
 		tp = tk_type(s[i]);
 		if (tp == WORD)
 		{
