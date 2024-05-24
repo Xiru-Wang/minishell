@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 19:27:42 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/24 14:28:34 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/24 20:03:37 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	is_empty_command(t_cmd *cmd)
 {
 	if (ft_strncmp(cmd->s[0], "", 1) == 0 || if_all_space(cmd->s[0]))
 	{
-		printf("minishell: %s: command not found\n", cmd->s[0]);
+		printf("minishell:%s:command not found\n", cmd->s[0]);
 		return (1);
 	}
 	return (0);
