@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/24 12:05:01 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/24 14:46:54 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,21 +113,23 @@ static int	fill_cmd(t_token **head, t_cmd *cmd)
 	if (!temp || temp->type == PIPE)
 	{
 		if (!temp || !temp->value)
-			printf(SYNTAXERR);
+			printf("minishell: syntax error near "
+				"unexpected token `newline\'\n");
 		else
 			printf("minishell: syntax error near "
-					"unexpected token `%s\'\n", temp->value);
+				"unexpected token `%s\'\n", temp->value);
 		return (EXIT_FAILURE);
 	}
 	size = count_args(temp) + 1;
 	cmd->s = (char **)ft_calloc(size, sizeof(char *));
 	if (!cmd->s)
 		free_exit("malloc error", cmd->data, EXIT_FAILURE);
-	fill_args(head, size, cmd);
+	if (fill_args(head, size, cmd) == 1)
+		return (1);//added
 	return (EXIT_SUCCESS);
 }
 
-static void	fill_args(t_token **head, int size, t_cmd *cmd)
+static int	fill_args(t_token **head, int size, t_cmd *cmd)
 {
 	t_token		*next;
 	t_token		*temp;
@@ -141,6 +143,8 @@ static void	fill_args(t_token **head, int size, t_cmd *cmd)
 		next = temp->next;
 		if (temp->type == STR)
 			cmd->s[i] = expand_complex(temp->value, cmd->data);
+		// if (!cmd->s[0])//added
+		// 	return (1);//added
 		if (i == 0)
 		{
 			builtin = ft_builtin(cmd->s[i]);
@@ -153,6 +157,7 @@ static void	fill_args(t_token **head, int size, t_cmd *cmd)
 	cmd->s[i] = NULL;
 	if (temp && temp->type == PIPE)
 		del_token(head, temp);
+	return (0);
 }
 
 // static void	expand_args(t_token **head, int size, t_cmd *cmd)

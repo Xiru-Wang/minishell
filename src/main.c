@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/24 12:13:46 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/24 14:29:16 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ static int	minishell(t_data *data)
 		add_history(data->line);
 		split_line(data->line, &data->token_list, data);
 		data->cmd_list = generate_cmds(&data->token_list, data);
-		//print_cmd_list(data->cmd_list);//debug
 		if (data->exit_code != 2 && data->cmd_list)
 		{
 			init_signals_noint();
@@ -75,7 +74,7 @@ int	main(int ac, char **av, char **env)
 	}
 	data = (t_data *)malloc(sizeof(t_data));
 	init_data(data, env);
-	/* print_welcome_msg(); */
+	//print_welcome_msg();
 	minishell(data);
 	exit_code = data->exit_code;
 	free_data(data);

@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:37:05 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/24 12:57:54 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/24 13:39:42 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,8 @@ int	call_exit(t_cmd *cmd, t_data *data)
 	i = 1;
 	if (!cmd->s[i])
 		free_exit("exit", data, EXIT_SUCCESS);
-	if (cmd->s[i] && empty_str(cmd->s[i]) == 1)
-	{
-		free_data(data);
-		exit(2);
-	}
+	if (cmd->s[i] && empty_str_exit(cmd->s[i]) == 1)
+		free_exit(NULL, data, 2);
 	if (cmd->s[i] && strcmp(cmd->s[i], "--") == 0)
 		i++;
 	if (cmd->s[i])

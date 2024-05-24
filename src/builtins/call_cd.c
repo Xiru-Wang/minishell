@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:07 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/24 10:37:31 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/24 14:11:04 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	call_cd(t_data *data, t_cmd *cmd)
 	char	*path;
 	int		ret;
 
-	if (!cmd->s[1]|| ( cmd->s[1] && ft_strncmp(cmd->s[1], "~", 1) == 0))
+	if (!cmd->s[1] || (cmd->s[1] && ft_strncmp(cmd->s[1], "~", 1) == 0))
 	{
 		path = find_env_var(data, "HOME");
 		if (!path)
@@ -95,8 +95,8 @@ int	change_directory(t_data *data, char *path)
 	if (!data->pwd)
 	{
 		ft_putendl_fd("cd: error retrieving current directory: getcwd:"
-				"cannot access parent directories: No such file or directory",
-				STDERR_FILENO);
+			"cannot access parent directories: No such file or directory",
+			STDERR_FILENO);
 		tmp = ft_strjoin(data->old_pwd, "/.");
 		data->pwd = tmp;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_unset.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jschroed <jschroed@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 20:31:14 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/20 20:34:29 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/24 13:20:23 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,6 @@ int	call_unset(t_cmd *cmd, t_data *data)
 	while (cmd->s[i])
 	{
 		temp = ft_strjoin(cmd->s[i], "=");
-		if (!temp)
-			return (EXIT_FAILURE);
 		k = 0;
 		while (data->env[k])
 		{
@@ -56,8 +54,6 @@ static char	**reset_env(t_data *data, char **env, int k)
 	while (env[i])
 		i++;
 	new_env = (char **)malloc(sizeof(char *) * i);
-	if (!new_env)
-		return (env);
 	i = 0;
 	while (env[i])
 	{

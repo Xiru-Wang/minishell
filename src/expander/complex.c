@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:20 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/24 12:58:25 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/24 14:00:37 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ char	*expand_complex(char *s, t_data *data)
 //eg.echo "$?'$?'$USER"  --->0'0'xiwang
 
 char	*replace_vars_complex(char *s, t_data *data)
-
 {
 	int		i;
 	char	*dst;
@@ -81,13 +80,10 @@ char	*replace_vars_complex(char *s, t_data *data)
 			value = char_to_str(s[i]);
 			i++;
 		}
-		if (value != NULL)
-		{
-			temp = dst;
-			dst = ft_strjoin(temp, value);
-			free(temp);
-			free(value);
-		}
+		temp = dst;
+		dst = ft_strjoin(temp, value);
+		free(temp);
+		free(value);
 	}
 	return (dst);
 }
