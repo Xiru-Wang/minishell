@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/24 21:56:19 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/25 12:32:56 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,8 +142,6 @@ static int	fill_args(t_token **head, int size, t_cmd *cmd)
 		next = temp->next;
 		if (temp->type == STR)
 			cmd->s[i] = expand_complex(temp->value, cmd->data);
-		// if (!cmd->s[0])//added
-		// 	return (1);//added
 		if (i == 0)
 		{
 			builtin = ft_builtin(cmd->s[i]);
@@ -158,33 +156,3 @@ static int	fill_args(t_token **head, int size, t_cmd *cmd)
 		del_token(head, temp);
 	return (0);
 }
-
-// static void	expand_args(t_token **head, int size, t_cmd *cmd)
-// {
-// 	t_token		*next;
-// 	t_token		*temp;
-// 	t_builtin	builtin;
-// 	int			i;
-
-// 	temp = *head;
-// 	i = 0;
-// 	while (temp && temp->type != PIPE && size > 0)
-// 	{
-// 		next = temp->next;
-// 		if (temp->type == WORD)
-// 			cmd->s[i] = expand_complex(temp->value, WORD, cmd->data);
-// 		else if (temp->type == QUO)
-// 			cmd->s[i] = expand_complex(temp->value, QUO, cmd->data);
-// 		if (i == 0)
-// 		{
-// 			builtin = ft_builtin(cmd->s[i]);
-// 			cmd->is_builtin = builtin;
-// 		}
-// 		del_token(head, temp);
-// 		temp = next;
-// 		i++;
-// 	}
-// 	cmd->s[i] = NULL;
-// 	if (temp && temp->type == PIPE)
-// 		del_token(head, temp);
-// }

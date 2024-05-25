@@ -6,13 +6,14 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 18:47:18 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/24 22:00:27 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/25 12:32:02 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 static int	init_env(t_data *data, char **env);
+static int	handle_word_token(char *s, int i, t_token **head, t_data *data);
 
 void	init_data(t_data *data, char **env)
 {
@@ -75,7 +76,6 @@ enum s_type	tk_type(char c)
 void	split_line(char *s, t_token **head, t_data *data)
 {
 	int			i;
-	int			res;
 	enum s_type	tp;
 
 	i = 0;
@@ -87,12 +87,7 @@ void	split_line(char *s, t_token **head, t_data *data)
 			return ;
 		tp = tk_type(s[i]);
 		if (tp == WORD)
-		{
-			res = check_unclosed_quotes((s + i), head, data);
-			if (res == -1)
-				free_exit("unclosed quote", data, EXIT_FAILURE);
-			i += res;
-		}
+			i = handle_word_token(s, i, head, data);
 		else if (tp == REDIR_IN && s[i + 1] && tk_type(s[i + 1]) == REDIR_IN)
 			i += add_token_list(ft_substr(s, i, 2), HEREDOC, head, data);
 		else if (tp == REDIR_OUT && s[i + 1] && tk_type(s[i + 1]) == REDIR_OUT)
@@ -100,4 +95,14 @@ void	split_line(char *s, t_token **head, t_data *data)
 		else
 			i += add_token_list(ft_substr(s, i, 1), tp, head, data);
 	}
+}
+
+static int	handle_word_token(char *s, int i, t_token **head, t_data *data)
+{
+	int	res;
+
+	res = check_unclosed_quotes((s + i), head, data);
+	if (res == -1)
+		free_exit("unclosed quote", data, EXIT_FAILURE);
+	return (i + res);
 }

@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 19:27:42 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/24 20:19:58 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/25 12:36:35 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,11 @@ static int	is_tilde_command(t_cmd *cmd)
 	return (EXIT_SUCCESS);
 }
 
-// bash-5.2$ ""
-// bash: : command not found
-//NOT SURE
 static int	is_empty_command(t_cmd *cmd)
 {
 	if (ft_strncmp(cmd->s[0], "", 1) == 0 || if_all_space(cmd->s[0]))
 	{
-		print_error("minishell: ",cmd->s[0], ": command not found\n");
-		//printf("minishell: %s: command not found\n", cmd->s[0]);
+		print_error("minishell: ", cmd->s[0], ": command not found\n");
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);

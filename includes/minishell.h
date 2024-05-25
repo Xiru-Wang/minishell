@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/24 19:26:17 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/25 12:29:24 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ int				len_within_quo(char *s, char c);
 char			*expand_complex(char *s, t_data *data);
 char			*replace_vars_complex(char *s, t_data *data);
 int				check_quo(char *s);
+char			*append_value(char *dst, char *value);
 
 //expander_utils
 char			*char_to_str(char c);

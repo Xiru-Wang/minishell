@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 19:27:42 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/24 21:01:19 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/25 12:23:02 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ int	find_executable_and_execute(t_cmd *cmd, t_data *data)
 	free_double_ptr(paths);
 	if (result == 0)
 		return (EXIT_SUCCESS);
-	//print_error("minishell: line 1: ", cmd->s[0], "No such file or directory\n");
 	write(STDERR_FILENO, cmd->s[0], strlen(cmd->s[0]));
 	write(STDERR_FILENO, ": command not found\n", 20);
 	return (EXIT_CMD_NOT_FOUND);

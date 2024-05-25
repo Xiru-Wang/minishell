@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:20 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/24 19:44:49 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/25 12:28:35 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,16 +56,11 @@ char	*expand_complex(char *s, t_data *data)
 	}
 }
 
-// if the string mixed normal chars and quotes
-//eg. hihi$USER"'$USER'" --->hihixiwang'xiwang'
-//eg.echo "$?'$?'$USER"  --->0'0'xiwang
-
 char	*replace_vars_complex(char *s, t_data *data)
 {
 	int		i;
 	char	*dst;
 	char	*value;
-	char	*temp;
 
 	i = 0;
 	dst = (char *)ft_calloc(1, sizeof(char));
@@ -82,10 +77,7 @@ char	*replace_vars_complex(char *s, t_data *data)
 			value = char_to_str(s[i]);
 			i++;
 		}
-		temp = dst;
-		dst = ft_strjoin(temp, value);
-		free(temp);
-		free(value);
+		dst = append_value(dst, value);
 	}
 	return (dst);
 }

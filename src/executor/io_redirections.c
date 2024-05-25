@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 17:35:45 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/24 20:54:00 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/25 12:24:00 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,12 @@ static void	redirect_fdin(t_cmd *cmd, t_io *io)
 		fd = open(io->hdfile, O_RDONLY);
 	if (fd == -1)
 	{
-		if (errno == EACCES)//?
-			print_error("minishell: line 1: ", io->filename,": Permission denied\n");
-		else if (errno == ENOENT)//?
-			print_error("minishell: ", io->filename,": No such file or directory\n");
+		if (errno == EACCES)
+			print_error("minishell: line 1: ", io->filename, \
+					": Permission denied\n");
+		else if (errno == ENOENT)
+			print_error("minishell: ", io->filename, \
+					": No such file or directory\n");
 		else
 			perror("minishell");
 		cmd->err = 1;
