@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:07 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/24 17:56:39 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/25 10:56:14 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	change_directory(t_data *data, char *path)
 	data->pwd = getcwd(NULL, 0);
 	if (!data->pwd)
 	{
-		ft_putendl_fd("cd: error retrieving current directory: getcwd:"
+		ft_putendl_fd("cd: error retrieving current directory: getcwd: "
 			"cannot access parent directories: No such file or directory",
 			STDERR_FILENO);
 		tmp = ft_strjoin(data->old_pwd, "/.");

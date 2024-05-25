@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:07 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/24 17:59:08 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/25 11:13:20 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,7 @@ static char	*get_oldpwd_directory(t_data *data)
 
 	oldpwd = handle_cd_oldpwd(data);
 	if (!oldpwd)
-	{
-		ft_putendl_fd("minishell: cd: OLDPWD not set", STDERR_FILENO);
 		return (NULL);
-	}
 	return (oldpwd);
 }
 
