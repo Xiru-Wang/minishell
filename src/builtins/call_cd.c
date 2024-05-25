@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:07 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/25 10:56:14 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/25 12:03:51 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,11 @@ int	call_cd(t_data *data, t_cmd *cmd)
 	if (ret == -1)
 		print_cd_error(path);
 	else
+	{
+		if (cmd->s[1] && ft_strncmp(cmd->s[1], "-", 1) == 0)
+			ft_putendl_fd(data->pwd, STDOUT_FILENO);
 		update_pwd_variables(data);
+	}
 	return (ret == -1);
 }
 
@@ -58,7 +62,6 @@ char	*handle_cd_oldpwd(t_data *data)
 		ft_putendl_fd("minishell: cd: OLDPWD not set", STDERR_FILENO);
 		return (NULL);
 	}
-	ft_putendl_fd(data->old_pwd, STDOUT_FILENO);
 	return (data->old_pwd);
 }
 
