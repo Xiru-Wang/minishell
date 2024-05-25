@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   generate_cmds.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/25 12:32:56 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/25 16:50:39 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,19 @@ static int	fill_args(t_token **head, int size, t_cmd *cmd);
 // cmd0:			"ls -l",
 // cmd1: io_list:	"> test.txt", "grep hi"
 
+static int	start_with_pipe(t_token *token, t_data *data)
+{
+	if (token->type == PIPE)
+	{
+		printf("minishell: syntax error near "
+			"unexpected token `%s\'\n", token->value);
+		ft_putendl_fd("minishell: line 1: syntax error near unexpected token `|'",
+				STDERR_FILENO);
+		data->exit_code = 2;
+		return (1);
+	}
+	return (0);
+}
 t_cmd	*generate_cmds(t_token **token, t_data *data)
 {
 	int		i;
@@ -29,21 +42,19 @@ t_cmd	*generate_cmds(t_token **token, t_data *data)
 
 	i = 0;
 	data->cmd_num = count_pipe(*token) + 1;
-	data->cmd_list = NULL;
+	if (start_with_pipe(*token, data) == 1)
+		return (NULL);
 	while (i < data->cmd_num && *token)
 	{
 		new = init_cmd(data);
 		if (!new)
 			free_exit("malloc error", data, EXIT_FAILURE);
-		if (extract_redir(token, new) == 1)
+		if (extract_redir(token, new) == 1 || \
+			fill_cmd(token, new) == 1)
 		{
 			data->exit_code = 2;
-			return (data->cmd_list);
-		}
-		if (fill_cmd(token, new) == 1)
-		{
-			data->exit_code = 2;
-			return (data->cmd_list);
+			free(new);
+			return (NULL);
 		}
 		append_cmd(&data->cmd_list, new);
 		i++;
@@ -64,7 +75,7 @@ static int	extract_redir(t_token **head, t_cmd *cmd)
 		if (temp->type >= REDIR_IN && temp->type <= HEREDOC)
 		{
 			next = temp->next;
-			if (check_syntax(next) == 1)
+			if (check_syntax(next, cmd->data) == EXIT_FAILURE)
 				return (EXIT_FAILURE);
 			add_io_list(cmd, temp);
 			del_token(head, temp);
@@ -110,16 +121,20 @@ static int	fill_cmd(t_token **head, t_cmd *cmd)
 	int			size;
 
 	temp = *head;
-	if (!temp || temp->type == PIPE)
-	{
-		if (!temp || !temp->value)
-			printf("minishell: syntax error near "
-				"unexpected token `newline\'\n");
-		else
-			printf("minishell: syntax error near "
-				"unexpected token `%s\'\n", temp->value);
-		return (EXIT_FAILURE);
-	}
+	if (!temp)//added
+		return (0);//added
+	if (temp->type == PIPE)//start next cmd
+		return (EXIT_SUCCESS);
+	// if (temp->type != WORD)//after extract redirection, encounter pipe
+	// {
+	// 	if (!temp->value)
+	// 		printf("minishell: syntax error near "
+	// 			"unexpected token `newline\'\n");
+	// 	else
+	// 		printf("minishell: syntax error near "
+	// 			"unexpected token `%s\'\n", temp->value);
+	// 	return (EXIT_FAILURE);
+	// }
 	size = count_args(temp) + 1;
 	cmd->s = (char **)ft_calloc(size, sizeof(char *));
 	if (!cmd->s)
@@ -134,6 +149,7 @@ static int	fill_args(t_token **head, int size, t_cmd *cmd)
 	t_token		*temp;
 	t_builtin	builtin;
 	int			i;
+	char		*new;//added
 
 	temp = *head;
 	i = 0;
@@ -141,7 +157,11 @@ static int	fill_args(t_token **head, int size, t_cmd *cmd)
 	{
 		next = temp->next;
 		if (temp->type == STR)
-			cmd->s[i] = expand_complex(temp->value, cmd->data);
+		{
+			new = expand_complex(temp->value, cmd->data);//added
+			cmd->s[i] = ft_strtrim(new, " ");//added
+			free(new);//added
+		}
 		if (i == 0)
 		{
 			builtin = ft_builtin(cmd->s[i]);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 19:27:42 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/25 12:36:35 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/25 15:42:04 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ int	call_cmd(t_data *data, t_cmd *cmd)
 	int		status;
 
 	status = 0;
+	if (!cmd->s)//added
+		return (0);//added
 	if (is_empty_command(cmd) != 0)
 		return (EXIT_CMD_NOT_FOUND);
 	if (is_tilde_command(cmd) != 0)

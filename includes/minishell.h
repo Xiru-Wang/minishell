@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/25 12:29:24 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/25 16:39:44 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ t_cmd			*init_cmd(t_data *data);
 void			append_cmd(t_cmd **head, t_cmd *new);
 int				count_pipe(t_token *list);
 int				count_args(t_token *list);
-int				check_syntax(t_token *next);
+int				check_syntax(t_token *next, t_data *data);
 
 //generate_cmd
 t_cmd			*generate_cmds(t_token **token, t_data *data);

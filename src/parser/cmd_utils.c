@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:31 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/24 14:21:04 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/25 16:41:14 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,16 +78,18 @@ int	count_args(t_token *list)
 	return (size);
 }
 
-int	check_syntax(t_token *next)
+int	check_syntax(t_token *next, t_data *data)
 {
 	if (!next || !next->value)
 	{
+		data->exit_code = 2;
 		printf("minishell: syntax error near "
 			"unexpected token `newline\'\n");
 		return (EXIT_FAILURE);
 	}
 	if (next->type != STR)
 	{
+		data->exit_code = 2;
 		printf("minishell: syntax error near "
 			"unexpected token `%s\'\n", next->value);
 		return (EXIT_FAILURE);
