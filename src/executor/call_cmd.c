@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 19:27:42 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/25 15:42:04 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/25 20:10:55 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	is_tilde_command(t_cmd *cmd)
 {
 	char	*expanded_arg;
 
-	if (ft_strncmp(cmd->s[0], "~", 1) == 0)
+	if (ft_strncmp(cmd->s[0], "~", 2) == 0)//was 1
 	{
 		expanded_arg = expand_tilde(cmd->s[0]);
 		print_error("minishell: ", expanded_arg, ": Is a directory\n");
@@ -59,7 +59,7 @@ static int	wait_for_child(pid_t pid, t_data *data)
 static void	execute_command(t_cmd *cmd, t_data *data)
 {
 	execve(cmd->s[0], cmd->s, data->env);
-	free_exit("execve", data, EXIT_FAILURE);
+	free_exit("execve", data, EXIT_FAILURE);//should quit??
 }
 
 //is_empty_command(cmd) --> add one space?
@@ -69,7 +69,7 @@ int	call_cmd(t_data *data, t_cmd *cmd)
 	int		status;
 
 	status = 0;
-	if (!cmd->s)//added
+	if (!cmd->s || cmd->empty_var == 1)//added
 		return (0);//added
 	if (is_empty_command(cmd) != 0)
 		return (EXIT_CMD_NOT_FOUND);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_execute.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 19:27:42 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/25 12:23:02 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/25 20:50:06 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,9 @@ static int	check_access_and_print_error(char *command)
 {
 	if (access(command, X_OK) == 0)
 		return (EXIT_SUCCESS);
-	write(STDERR_FILENO, command, strlen(command));
-	write(STDERR_FILENO, ": command not found\n", 20);
+	print_error("minishell: ", command, ": command not found\n");
+	// write(STDERR_FILENO, command, ft_strlen(command));
+	// write(STDERR_FILENO, ": command not found\n", 20);
 	return (EXIT_CMD_NOT_FOUND);
 }
 
@@ -37,7 +38,7 @@ static char	**get_paths_from_env(char **env)
 	int	i;
 
 	i = 0;
-	while (env[i] && strncmp(env[i], "PATH=", 5) != 0)
+	while (env[i] && ft_strncmp(env[i], "PATH=", 5) != 0)
 		i++;
 	if (env[i])
 		return (ft_split(env[i] + 5, ':'));
@@ -80,7 +81,8 @@ int	find_executable_and_execute(t_cmd *cmd, t_data *data)
 	free_double_ptr(paths);
 	if (result == 0)
 		return (EXIT_SUCCESS);
-	write(STDERR_FILENO, cmd->s[0], strlen(cmd->s[0]));
-	write(STDERR_FILENO, ": command not found\n", 20);
+	print_error("minishell: ", cmd->s[0], ": command not found\n");
+	// write(STDERR_FILENO, cmd->s[0], ft_strlen(cmd->s[0]));
+	// write(STDERR_FILENO, ": command not found\n", 20);
 	return (EXIT_CMD_NOT_FOUND);
 }

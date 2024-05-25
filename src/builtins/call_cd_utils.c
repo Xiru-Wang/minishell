@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:07 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/24 10:31:12 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/25 20:08:54 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ void	print_cd_error(char *path)
 
 void	update_pwd_variables(t_data *data)
 {
-	if (data->pwd && strcmp(data->pwd, "") != 0)
+	if (data->pwd && ft_strncmp(data->pwd, "", 1) != 0)//
 		update_env_var(data, "PWD", data->pwd);
-	if (data->old_pwd && strcmp(data->old_pwd, "") != 0)
+	if (data->old_pwd && ft_strncmp(data->old_pwd, "", 1) != 0)//
 		update_env_var(data, "OLDPWD", data->old_pwd);
 }
 

@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/25 16:52:41 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/25 18:45:43 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ static int	minishell(t_data *data)
 	while (1)
 	{
 		init_signals();
+		//data->exit_code = 0;//how to reset this code??
+		//printf("data->exit code = %d\n", data->exit_code);
 		data->line = readline("minishell>>");
 		if (!data->line)
 		{
@@ -51,12 +53,16 @@ static int	minishell(t_data *data)
 		}
 		add_history(data->line);
 		split_line(data->line, &data->token_list, data);
-		data->cmd_list = generate_cmds(&data->token_list, data);
-		if (data->exit_code != 2 && data->cmd_list)
+		if (generate_cmds(&data->token_list, &data->cmd_list, data) == 0)
 		{
 			init_signals_noint();
 			executor(data->cmd_list, data);
 		}
+		// if (data->exit_code == 0 && data->cmd_list)
+		// {
+		// 	init_signals_noint();
+		// 	executor(data->cmd_list, data);
+		// }
 		free_mini(data);
 	}
 	return (EXIT_SUCCESS);

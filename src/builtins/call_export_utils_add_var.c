@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   call_export_add_var.c                              :+:      :+:    :+:   */
+/*   call_export_utils_add_var.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jschroed <jschroed@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 20:27:08 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/22 08:00:17 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/25 19:10:08 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	copy_env_vars(char **new_env, char **env, int len)
 	i = 0;
 	while (i < len)
 	{
-		new_env[i] = strdup(env[i]);
+		new_env[i] = ft_strdup(env[i]);
 		if (new_env[i] == NULL)
 		{
 			cleanup_new_env(new_env, i);
@@ -61,7 +61,7 @@ static char	**cleanup_new_env(char **new_env, int i)
 
 char	**add_str_to_env(char **new_env, char *str, int len)
 {
-	new_env[len] = strdup(str);
+	new_env[len] = ft_strdup(str);
 	if (new_env[len] == NULL)
 		return (cleanup_new_env(new_env, len));
 	new_env[len + 1] = NULL;

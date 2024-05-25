@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 12:37:05 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/24 13:39:42 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/25 20:09:26 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	call_exit(t_cmd *cmd, t_data *data)
 		free_exit("exit", data, EXIT_SUCCESS);
 	if (cmd->s[i] && empty_str_exit(cmd->s[i]) == 1)
 		free_exit(NULL, data, 2);
-	if (cmd->s[i] && strcmp(cmd->s[i], "--") == 0)
+	if (cmd->s[i] && ft_strncmp(cmd->s[i], "--", 3) == 0)//
 		i++;
 	if (cmd->s[i])
 	{
@@ -92,7 +92,7 @@ static int	calculate_exit_code(char *arg)
 			sign = -1;
 	if (!check_and_convert_number(arg + i, &num))
 		return (print_error_exit(arg));
-	if (sign == -1 && strcmp(arg, "-9223372036854775808") == 0)
+	if (sign == -1 && ft_strncmp(arg, "-9223372036854775808", ft_strlen(arg)) == 0)//
 		num = 9223372036854775808ULL;
 	else if ((sign == 1 && num > LLONG_MAX) || \
 			(sign == -1 && num > 9223372036854775808ULL))

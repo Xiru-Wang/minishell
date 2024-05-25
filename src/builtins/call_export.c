@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_export.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jschroed <jschroed@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 20:27:08 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/22 08:12:22 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/25 19:11:11 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,9 @@ int	call_export(t_cmd *cmd, t_data *data)
 		i = 0;
 		while (data->env && data->env[i])
 		{
-			ft_putstr_fd(data->env[i], STDOUT_FILENO);
-			ft_putstr_fd("\n", STDOUT_FILENO);
+			ft_putendl_fd(data->env[i], STDOUT_FILENO);
+			//ft_putstr_fd(data->env[i], STDOUT_FILENO);
+			//ft_putstr_fd("\n", STDOUT_FILENO);
 			i++;
 		}
 		return (EXIT_SUCCESS);

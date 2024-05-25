@@ -3,14 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   debug_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 19:02:11 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/20 20:40:39 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/25 19:04:54 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	print_token_list(t_token *token_list)
+{
+	while (token_list)
+	{
+		if (token_list->value)
+			printf("value: %s, type: %d\n", \
+					token_list->value, token_list->type);
+		else
+			printf("value: (null)\n");
+		token_list = token_list->next;
+	}
+}
 
 void	print_cmd_list(t_cmd *cmd)
 {

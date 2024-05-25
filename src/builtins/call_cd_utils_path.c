@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:07 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/25 11:13:20 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/25 20:10:16 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ static int	check_too_many_arguments(t_cmd *cmd)
 
 char	*resolve_cd_path(t_data *data, t_cmd *cmd)
 {
-	if (!cmd->s[1] || (cmd->s[1] && ft_strncmp(cmd->s[1], "~", 1) == 0))
+	if (!cmd->s[1] || (cmd->s[1] && ft_strncmp(cmd->s[1], "~", 2) == 0))//was 1
 		return (get_home_directory(data));
 	if (check_too_many_arguments(cmd))
 		return (NULL);
 	if (cmd->s[1] && ft_strncmp(cmd->s[1], "", 1) == 0)
 		return (NULL);
-	if (ft_strncmp(cmd->s[1], "-", 1) == 0)
+	if (ft_strncmp(cmd->s[1], "-", 2) == 0)//was 1
 		return (get_oldpwd_directory(data));
 	return (cmd->s[1]);
 }

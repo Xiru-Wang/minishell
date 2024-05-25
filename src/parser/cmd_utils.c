@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:31 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/25 16:41:14 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/25 19:33:18 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_cmd	*init_cmd(t_data *data)
 	new->stdin_backup = -1;
 	new->stdout_backup = -1;
 	new->err = 0;
+	new->empty_var = 0;
 	return (new);
 }
 
@@ -77,38 +78,3 @@ int	count_args(t_token *list)
 	}
 	return (size);
 }
-
-int	check_syntax(t_token *next, t_data *data)
-{
-	if (!next || !next->value)
-	{
-		data->exit_code = 2;
-		printf("minishell: syntax error near "
-			"unexpected token `newline\'\n");
-		return (EXIT_FAILURE);
-	}
-	if (next->type != STR)
-	{
-		data->exit_code = 2;
-		printf("minishell: syntax error near "
-			"unexpected token `%s\'\n", next->value);
-		return (EXIT_FAILURE);
-	}
-	return (EXIT_SUCCESS);
-}
-
-// int	check_syntax(t_token *next)
-// {
-// 	if (!next || !next->value)
-// 	{
-// 		printf(SYNTAXERR);
-// 		return (EXIT_FAILURE);
-// 	}
-// 	if (next->type != WORD && next->type != QUO)
-// 	{
-// 		printf("minishell: syntax error near"
-// 			"unexpected token `%s\'\n", next->value);
-// 		return (EXIT_FAILURE);
-// 	}
-// 	return (EXIT_SUCCESS);
-// }

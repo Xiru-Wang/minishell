@@ -3,28 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   simple.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 19:18:49 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/24 19:45:29 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/25 20:37:48 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static char	*add_expand_value(char *s, char *dst, t_data *data, int *i)
-{
-	char	*value;
-	char	*new;
+// static char	*add_expand_value(char *s, char *dst, t_data *data, int *i)
+// {
+// 	char	*value;
+// 	char	*new;
 
-	value = handle_dollar(s, i, data->env, data);
-	new = ft_strjoin(dst, value);
-	free(dst);
-	free(value);
-	return (new);
-}
+// 	value = handle_dollar(s, i, data->env, data);
+// 	if (!value)
+// 		new = ft_strjoin(dst, "");
+// 	else
+// 	{
+// 		new = ft_strjoin(dst, value);
+// 		free(value);
+// 	}
+// 	free(dst);
+// 	return (new);
+// }
 
-// in this function: vars expand without careing quotes
+// in this function: vars expand without caring quotes
 char	*expand_simple(char *s, t_data *data)
 {
 	int		i;
@@ -37,16 +42,17 @@ char	*expand_simple(char *s, t_data *data)
 	while (s[i])
 	{
 		if (s[i] == '$' && s[i + 1] && char_is_valid(s[i + 1]))
-			dst = add_expand_value(s + i, dst, data, &i);
+			value = handle_dollar(s + i,&i, data->env, data);
+		//dst = add_expand_value(s + i, dst, data, &i);
 		else
 		{
 			value = char_to_str(s[i]);
-			temp = ft_strjoin(dst, value);
-			free(dst);
-			dst = temp;
-			free(value);
 			i++;
 		}
+		temp = ft_strjoin(dst, value);
+		free(dst);
+		dst = temp;
+		free(value);
 	}
 	return (dst);
 }

@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:52:07 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/25 12:03:51 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/25 19:07:51 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	call_cd(t_data *data, t_cmd *cmd)
 		print_cd_error(path);
 	else
 	{
-		if (cmd->s[1] && ft_strncmp(cmd->s[1], "-", 1) == 0)
+		if (cmd->s[1] && ft_strncmp(cmd->s[1], "-", 1) == 0)//ft_strncmp(cmd->s[1], "-", 2)??
 			ft_putendl_fd(data->pwd, STDOUT_FILENO);
 		update_pwd_variables(data);
 	}

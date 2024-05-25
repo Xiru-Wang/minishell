@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:58 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/24 08:38:39 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/25 19:04:46 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,17 +72,4 @@ void	del_token(t_token **head, t_token *node)
 	if (node->value)
 		free(node->value);
 	free(node);
-}
-
-void	print_token_list(t_token *token_list)
-{
-	while (token_list)
-	{
-		if (token_list->value)
-			printf("value: %s, type: %d\n", \
-					token_list->value, token_list->type);
-		else
-			printf("value: (null)\n");
-		token_list = token_list->next;
-	}
 }
