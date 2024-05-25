@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/25 18:45:43 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/25 22:05:43 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,11 @@ static int	minishell(t_data *data)
 		}
 		add_history(data->line);
 		split_line(data->line, &data->token_list, data);
+		if (data->token_list == NULL)
+		{
+			free(data->line);
+			continue ;
+		}
 		if (generate_cmds(&data->token_list, &data->cmd_list, data) == 0)
 		{
 			init_signals_noint();
