@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_syntax.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:31 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/26 14:16:36 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/26 17:14:43 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,8 @@
 void	expand_arg(t_token *temp, t_cmd *cmd, int i)
 {
 	t_builtin	builtin;
-	char		*new;
 
-	new = NULL;
-	new = expand_complex(temp->value, cmd->data);
-	if (new && if_all_space(new) == 0)
-	{
-		cmd->s[i] = ft_strtrim(new, " ");
-		free(new);
-	}
-	else
-		cmd->s[i] = new;
+	cmd->s[i] = expand_complex(temp->value, cmd->data);
 	if (i == 0 && ft_strncmp(cmd->s[i], "", 1) == 0)
 		cmd->empty_var = 1;
 	else if (i == 0)

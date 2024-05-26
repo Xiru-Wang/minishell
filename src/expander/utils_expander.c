@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_expander.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 19:19:05 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/26 14:10:22 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/26 17:12:43 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,23 @@ int	check_valid_dollar_limit(char *s, int max)
 	return (0);
 }
 
+char	*trim_extra_space(char *s1)
+{
+	char	*temp;
+	char	*res;
+
+	temp = ft_strtrim(s1, " ");
+	res = ft_strjoin(temp, " ");
+	free(temp);
+	return (res);
+}
+
 char	*find_env(char *s, char **env)
 {
 	int		i;
 	int		n;
 	char	*res;
+	char	*temp;
 
 	i = 0;
 	n = ft_strlen(s);
@@ -73,7 +85,17 @@ char	*find_env(char *s, char **env)
 	while (env[i])
 	{
 		if (ft_strncmp(s, env[i], n) == 0 && env[i][n] == '=')
-			res = ft_substr(env[i], n + 1, ft_strlen(env[i]) - n);
+		{
+			temp = ft_substr(env[i], n + 1, ft_strlen(env[i]) - n);
+			if (temp[ft_strlen(temp) - 2] == ' ')
+			{
+				res = trim_extra_space(temp);
+				free(temp);
+				return (res);
+			}
+			else
+				return (temp);
+		}
 		i++;
 	}
 	return (res);
