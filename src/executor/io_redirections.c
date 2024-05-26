@@ -6,14 +6,14 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 17:35:45 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/26 12:59:40 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/26 17:07:28 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 static void	redirect_fdin(t_cmd *cmd, t_io *io);
-static void	redirect_fdout(t_io *io);
+static void	redirect_fdout(t_cmd *cmd, t_io *io);
 
 void	redirect_io(t_cmd *cmd)
 {
@@ -27,7 +27,7 @@ void	redirect_io(t_cmd *cmd)
 		if (io->type == REDIR_IN || io->type == HEREDOC)
 			redirect_fdin(cmd, io);
 		else if (io->type == REDIR_OUT || io->type == APPEND)
-			redirect_fdout(io);
+			redirect_fdout(cmd, io);
 		if (cmd->err)
 		{
 			cmd->data->exit_code = 1;
@@ -67,7 +67,7 @@ static void	redirect_fdin(t_cmd *cmd, t_io *io)
 	}
 }
 
-static void	redirect_fdout(t_io *io)
+static void	redirect_fdout(t_cmd *cmd, t_io *io)
 {
 	int	fd;
 
@@ -76,6 +76,19 @@ static void	redirect_fdout(t_io *io)
 		fd = open(io->filename, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	else if (io->type == APPEND)
 		fd = open(io->filename, O_WRONLY | O_CREAT | O_APPEND, 0666);
+	if (fd == -1)
+	{
+		if (errno == EACCES)
+			print_error("minishell: ", io->filename, \
+					": Permission denied\n");
+		else if (errno == ENOENT)
+			print_error("minishell: ", io->filename, \
+					": No such file or directory\n");
+		else
+			perror("minishell");
+		cmd->err = 1;
+		return ;
+	}
 	if (fd != -1)
 	{
 		dup2(fd, STDOUT_FILENO);
