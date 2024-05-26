@@ -6,7 +6,7 @@
 /*   By: jschroed <jschroed@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 20:27:08 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/22 08:14:07 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/26 16:36:32 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ int	update_or_add_var(t_data *data, char *str)
 
 	pos = equal_sign(str);
 	if (pos == -1)
-		return (EXIT_FAILURE);
-	if (handle_quotes_and_check(str, pos) == EXIT_FAILURE)
+		return (add_new_var(data, str));
+	else if (handle_quotes_and_check(str, pos) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	result = find_var_position(data, str, pos);
 	if (result != -1)

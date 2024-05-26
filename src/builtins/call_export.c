@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 20:27:08 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/26 10:14:41 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/26 16:33:03 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,14 @@ static int	check_parameter(char *str)
 
 	if (ft_isdigit(str[0]) || str[0] == '=')
 		return (export_error(str));
-	i = 0;
-	while (str[i] && str[i] != '=')
+	i = 1;
+	while (str[i] && str[i] != '=') 
 	{
-		if (!is_valid_identifier(str[i]))
+		if (!is_valid_identifier(str[i]) && !ft_isdigit(str[i]))
 			return (export_error(str));
 		i++;
 	}
-	if (str[i] == '=')
-		return (EXIT_SUCCESS);
-	return (export_error(str));
+	return (EXIT_SUCCESS);
 }
 
 char	**add_var(char **env, char *str)
