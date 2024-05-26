@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 19:27:42 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/25 20:50:06 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/26 10:03:12 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ static int	check_access_and_print_error(char *command)
 	if (access(command, X_OK) == 0)
 		return (EXIT_SUCCESS);
 	print_error("minishell: ", command, ": command not found\n");
-	// write(STDERR_FILENO, command, ft_strlen(command));
-	// write(STDERR_FILENO, ": command not found\n", 20);
 	return (EXIT_CMD_NOT_FOUND);
 }
 
@@ -82,7 +80,5 @@ int	find_executable_and_execute(t_cmd *cmd, t_data *data)
 	if (result == 0)
 		return (EXIT_SUCCESS);
 	print_error("minishell: ", cmd->s[0], ": command not found\n");
-	// write(STDERR_FILENO, cmd->s[0], ft_strlen(cmd->s[0]));
-	// write(STDERR_FILENO, ": command not found\n", 20);
 	return (EXIT_CMD_NOT_FOUND);
 }

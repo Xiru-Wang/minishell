@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:31 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/25 20:48:56 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/26 10:15:47 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,16 @@ void	expand_arg(t_token *temp, t_cmd *cmd, int i)
 	char		*new;
 
 	new = NULL;
-	new = expand_complex(temp->value, cmd->data);// added
-	if (new && if_all_space(new) == 0)//"a   " trim
+	new = expand_complex(temp->value, cmd->data);
+	if (new && if_all_space(new) == 0)
 	{
 		cmd->s[i] = ft_strtrim(new, " ");
 		free(new);
 	}
-	else//if "   ", dont trim
+	else
 		cmd->s[i] = new;
-	if (i == 0 && ft_strncmp(cmd->s[i], "", 1) == 0)//eg. $hi//not sure
-		cmd->empty_var = 1;//not sure
+	if (i == 0 && ft_strncmp(cmd->s[i], "", 1) == 0)
+		cmd->empty_var = 1;
 	else if (i == 0)
 	{
 		builtin = ft_builtin(cmd->s[i]);

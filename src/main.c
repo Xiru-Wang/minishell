@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/25 22:05:43 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/26 10:12:36 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,49 +26,56 @@ static void	print_welcome_msg(int print_flag)
 	}
 }
 
-static void	free_mini(t_data *data)
+static int	handle_input(t_data *data)
 {
-	free(data->line);
-	free_token_list(&data->token_list);
-	free_cmd_list(&data->cmd_list);
+	if (!data->line)
+	{
+		write(STDOUT_FILENO, "exit\n", 5);
+		return (0);
+	}
+	if (data->line[0] == '\0')
+	{
+		free(data->line);
+		return (-1);
+	}
+	add_history(data->line);
+	return (1);
+}
+
+static int	process_line(t_data *data)
+{
+	split_line(data->line, &data->token_list, data);
+	if (data->token_list == NULL)
+	{
+		free(data->line);
+		return (-1);
+	}
+	if (generate_cmds(&data->token_list, &data->cmd_list, data) == 0)
+	{
+		init_signals_noint();
+		executor(data->cmd_list, data);
+	}
+	return (0);
 }
 
 static int	minishell(t_data *data)
 {
+	int	input_status;
+
 	while (1)
 	{
 		init_signals();
-		//data->exit_code = 0;//how to reset this code??
-		//printf("data->exit code = %d\n", data->exit_code);
 		data->line = readline("minishell>>");
-		if (!data->line)
-		{
-			write(STDOUT_FILENO, "exit\n", 5);
+		input_status = handle_input(data);
+		if (input_status == 0)
 			break ;
-		}
-		if (data->line[0] == '\0')
-		{
-			free(data->line);
+		if (input_status == -1)
 			continue ;
-		}
-		add_history(data->line);
-		split_line(data->line, &data->token_list, data);
-		if (data->token_list == NULL)
-		{
-			free(data->line);
+		if (process_line(data) == -1)
 			continue ;
-		}
-		if (generate_cmds(&data->token_list, &data->cmd_list, data) == 0)
-		{
-			init_signals_noint();
-			executor(data->cmd_list, data);
-		}
-		// if (data->exit_code == 0 && data->cmd_list)
-		// {
-		// 	init_signals_noint();
-		// 	executor(data->cmd_list, data);
-		// }
-		free_mini(data);
+		free(data->line);
+		free_token_list(&data->token_list);
+		free_cmd_list(&data->cmd_list);
 	}
 	return (EXIT_SUCCESS);
 }

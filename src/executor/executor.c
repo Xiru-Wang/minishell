@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 20:35:04 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/25 20:06:59 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/26 10:02:57 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ static int	execute_single_command(t_cmd *cmd)
 	if (check_hd(cmd) == EXIT_SIGINT)
 		return (EXIT_SIGINT);
 	redirect_io(cmd);
-	if (!cmd->s)//added
+	if (!cmd->s)
 	{
-		reset_stdio(cmd);//added
-		return (0);//added
+		reset_stdio(cmd);
+		return (0);
 	}
 	if (cmd->err)
 	{

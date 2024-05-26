@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/25 19:54:51 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/26 10:18:46 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ void			expand_arg(t_token *temp, t_cmd *cmd, int i);
 int				check_syntax(t_token *next, t_data *data);
 int				pipe_syntax(t_token *token, t_data *data);
 //generate_cmd
-int				generate_cmds(t_token **token,t_cmd **cmd_list, t_data *data);
+int				generate_cmds(t_token **token, t_cmd **cmd_list, t_data *data);
 
 //io_utils
 t_io			*init_io(t_cmd *cmd);

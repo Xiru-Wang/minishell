@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/25 20:05:14 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/26 10:16:17 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,10 @@ static void	add_io_list(t_cmd *cmd, t_token *temp);
 static int	fill_cmd(t_token **head, t_cmd *cmd);
 static int	fill_args(t_token **head, int size, t_cmd *cmd);
 
-# define STOP 1
 // input:			ls -l | grep 'hi' > test.txt
 // token_list:		"ls", "-l", "|", "grep", "'hi'", ">", "test.txt"
 // cmd0:			"ls -l",
 // cmd1: io_list:	"> test.txt", "grep hi"
-
 int	generate_cmds(t_token **token, t_cmd **cmd_list, t_data *data)
 {
 	int		i;
@@ -109,9 +107,9 @@ static int	fill_cmd(t_token **head, t_cmd *cmd)
 	int			size;
 
 	temp = *head;
-	if (!temp)//eg " > file ", no cmd
+	if (!temp)
 		return (0);
-	if (temp->type == PIPE)//start next cmd
+	if (temp->type == PIPE)
 		return (EXIT_SUCCESS);
 	size = count_args(temp) + 1;
 	cmd->s = (char **)ft_calloc(size, sizeof(char *));

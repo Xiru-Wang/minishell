@@ -6,28 +6,11 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 19:18:49 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/25 20:37:48 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/26 10:05:14 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-// static char	*add_expand_value(char *s, char *dst, t_data *data, int *i)
-// {
-// 	char	*value;
-// 	char	*new;
-
-// 	value = handle_dollar(s, i, data->env, data);
-// 	if (!value)
-// 		new = ft_strjoin(dst, "");
-// 	else
-// 	{
-// 		new = ft_strjoin(dst, value);
-// 		free(value);
-// 	}
-// 	free(dst);
-// 	return (new);
-// }
 
 // in this function: vars expand without caring quotes
 char	*expand_simple(char *s, t_data *data)
@@ -42,8 +25,7 @@ char	*expand_simple(char *s, t_data *data)
 	while (s[i])
 	{
 		if (s[i] == '$' && s[i + 1] && char_is_valid(s[i + 1]))
-			value = handle_dollar(s + i,&i, data->env, data);
-		//dst = add_expand_value(s + i, dst, data, &i);
+			value = handle_dollar(s + i, &i, data->env, data);
 		else
 		{
 			value = char_to_str(s[i]);
