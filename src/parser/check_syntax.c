@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:31 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/26 19:57:17 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/26 20:02:22 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	check_empty_token(t_token *token, t_data *data)
 {
 	if (ft_strncmp(token->value, "\"\"", 3) == 0)
 	{
-		ft_putendl_fd("Command \'\' not found", STDERR_FILENO);
+		ft_putendl_fd("minishell: : command not found", STDERR_FILENO);
 		data->exit_code = 127;
 		return (1);
 	}
