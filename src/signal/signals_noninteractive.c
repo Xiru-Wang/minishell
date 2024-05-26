@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 19:44:07 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/26 13:37:21 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/26 15:58:27 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,12 @@ static void	sigint_handler_noint(int signum)
 	}
 	if (signum == SIGQUIT)
 	{
-		write(1, "Quit (core dumped)", ft_strlen("Quit (core dumped)"));
-		write(1, "\n", 1);
-		rl_on_new_line();
+		if (isatty(STDIN_FILENO))
+		{
+			write(1, "Quit (core dumped)", ft_strlen("Quit (core dumped)"));
+			write(1, "\n", 1);
+			rl_on_new_line();
+		}
 	}
 }
 
