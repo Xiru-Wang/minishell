@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:31 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/25 19:33:18 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/26 14:19:39 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_cmd	*init_cmd(t_data *data)
 {
 	t_cmd	*new;
 
-	new = (t_cmd *)calloc(1, sizeof(t_cmd));
+	new = (t_cmd *)ft_calloc(1, sizeof(t_cmd));
 	if (!new)
 		return (NULL);
 	new->s = NULL;
