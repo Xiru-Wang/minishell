@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   generate_cmds.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/26 10:16:17 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/26 19:45:58 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ int	generate_cmds(t_token **token, t_cmd **cmd_list, t_data *data)
 	t_cmd	*new;
 
 	i = 0;
-	data->cmd_num = count_pipe(*token) + 1;
-	if (pipe_syntax(*token, data) == 1)
+	if (check_empty_token(*token, data) || pipe_syntax(*token, data))
 		return (EXIT_FAILURE);
+	data->cmd_num = count_pipe(*token) + 1;
 	while (i < data->cmd_num && *token)
 	{
 		new = init_cmd(data);

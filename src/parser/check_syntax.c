@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:31 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/26 17:14:43 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/26 19:57:17 by xiwang           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,17 @@ int	pipe_syntax(t_token *token, t_data *data)
 		ft_putendl_fd("minishell: syntax error near unexpected token `|'",
 			STDERR_FILENO);
 		data->exit_code = 2;
+		return (1);
+	}
+	return (0);
+}
+
+int	check_empty_token(t_token *token, t_data *data)
+{
+	if (ft_strncmp(token->value, "\"\"", 3) == 0)
+	{
+		ft_putendl_fd("Command \'\' not found", STDERR_FILENO);
+		data->exit_code = 127;
 		return (1);
 	}
 	return (0);
