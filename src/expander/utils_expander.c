@@ -6,7 +6,7 @@
 /*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 19:19:05 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/26 17:12:43 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/26 19:35:04 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,6 @@ char	*char_to_str(char c)
 	return (temp);
 }
 
-int	check_valid_dollar(char *s)
-{
-	while (*s)
-	{
-		if (*s == '$' && *(s + 1))
-		{
-			s++;
-			if (char_is_valid(*s))
-				return (1);
-		}
-		s++;
-	}
-	return (0);
-}
-
 //check var_name after $
 int	char_is_valid(char c)
 {
@@ -43,22 +28,6 @@ int	char_is_valid(char c)
 		return (1);
 	else
 		return (0);
-}
-
-// if "'$USER'"$? -> 'xiwang'0
-int	check_valid_dollar_limit(char *s, int max)
-{
-	int	i;
-
-	i = 0;
-	printf("%d\n", max);
-	while (s[i] && i < max)
-	{
-		if (s[i] == '$' && s[i + 1] && char_is_valid(s[i + 1]))
-			return (1);
-		i++;
-	}
-	return (0);
 }
 
 char	*trim_extra_space(char *s1)
