@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 19:27:42 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/26 10:03:12 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/26 18:06:16 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,30 @@ static int	is_relative_or_absolute(char *command)
 
 static int	check_access_and_print_error(char *command)
 {
+	struct stat	buf;
+
+	if (stat(command, &buf) == 0 && S_ISDIR(buf.st_mode))
+	{
+		print_error("minishell: ", command, ": Is a directory\n");
+		return (EXIT_CMD_EXEC_ERROR);
+	}
 	if (access(command, X_OK) == 0)
 		return (EXIT_SUCCESS);
-	print_error("minishell: ", command, ": command not found\n");
+	if (errno == ENOENT)
+	{
+		print_error("minishell: ", command, ": No such file or directory\n");
+		return (EXIT_CMD_NOT_FOUND);
+	}
+	else if (errno == EACCES)
+	{
+		print_error("minishell: ", command, ": Permission denied\n");
+		return (EXIT_CMD_EXEC_ERROR);
+	}
+	else
+	{
+		print_error("minishell: ", command, ": command not found\n");
+		return (EXIT_CMD_NOT_FOUND);
+	}
 	return (EXIT_CMD_NOT_FOUND);
 }
 

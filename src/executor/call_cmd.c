@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 19:27:42 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/26 13:35:29 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/26 18:00:43 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,16 +66,19 @@ int	call_cmd(t_data *data, t_cmd *cmd)
 {
 	pid_t	pid;
 	int		status;
+	int		exit_code;
 
+	exit_code = 0;
 	status = 0;
 	if (!cmd->s || cmd->empty_var == 1)
 		return (0);
 	if (is_empty_command(cmd) != 0)
 		return (EXIT_CMD_NOT_FOUND);
 	if (is_tilde_command(cmd) != 0)
-		return (126);
-	if (find_executable_and_execute(cmd, data) != 0)
-		return (EXIT_CMD_NOT_FOUND);
+		return (EXIT_CMD_EXEC_ERROR);
+	exit_code = find_executable_and_execute(cmd, data);
+	if (exit_code != 0)
+		return (exit_code);
 	pid = fork();
 	if (pid == 0)
 		execute_command(cmd, data);

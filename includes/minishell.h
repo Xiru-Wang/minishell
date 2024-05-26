@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/26 10:18:46 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/26 17:19:39 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <string.h>
 # include <signal.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
 # include <sys/ioctl.h>
 # include <errno.h>
 
