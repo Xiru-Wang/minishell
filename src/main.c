@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:48:03 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/26 10:12:36 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/27 18:47:58 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	main(int ac, char **av, char **env)
 	}
 	data = (t_data *)malloc(sizeof(t_data));
 	init_data(data, env);
-	print_welcome_msg(0);
+	print_welcome_msg(1);
 	minishell(data);
 	exit_code = data->exit_code;
 	free_data(data);
