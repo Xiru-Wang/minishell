@@ -3,26 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   check_syntax.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:31 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/26 20:02:22 by jschroed         ###   ########.fr       */
+/*   Updated: 2024/05/27 17:40:30 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	expand_arg(t_token *temp, t_cmd *cmd, int i)
+void	expand_arg(t_token *temp,t_token *next, t_cmd *cmd, int *i)
 {
 	t_builtin	builtin;
 
-	cmd->s[i] = expand_complex(temp->value, cmd->data);
-	if (i == 0 && ft_strncmp(cmd->s[i], "", 1) == 0)
-		cmd->empty_var = 1;
-	else if (i == 0)
+	cmd->s[*i] = expand_complex(temp->value, cmd->data);
+	if (ft_strncmp(cmd->s[*i], "", 1) == 0 && next && next->type == STR)
+		free(cmd->s[*i]);
+	else
 	{
-		builtin = ft_builtin(cmd->s[i]);
-		cmd->is_builtin = builtin;
+		if (*i == 0 && ft_strncmp(cmd->s[*i], "", 1) == 0)
+			cmd->empty_var = 1;
+		if (cmd->s[*i])
+		{
+			builtin = ft_builtin(cmd->s[*i]);
+			cmd->is_builtin = builtin;
+		}
+		(*i)++;
 	}
 }
 

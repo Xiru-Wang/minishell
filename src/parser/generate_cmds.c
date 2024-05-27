@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   generate_cmds.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 09:50:42 by xiruwang          #+#    #+#             */
-/*   Updated: 2024/05/26 19:45:58 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/27 17:31:51 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,11 +132,11 @@ static int	fill_args(t_token **head, int size, t_cmd *cmd)
 		next = temp->next;
 		if (temp->type == STR)
 		{
-			expand_arg(temp, cmd, i);
+			expand_arg(temp, next, cmd, &i);
 			del_token(head, temp);
 		}
 		temp = next;
-		i++;
+		size--;
 	}
 	cmd->s[i] = NULL;
 	if (temp && temp->type == PIPE)

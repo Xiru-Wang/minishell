@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xiwang <xiwang@student.42.fr>              +#+  +:+       +#+        */
+/*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 11:49:23 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/26 19:44:39 by xiwang           ###   ########.fr       */
+/*   Updated: 2024/05/27 17:39:56 by xiruwang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ void			append_cmd(t_cmd **head, t_cmd *new);
 int				count_pipe(t_token *list);
 int				count_args(t_token *list);
 //sytax error
-void			expand_arg(t_token *temp, t_cmd *cmd, int i);
+void			expand_arg(t_token *temp, t_token *next, t_cmd *cmd, int *i);
 int				check_syntax(t_token *next, t_data *data);
 int				pipe_syntax(t_token *token, t_data *data);
 int				check_empty_token(t_token *token, t_data *data);
