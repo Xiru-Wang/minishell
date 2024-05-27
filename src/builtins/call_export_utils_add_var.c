@@ -6,13 +6,12 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 20:27:08 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/25 19:10:08 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/27 08:43:00 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-// Function prototypes
 static char	**cleanup_new_env(char **new_env, int i);
 
 int	get_env_len(char **env)
