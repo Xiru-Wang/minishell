@@ -6,7 +6,7 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/20 20:35:04 by jschroed          #+#    #+#             */
-/*   Updated: 2024/05/27 17:13:48 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/27 18:14:05 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int	executor(t_cmd *cmd, t_data *data)
 	else
 		return (0);
 }
-
 
 static int	execute_single_command(t_cmd *cmd)
 {

@@ -6,13 +6,13 @@
 /*   By: xiruwang <xiruwang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/10 16:24:31 by xiwang            #+#    #+#             */
-/*   Updated: 2024/05/27 17:40:30 by xiruwang         ###   ########.fr       */
+/*   Updated: 2024/05/27 18:13:57 by jschroed         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	expand_arg(t_token *temp,t_token *next, t_cmd *cmd, int *i)
+void	expand_arg(t_token *temp, t_token *next, t_cmd *cmd, int *i)
 {
 	t_builtin	builtin;
 
@@ -23,7 +23,7 @@ void	expand_arg(t_token *temp,t_token *next, t_cmd *cmd, int *i)
 	{
 		if (*i == 0 && ft_strncmp(cmd->s[*i], "", 1) == 0)
 			cmd->empty_var = 1;
-		if (cmd->s[*i])
+		if (*i == 0)
 		{
 			builtin = ft_builtin(cmd->s[*i]);
 			cmd->is_builtin = builtin;
