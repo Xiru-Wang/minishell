@@ -4,7 +4,11 @@
 # Test result
 ![tester_minishell](https://github.com/Xiru-Wang/minishell/assets/79924696/bf5b4cb8-67b8-4050-988b-4526233553e5)
 
-Note: Before running the tester, set the customized function print_welcome_msg to 0: print_welcome_msg(0);
+We are using these testers: 
+- [minishell_tester](https://github.com/LucasKuhn/minishell_tester) (nice minimum checks)
+- [mpanic](https://github.com/ChewyToast/mpanic) (covers more than needed)
+
+Note: Before running the any tester, set the customized function print_welcome_msg to 0: print_welcome_msg(0);
 
 # Goal
 To create a miniature version of Bash, providing a hands-on understanding of how a Unix shell operates.
